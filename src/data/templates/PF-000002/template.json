@@ -1,0 +1,161 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "PF-000002",
+    "occasion": ["birthday", "friendship"]
+  },
+  "canvas": {
+    "widthMm": 304.8,
+    "heightMm": 457.2,
+    "dpi": 300,
+    "bleedMm": 3,
+    "widthPx": 3600,
+    "heightPx": 5400,
+    "background": "#0A0A0A"
+  },
+  "inputs": {
+    "photos": { "min": 8, "max": 8 },
+    "fields": [
+      { "key": "heading", "label": "Heading", "type": "text", "maxLen": 30, "required": true, "default": "Happy Birthday" },
+      { "key": "emojis", "label": "Emoji row", "type": "text", "maxLen": 20, "required": false, "default": "🎂 🎁 ❤️ 😍" },
+      { "key": "message", "label": "Message", "type": "text", "maxLen": 400, "required": true, "default": "You are one of the very best friends. Just close my eyes, inspire, give power to achieve, one of the best and very cute and supporter. Thanks for being there in every up and down. Your presence in my life has made everything better and beautiful. Happy Birthday to the most amazing person!" },
+      { "key": "label", "label": "Name / relationship", "type": "text", "maxLen": 30, "required": true, "default": "My best Friend" }
+    ]
+  },
+  "layers": [
+    {
+      "id": "ring",
+      "type": "image",
+      "role": "overlay",
+      "src": "/templates/PF-000002/assets/calender-ring.png",
+      "x": 90,
+      "y": 90,
+      "w": 1650,
+      "h": 1650,
+      "locked": true
+    },
+    {
+      "id": "calendar",
+      "type": "calendar",
+      "x": 320,
+      "y": 480,
+      "w": 930,
+      "h": 860,
+      "year": 2026,
+      "month": 1,
+      "highlightDay": 16,
+      "font": "Playfair Display",
+      "titleFont": "Pinyon Script",
+      "titleSizePx": 168,
+      "headerSizePx": 64,
+      "cellSizePx": 70,
+      "color": "#EDE6D6",
+      "titleColor": "#F3ECDC",
+      "headerColor": "#CBB56B",
+      "heartColor": "#E23B3B"
+    },
+    {
+      "id": "bunnies",
+      "type": "image",
+      "role": "overlay",
+      "src": "/templates/PF-000002/assets/top-element.png",
+      "x": 1990,
+      "y": 150,
+      "w": 1500,
+      "h": 1000,
+      "locked": true
+    },
+    {
+      "id": "heading",
+      "type": "text",
+      "binds": "heading",
+      "x": 180,
+      "y": 1640,
+      "w": 1450,
+      "align": "left",
+      "font": "Great Vibes",
+      "weight": 400,
+      "sizePx": 250,
+      "color": "#EFE7D4",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "emojis",
+      "type": "text",
+      "binds": "emojis",
+      "x": 180,
+      "y": 1985,
+      "w": 1450,
+      "align": "left",
+      "font": "Inter",
+      "weight": 400,
+      "sizePx": 140,
+      "color": "#FFFFFF",
+      "maxLines": 1
+    },
+    {
+      "id": "message",
+      "type": "text",
+      "binds": "message",
+      "x": 170,
+      "y": 2260,
+      "w": 1430,
+      "align": "center",
+      "font": "Playfair Display",
+      "weight": 400,
+      "sizePx": 92,
+      "color": "#E7E1D5",
+      "maxLines": 22,
+      "lineHeight": 1.4,
+      "italic": true
+    },
+    { "id": "p1", "type": "photoSlot", "x": 1620, "y": 1240, "w": 900, "h": 1150, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p2", "type": "photoSlot", "x": 2550, "y": 1240, "w": 930, "h": 800, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p3", "type": "photoSlot", "x": 1620, "y": 2420, "w": 900, "h": 1500, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p4", "type": "photoSlot", "x": 2550, "y": 2070, "w": 930, "h": 1850, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p5", "type": "photoSlot", "x": 120, "y": 3955, "w": 817, "h": 1065, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p6", "type": "photoSlot", "x": 967, "y": 3955, "w": 817, "h": 1065, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p7", "type": "photoSlot", "x": 1814, "y": 3955, "w": 817, "h": 1065, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p8", "type": "photoSlot", "x": 2661, "y": 3955, "w": 819, "h": 1065, "shape": "rect", "fit": "cover", "focal": "faces" },
+    {
+      "id": "flowers-left",
+      "type": "image",
+      "role": "overlay",
+      "src": "/templates/PF-000002/assets/left-side-bottom-flower.png",
+      "x": -40,
+      "y": 3980,
+      "w": 1260,
+      "h": 1890,
+      "bleed": true,
+      "locked": true
+    },
+    {
+      "id": "flowers-right",
+      "type": "image",
+      "role": "overlay",
+      "src": "/templates/PF-000002/assets/right-side-bottom-flower.png",
+      "x": 2080,
+      "y": 4790,
+      "w": 1560,
+      "h": 990,
+      "bleed": true,
+      "locked": true
+    },
+    {
+      "id": "label",
+      "type": "text",
+      "binds": "label",
+      "x": 700,
+      "y": 5060,
+      "w": 2200,
+      "align": "center",
+      "font": "Great Vibes",
+      "weight": 400,
+      "sizePx": 205,
+      "color": "#EFE7D4",
+      "maxLines": 1,
+      "autoFit": true
+    }
+  ]
+}
