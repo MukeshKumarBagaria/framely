@@ -132,6 +132,7 @@ export const FONT_CHOICES: { value: string; label: string }[] = [
   { value: "Playfair Display", label: "Playfair Display (serif)" },
   { value: "Great Vibes", label: "Great Vibes (script)" },
   { value: "Pinyon Script", label: "Pinyon Script (script)" },
+  { value: "Kaushan Script", label: "Kaushan Script (brush)" },
 ];
 
 // The template's own font for each bound field, so the picker opens on the real

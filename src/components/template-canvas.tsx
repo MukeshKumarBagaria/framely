@@ -107,7 +107,7 @@ function OrderIdBadge({
   );
 }
 
-const FONT_FAMILIES = ["Inter", "Playfair Display", "Great Vibes", "Pinyon Script"];
+const FONT_FAMILIES = ["Inter", "Playfair Display", "Great Vibes", "Pinyon Script", "Kaushan Script"];
 
 function useFontsReady() {
   const [ready, setReady] = useState(false);

@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "PF-000003",
+    "occasion": ["friendship"]
+  },
+  "canvas": {
+    "widthMm": 304.8,
+    "heightMm": 457.2,
+    "dpi": 300,
+    "bleedMm": 3,
+    "widthPx": 3600,
+    "heightPx": 5400,
+    "background": "#F4F3EF"
+  },
+  "inputs": {
+    "photos": { "min": 11, "max": 11 },
+    "fields": [
+      { "key": "caption", "label": "Caption", "type": "text", "maxLen": 60, "required": true, "default": "Best\nfriends\never" }
+    ]
+  },
+  "layers": [
+    { "id": "p1", "type": "photoSlot", "x": 30, "y": 30, "w": 1150, "h": 1330, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p2", "type": "photoSlot", "x": 1210, "y": 170, "w": 1180, "h": 1090, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p3", "type": "photoSlot", "x": 2420, "y": 90, "w": 1150, "h": 1270, "shape": "rect", "fit": "cover", "focal": "faces" },
+
+    { "id": "p4", "type": "photoSlot", "x": 30, "y": 1390, "w": 1150, "h": 1430, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p5", "type": "photoSlot", "x": 2420, "y": 1390, "w": 1150, "h": 1430, "shape": "rect", "fit": "cover", "focal": "faces" },
+
+    { "id": "p6", "type": "photoSlot", "x": 30, "y": 2850, "w": 1150, "h": 1180, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p7", "type": "photoSlot", "x": 1210, "y": 2850, "w": 1180, "h": 1180, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p8", "type": "photoSlot", "x": 2420, "y": 2850, "w": 1150, "h": 1180, "shape": "rect", "fit": "cover", "focal": "faces" },
+
+    { "id": "p9", "type": "photoSlot", "x": 30, "y": 4060, "w": 1150, "h": 1310, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p10", "type": "photoSlot", "x": 1210, "y": 4060, "w": 1180, "h": 1310, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p11", "type": "photoSlot", "x": 2420, "y": 4060, "w": 1150, "h": 1310, "shape": "rect", "fit": "cover", "focal": "faces" },
+
+    {
+      "id": "sparkle-left",
+      "type": "text",
+      "label": "Sparkle (left)",
+      "text": "✦",
+      "x": 1240,
+      "y": 1470,
+      "w": 220,
+      "align": "center",
+      "font": "Inter",
+      "weight": 400,
+      "sizePx": 90,
+      "color": "#8A8A8A",
+      "maxLines": 1,
+      "locked": true
+    },
+    {
+      "id": "sparkle-right",
+      "type": "text",
+      "label": "Sparkle (right)",
+      "text": "✦",
+      "x": 2140,
+      "y": 1470,
+      "w": 220,
+      "align": "center",
+      "font": "Inter",
+      "weight": 400,
+      "sizePx": 90,
+      "color": "#8A8A8A",
+      "maxLines": 1,
+      "locked": true
+    },
+    {
+      "id": "caption",
+      "type": "text",
+      "binds": "caption",
+      "x": 1240,
+      "y": 1470,
+      "w": 1120,
+      "align": "center",
+      "font": "Kaushan Script",
+      "weight": 400,
+      "sizePx": 300,
+      "color": "#3D3D3D",
+      "maxLines": 3,
+      "lineHeight": 1.02
+    }
+  ]
+}
