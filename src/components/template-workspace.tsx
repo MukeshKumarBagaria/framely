@@ -6,6 +6,7 @@
 //   • rearrange photos between slots       • round photo corners
 //   • pick a date of birth (drives calendars, moves the heart)
 //   • reposition any element (edit-layout) • reset positions
+//   • recolour text, accents, the calendar, photo frames and the background
 //   • resize to another print size         • export a max-quality print file
 import { useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
@@ -14,12 +15,23 @@ import type { TemplateDoc, PhotoSlotLayer } from "@/lib/template/schema";
 import { products } from "@/lib/template/products";
 import { scaleTemplateDoc } from "@/lib/template/scale";
 import {
+  accentLayers,
   applyAdjustments,
+  calendarColorDefaults,
+  CALENDAR_COLOR_ROLES,
+  ORDER_ID_CORNERS,
   defaultAdjustments,
+  DEFAULT_CROP,
+  FONT_CHOICES,
   maxPhotoCornerRadius,
+  photoBorderDefault,
   resizableFieldKeys,
+  textColorDefaults,
+  textFontDefaults,
   type Adjustments,
+  type CalendarColorRole,
   type LayerOffset,
+  type PhotoCrop,
 } from "@/lib/template/adjustments";
 import { downloadPdf, downloadPng, slugifyFilename } from "@/lib/export/print-export";
 
@@ -65,6 +77,59 @@ function pad2(n: number) {
   return String(n).padStart(2, "0");
 }
 
+// `<input type="color">` only accepts #rrggbb, so expand the 3-digit form.
+function toHex6(color: string) {
+  const short = /^#([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])$/.exec(color);
+  return short ? `#${short[1]}${short[1]}${short[2]}${short[2]}${short[3]}${short[3]}` : color;
+}
+
+function ColorSwatch({
+  label,
+  value,
+  onChange,
+  modified,
+  onReset,
+}: {
+  label: string;
+  value: string;
+  onChange: (hex: string) => void;
+  modified: boolean;
+  onReset: () => void;
+}) {
+  return (
+    <div className="flex items-center justify-between gap-3">
+      <span className="min-w-0 flex-1 truncate text-xs text-zinc-400">{label}</span>
+      {modified && (
+        <button
+          type="button"
+          onClick={onReset}
+          title={`Reset ${label}`}
+          className="text-xs text-zinc-500 underline underline-offset-2 hover:text-zinc-200"
+        >
+          Reset
+        </button>
+      )}
+      <input
+        type="color"
+        aria-label={label}
+        value={toHex6(value)}
+        onChange={(e) => onChange(e.target.value)}
+        className="h-7 w-10 shrink-0 cursor-pointer rounded border border-zinc-700 bg-zinc-950 p-0.5"
+      />
+    </div>
+  );
+}
+
+function Panel({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
+  return (
+    <div className="rounded-lg border border-zinc-800 bg-zinc-900/60 p-4">
+      <p className="text-sm font-medium text-zinc-200">{title}</p>
+      {hint && <p className="mt-1 text-xs text-zinc-500">{hint}</p>}
+      <div className="mt-3 flex flex-col gap-2.5">{children}</div>
+    </div>
+  );
+}
+
 export default function TemplateWorkspace({ doc, productId }: Props) {
   const [fieldValues, setFieldValues] = useState(() => defaultFieldValues(doc));
   const [photoUrls, setPhotoUrls] = useState<Partial<Record<string, string>>>({});
@@ -73,10 +138,14 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
   const [productSizeId, setProductSizeId] = useState(productId);
   const [adjustments, setAdjustments] = useState<Adjustments>(() => defaultAdjustments(doc));
   const [editMode, setEditMode] = useState(false);
+  const [photoAdjust, setPhotoAdjust] = useState(false);
+  const [cropSlotId, setCropSlotId] = useState<string | null>(null);
   const [exporting, setExporting] = useState<"png" | "pdf" | null>(null);
   const [exportError, setExportError] = useState<string | null>(null);
   const objectUrlsRef = useRef<string[]>([]);
   const stageRef = useRef<Konva.Stage | null>(null);
+  const previewBoxRef = useRef<HTMLDivElement | null>(null);
+  const [previewWidth, setPreviewWidth] = useState(480);
 
   const activeProduct = products[productSizeId] ?? products[productId];
 
@@ -106,10 +175,30 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
   const cornerMax = useMemo(() => maxPhotoCornerRadius(doc), [doc]);
   const resizableFields = useMemo(() => resizableFieldKeys(doc), [doc]);
 
+  // The template's own colours — used as the "unmodified" baseline every colour
+  // control opens on and resets back to.
+  const baseTextColors = useMemo(() => textColorDefaults(doc), [doc]);
+  const baseTextFonts = useMemo(() => textFontDefaults(doc), [doc]);
+  const accents = useMemo(() => accentLayers(doc), [doc]);
+  const baseCalendarColors = useMemo(() => calendarColorDefaults(doc), [doc]);
+  const baseBorder = useMemo(() => photoBorderDefault(doc), [doc]);
+  const activeBorder = adjustments.photoBorder ?? baseBorder;
+
   useEffect(() => {
     return () => {
       objectUrlsRef.current.forEach((u) => URL.revokeObjectURL(u));
     };
+  }, []);
+
+  // Keep the stage exactly as wide as its container.
+  useEffect(() => {
+    const el = previewBoxRef.current;
+    if (!el) return;
+    const measure = () => setPreviewWidth(Math.max(1, Math.floor(el.getBoundingClientRect().width)));
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
 
   async function handleFiles(files: FileList | null) {
@@ -187,6 +276,34 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
     setAdjustments((a) => ({ ...a, layerOffsets: {} }));
   }
 
+  // --- photo fit (zoom/pan inside the frame) ---
+  function cropFor(slotId: string): PhotoCrop {
+    return adjustments.photoCrops[slotId] ?? DEFAULT_CROP;
+  }
+
+  function setCrop(slotId: string, next: Partial<PhotoCrop>) {
+    setAdjustments((a) => {
+      const current = a.photoCrops[slotId] ?? DEFAULT_CROP;
+      return { ...a, photoCrops: { ...a.photoCrops, [slotId]: { ...current, ...next } } };
+    });
+  }
+
+  function setCropScale(slotId: string, scale: number) {
+    setCrop(slotId, { scale });
+  }
+
+  function handlePhotoCropChange(slotId: string, offsetX: number, offsetY: number) {
+    setCrop(slotId, { offsetX, offsetY });
+  }
+
+  function resetCrop(slotId: string) {
+    setAdjustments((a) => {
+      const next = { ...a.photoCrops };
+      delete next[slotId];
+      return { ...a, photoCrops: next };
+    });
+  }
+
   function setDOBFromInput(value: string) {
     const [y, m, d] = value.split("-").map((n) => Number.parseInt(n, 10));
     if (!y || !m || !d) return;
@@ -196,6 +313,70 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
   function setTextScale(fieldKey: string, value: number) {
     setAdjustments((a) => ({ ...a, textScale: { ...a.textScale, [fieldKey]: value } }));
   }
+
+  // Colour setters. Each stores an override keyed by field/layer/role; clearing
+  // one deletes the key so the template's authored colour shows through again.
+  function setTextColor(fieldKey: string, hex: string | null) {
+    setAdjustments((a) => {
+      const next = { ...a.textColors };
+      if (hex === null) delete next[fieldKey];
+      else next[fieldKey] = hex;
+      return { ...a, textColors: next };
+    });
+  }
+
+  function setTextFont(fieldKey: string, family: string | null) {
+    setAdjustments((a) => {
+      const next = { ...a.textFonts };
+      if (family === null) delete next[fieldKey];
+      else next[fieldKey] = family;
+      return { ...a, textFonts: next };
+    });
+  }
+
+  function setAccentColor(layerId: string, hex: string | null) {
+    setAdjustments((a) => {
+      const next = { ...a.accentColors };
+      if (hex === null) delete next[layerId];
+      else next[layerId] = hex;
+      return { ...a, accentColors: next };
+    });
+  }
+
+  function setCalendarColor(role: CalendarColorRole, hex: string | null) {
+    setAdjustments((a) => {
+      const next = { ...a.calendarColors };
+      if (hex === null) delete next[role];
+      else next[role] = hex;
+      return { ...a, calendarColors: next };
+    });
+  }
+
+  function setBorder(patch: Partial<{ width: number; color: string }>) {
+    setAdjustments((a) => {
+      const current = a.photoBorder ?? baseBorder;
+      if (!current) return a;
+      return { ...a, photoBorder: { ...current, ...patch } };
+    });
+  }
+
+  function resetColors() {
+    setAdjustments((a) => ({
+      ...a,
+      textColors: {},
+      accentColors: {},
+      calendarColors: {},
+      photoBorder: null,
+      background: null,
+    }));
+  }
+
+  const colorsModified =
+    Object.keys(adjustments.textColors).length > 0 ||
+    Object.keys(adjustments.accentColors).length > 0 ||
+    Object.keys(adjustments.calendarColors).length > 0 ||
+    adjustments.photoBorder !== null ||
+    adjustments.background !== null;
 
   async function handleExport(kind: "png" | "pdf") {
     const stage = stageRef.current;
@@ -320,21 +501,56 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
                   />
                 )}
                 {resizableFields.has(field.key) && (
-                  <div className="mt-2 flex items-center gap-2">
-                    <span className="w-8 text-xs text-zinc-500">Size</span>
-                    <input
-                      type="range"
-                      min={0.6}
-                      max={3}
-                      step={0.05}
-                      value={adjustments.textScale[field.key] ?? 1}
-                      onChange={(e) => setTextScale(field.key, Number(e.target.value))}
-                      className="flex-1 accent-zinc-200"
-                    />
-                    <span className="w-9 text-right text-xs text-zinc-500">
-                      {Math.round((adjustments.textScale[field.key] ?? 1) * 100)}%
-                    </span>
-                  </div>
+                  <>
+                    <div className="mt-2 flex items-center gap-2">
+                      <span className="w-8 text-xs text-zinc-500">Size</span>
+                      <input
+                        type="range"
+                        min={0.6}
+                        max={3}
+                        step={0.05}
+                        value={adjustments.textScale[field.key] ?? 1}
+                        onChange={(e) => setTextScale(field.key, Number(e.target.value))}
+                        className="flex-1 accent-zinc-200"
+                      />
+                      <span className="w-9 text-right text-xs text-zinc-500">
+                        {Math.round((adjustments.textScale[field.key] ?? 1) * 100)}%
+                      </span>
+                    </div>
+                    <div className="mt-2 flex items-center gap-2">
+                      <span className="w-8 shrink-0 text-xs text-zinc-500">Font</span>
+                      <select
+                        aria-label={`${field.label} font`}
+                        value={adjustments.textFonts[field.key] ?? baseTextFonts[field.key] ?? "Inter"}
+                        onChange={(e) => setTextFont(field.key, e.target.value)}
+                        className="min-w-0 flex-1 rounded-md border border-zinc-700 bg-zinc-950 px-2 py-1 text-xs text-zinc-100 outline-none focus:border-zinc-400"
+                      >
+                        {FONT_CHOICES.map((f) => (
+                          <option key={f.value} value={f.value}>
+                            {f.label}
+                          </option>
+                        ))}
+                      </select>
+                      {field.key in adjustments.textFonts && (
+                        <button
+                          type="button"
+                          onClick={() => setTextFont(field.key, null)}
+                          className="shrink-0 text-xs text-zinc-500 underline underline-offset-2 hover:text-zinc-200"
+                        >
+                          Reset
+                        </button>
+                      )}
+                    </div>
+                    <div className="mt-1.5">
+                      <ColorSwatch
+                        label="Colour"
+                        value={adjustments.textColors[field.key] ?? baseTextColors[field.key] ?? "#FFFFFF"}
+                        modified={field.key in adjustments.textColors}
+                        onChange={(hex) => setTextColor(field.key, hex)}
+                        onReset={() => setTextColor(field.key, null)}
+                      />
+                    </div>
+                  </>
                 )}
               </div>
             ))}
@@ -353,6 +569,82 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
               onChange={(e) => setDOBFromInput(e.target.value)}
               className="mt-2 w-full rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 outline-none focus:border-zinc-400 [color-scheme:dark]"
             />
+          </div>
+        )}
+
+        {photoSlots.length > 0 && photoCount > 0 && (
+          <div className="rounded-lg border border-zinc-800 bg-zinc-900/60 p-4">
+            <div className="flex items-center justify-between">
+              <label className="text-sm font-medium text-zinc-200">Fit photos</label>
+              <button
+                onClick={() => {
+                  setPhotoAdjust((v) => !v);
+                  if (!photoAdjust) setEditMode(false);
+                }}
+                className={`rounded-md px-3 py-1 text-xs font-medium transition-colors ${
+                  photoAdjust
+                    ? "bg-amber-400 text-zinc-900"
+                    : "border border-zinc-600 text-zinc-200 hover:border-zinc-400"
+                }`}
+              >
+                {photoAdjust ? "On" : "Off"}
+              </button>
+            </div>
+            <p className="mt-2 text-xs text-zinc-500">
+              {photoAdjust
+                ? "Drag a photo on the preview to move it inside its frame, then zoom below."
+                : "Turn on to drag each photo into place inside its frame (e.g. to centre a face)."}
+            </p>
+
+            <div className="mt-3 grid grid-cols-4 gap-2">
+              {photoSlots.map((slot, i) => {
+                const url = photoUrls[slot.id];
+                const active = cropSlotId === slot.id;
+                return (
+                  <button
+                    key={slot.id}
+                    type="button"
+                    onClick={() => setCropSlotId(active ? null : slot.id)}
+                    className={`relative flex aspect-square items-center justify-center overflow-hidden rounded-md border text-xs text-zinc-500 ${
+                      active ? "border-amber-400 ring-2 ring-amber-400/60" : "border-zinc-700 hover:border-zinc-500"
+                    }`}
+                    style={
+                      url
+                        ? { backgroundImage: `url(${url})`, backgroundSize: "cover", backgroundPosition: "center" }
+                        : undefined
+                    }
+                  >
+                    {!url && String(i + 1).padStart(2, "0")}
+                  </button>
+                );
+              })}
+            </div>
+
+            {cropSlotId && (
+              <div className="mt-3 border-t border-zinc-800 pt-3">
+                <div className="flex items-center gap-2">
+                  <span className="w-10 text-xs text-zinc-500">Zoom</span>
+                  <input
+                    type="range"
+                    min={1}
+                    max={3}
+                    step={0.05}
+                    value={cropFor(cropSlotId).scale}
+                    onChange={(e) => setCropScale(cropSlotId, Number(e.target.value))}
+                    className="flex-1 accent-zinc-200"
+                  />
+                  <span className="w-9 text-right text-xs text-zinc-500">
+                    {Math.round(cropFor(cropSlotId).scale * 100)}%
+                  </span>
+                </div>
+                <button
+                  onClick={() => resetCrop(cropSlotId)}
+                  className="mt-2 text-xs text-zinc-300 underline underline-offset-2 hover:text-white"
+                >
+                  Reset this photo
+                </button>
+              </div>
+            )}
           </div>
         )}
 
@@ -378,11 +670,82 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
           </div>
         )}
 
+        {activeBorder && (
+          <Panel title="Photo frames" hint="Restyles the white border around the collage photos.">
+            <div className="flex items-center gap-2">
+              <span className="w-10 text-xs text-zinc-500">Width</span>
+              <input
+                type="range"
+                min={0}
+                max={120}
+                step={1}
+                value={activeBorder.width}
+                onChange={(e) => setBorder({ width: Number(e.target.value) })}
+                className="flex-1 accent-zinc-200"
+              />
+              <span className="w-9 text-right text-xs text-zinc-500">{Math.round(activeBorder.width)}</span>
+            </div>
+            <ColorSwatch
+              label="Frame colour"
+              value={activeBorder.color}
+              modified={adjustments.photoBorder !== null}
+              onChange={(hex) => setBorder({ color: hex })}
+              onReset={() => setAdjustments((a) => ({ ...a, photoBorder: null }))}
+            />
+          </Panel>
+        )}
+
+        {hasCalendar && (
+          <Panel title="Calendar colours" hint="Each part of the calendar can be recoloured on its own.">
+            {CALENDAR_COLOR_ROLES.filter((r) => baseCalendarColors[r.role]).map(({ role, label }) => (
+              <ColorSwatch
+                key={role}
+                label={label}
+                value={adjustments.calendarColors[role] ?? baseCalendarColors[role] ?? "#FFFFFF"}
+                modified={role in adjustments.calendarColors}
+                onChange={(hex) => setCalendarColor(role, hex)}
+                onReset={() => setCalendarColor(role, null)}
+              />
+            ))}
+          </Panel>
+        )}
+
+        <Panel title="Colours" hint="The page background and every decorative element.">
+          <ColorSwatch
+            label="Background"
+            value={adjustments.background ?? doc.canvas.background}
+            modified={adjustments.background !== null}
+            onChange={(hex) => setAdjustments((a) => ({ ...a, background: hex }))}
+            onReset={() => setAdjustments((a) => ({ ...a, background: null }))}
+          />
+          {accents.map((accent) => (
+            <ColorSwatch
+              key={accent.id}
+              label={accent.label}
+              value={adjustments.accentColors[accent.id] ?? accent.color}
+              modified={accent.id in adjustments.accentColors}
+              onChange={(hex) => setAccentColor(accent.id, hex)}
+              onReset={() => setAccentColor(accent.id, null)}
+            />
+          ))}
+          {colorsModified && (
+            <button
+              onClick={resetColors}
+              className="mt-1 self-start text-xs text-zinc-300 underline underline-offset-2 hover:text-white"
+            >
+              Reset all colours
+            </button>
+          )}
+        </Panel>
+
         <div className="rounded-lg border border-zinc-800 bg-zinc-900/60 p-4">
           <div className="flex items-center justify-between">
             <label className="text-sm font-medium text-zinc-200">Move elements</label>
             <button
-              onClick={() => setEditMode((v) => !v)}
+              onClick={() => {
+                setEditMode((v) => !v);
+                if (!editMode) setPhotoAdjust(false);
+              }}
               className={`rounded-md px-3 py-1 text-xs font-medium transition-colors ${
                 editMode ? "bg-amber-400 text-zinc-900" : "border border-zinc-600 text-zinc-200 hover:border-zinc-400"
               }`}
@@ -425,6 +788,68 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
         </div>
 
         <div className="rounded-lg border border-zinc-800 bg-zinc-900/60 p-4">
+          <label className="block text-sm font-medium text-zinc-200">Order ID</label>
+          <p className="mt-1 text-xs text-zinc-500">
+            Prints a tiny reference (e.g. a Meesho order ID) in a corner so you can match each printed
+            sheet to its order. Leave blank to hide it.
+          </p>
+          <input
+            type="text"
+            value={adjustments.orderId}
+            placeholder="e.g. 1234567890_1"
+            onChange={(e) => setAdjustments((a) => ({ ...a, orderId: e.target.value }))}
+            className="mt-2 w-full rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 outline-none focus:border-zinc-400"
+          />
+          {adjustments.orderId.trim() !== "" && (
+            <>
+              <div className="mt-2 flex items-center gap-2">
+                <span className="w-14 shrink-0 text-xs text-zinc-500">Corner</span>
+                <select
+                  aria-label="Order ID corner"
+                  value={adjustments.orderIdCorner}
+                  onChange={(e) =>
+                    setAdjustments((a) => ({ ...a, orderIdCorner: e.target.value as typeof a.orderIdCorner }))
+                  }
+                  className="min-w-0 flex-1 rounded-md border border-zinc-700 bg-zinc-950 px-2 py-1 text-xs text-zinc-100 outline-none focus:border-zinc-400"
+                >
+                  {ORDER_ID_CORNERS.map((c) => (
+                    <option key={c.value} value={c.value}>
+                      {c.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="mt-2 flex items-center gap-2">
+                <span className="w-14 shrink-0 text-xs text-zinc-500">Colour</span>
+                <select
+                  aria-label="Order ID colour mode"
+                  value={adjustments.orderIdColor === "auto" ? "auto" : "custom"}
+                  onChange={(e) =>
+                    setAdjustments((a) => ({
+                      ...a,
+                      orderIdColor: e.target.value === "auto" ? "auto" : "#FF0000",
+                    }))
+                  }
+                  className="min-w-0 flex-1 rounded-md border border-zinc-700 bg-zinc-950 px-2 py-1 text-xs text-zinc-100 outline-none focus:border-zinc-400"
+                >
+                  <option value="auto">Auto (contrast)</option>
+                  <option value="custom">Custom…</option>
+                </select>
+                {adjustments.orderIdColor !== "auto" && (
+                  <input
+                    type="color"
+                    aria-label="Order ID colour"
+                    value={toHex6(adjustments.orderIdColor)}
+                    onChange={(e) => setAdjustments((a) => ({ ...a, orderIdColor: e.target.value }))}
+                    className="h-7 w-10 shrink-0 cursor-pointer rounded border border-zinc-700 bg-zinc-950 p-0.5"
+                  />
+                )}
+              </div>
+            </>
+          )}
+        </div>
+
+        <div className="rounded-lg border border-zinc-800 bg-zinc-900/60 p-4">
           <label className="block text-sm font-medium text-zinc-200">Download</label>
           <p className="mt-1 text-xs text-zinc-500">
             Full print resolution ({renderDoc.canvas.widthPx} × {renderDoc.canvas.heightPx}px at{" "}
@@ -450,9 +875,17 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
         </div>
       </div>
 
-      <div className="order-1 flex flex-col items-center gap-2 lg:order-2">
+      {/* The preview follows you down the long tools column. `self-start` is
+          required: a grid item stretches to the row height by default, which
+          leaves sticky nothing to travel within. */}
+      <div className="order-1 flex flex-col items-center gap-2 lg:sticky lg:top-6 lg:order-2 lg:self-start">
+        {/* The stage is a fixed-size canvas, so its width is measured from this
+            box rather than assumed — otherwise it overflows narrow screens
+            (FR-EDT-7: usable at 360px). Export is unaffected: it re-rasterizes
+            at full print resolution regardless of preview size. */}
         <div
-          className={`w-full max-w-md overflow-hidden rounded-lg ${
+          ref={previewBoxRef}
+          className={`w-full max-w-[480px] overflow-hidden rounded-lg ${
             editMode ? "ring-2 ring-amber-400/70" : ""
           }`}
         >
@@ -460,14 +893,22 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
             doc={renderDoc}
             fieldValues={fieldValues}
             photoUrls={photoUrls}
-            displayWidth={480}
+            displayWidth={previewWidth}
             stageRef={stageRef}
             editable={editMode}
             layerOffsets={renderOffsets}
             onLayerDrag={handleLayerDrag}
+            photoAdjust={photoAdjust}
+            onPhotoCropChange={handlePhotoCropChange}
+            orderId={adjustments.orderId}
+            orderIdCorner={adjustments.orderIdCorner}
+            orderIdColor={adjustments.orderIdColor}
           />
         </div>
         {editMode && <p className="text-xs text-amber-300/80">Drag elements to reposition · changes are saved live</p>}
+        {photoAdjust && (
+          <p className="text-xs text-amber-300/80">Drag a photo to move it inside its frame · changes are saved live</p>
+        )}
       </div>
     </div>
   );

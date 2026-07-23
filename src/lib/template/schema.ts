@@ -6,12 +6,23 @@ import { z } from "zod";
 
 const hexColor = z.string().regex(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/, "must be a hex color");
 
+// Same, but the 4-/8-digit alpha forms are allowed too. Only used where a
+// colour must be able to fade to nothing (gradient stops) — the plain-colour
+// fields stay strict so an `<input type="color">` can always round-trip them.
+const hexColorAlpha = z
+  .string()
+  .regex(/^#([0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/, "must be a hex color, optionally with alpha");
+
 const layerId = z.string().regex(/^[a-z0-9-]{1,32}$/);
 
 const fieldKey = z.string().regex(/^[a-z][a-z0-9_]{0,23}$/);
 
 const layerCommon = z.object({
   id: layerId,
+  // Human-readable name for this layer. Purely presentational: the customizer
+  // uses it to label per-layer controls (e.g. the accent-colour pickers)
+  // instead of showing a raw layer id.
+  label: z.string().max(40).optional(),
   x: z.number(),
   y: z.number(),
   rotation: z.number().min(-180).max(180).default(0),
@@ -43,6 +54,17 @@ export const photoSlotLayerSchema = layerCommon.extend({
   cornerRadius: z.number().min(0).optional(),
   fit: z.literal("cover").default("cover"),
   focal: z.enum(["faces", "center"]).default("faces"),
+  // How the photo sits inside the frame (PRD §7.1 crop model). Baseline is a
+  // cover-fit; `scale` ≥ 1 zooms in on that, and offsetX/offsetY ∈ [-1,1] pan
+  // the visible window within the leftover range (0 = centred). Resolution
+  // independent, so the on-screen crop reproduces exactly in the print render.
+  crop: z
+    .object({
+      scale: z.number().min(1).max(5).default(1),
+      offsetX: z.number().min(-1).max(1).default(0),
+      offsetY: z.number().min(-1).max(1).default(0),
+    })
+    .optional(),
   border: z
     .object({
       width: z.number().min(0).max(120),
@@ -76,10 +98,25 @@ export const textLayerSchema = layerCommon
 
 export const shapeLayerSchema = layerCommon.extend({
   type: z.literal("shape"),
-  kind: z.enum(["rect", "ellipse", "line"]),
+  // "ribbon" is a name-plate banner: a horizontal band with a V-notch cut into
+  // each end (the classic pennant/award look).
+  kind: z.enum(["rect", "ellipse", "line", "ribbon"]),
   w: z.number().positive(),
   h: z.number().positive(),
+  cornerRadius: z.number().min(0).optional(), // rect only
+  // Depth of the ribbon's end notches, in px. Defaults to h/2 (a 45° cut).
+  notch: z.number().min(0).optional(), // ribbon only
   fill: z.union([hexColor, z.literal("none")]).default("none"),
+  // Vertical/horizontal two-stop gradient. Takes precedence over `fill` when
+  // present. Stops accept alpha, so a shape can fade to nothing — that's how a
+  // photo is blended into the page background behind a block of text.
+  fillGradient: z
+    .object({
+      from: hexColorAlpha,
+      to: hexColorAlpha,
+      direction: z.enum(["vertical", "horizontal"]).default("vertical"),
+    })
+    .optional(),
   stroke: z
     .object({
       width: z.number().positive(),
@@ -96,6 +133,12 @@ export const shapeLayerSchema = layerCommon.extend({
 // date-of-birth picker overrides year/month/highlightDay via applyAdjustments.
 export const calendarLayerSchema = layerCommon.extend({
   type: z.literal("calendar"),
+  // Presentation:
+  //   "grid" — a full month grid, heart on `highlightDay`
+  //   "day"  — a tear-off day card: month label above a large day number
+  // Both read the same year/month/highlightDay, so one date-of-birth picker
+  // drives either style.
+  variant: z.enum(["grid", "day"]).default("grid"),
   w: z.number().positive(),
   h: z.number().positive(),
   year: z.number().int().min(1900).max(2200),
@@ -103,17 +146,37 @@ export const calendarLayerSchema = layerCommon.extend({
   // Optional override; when absent the renderer derives the month name from
   // `month` (so the date-of-birth picker updates it automatically).
   title: z.string().optional(),
+  // Use the 3-letter month ("Feb" rather than "February"). Composes with
+  // titleUppercase — set both for the poster-style "FEB".
+  titleAbbrev: z.boolean().default(false),
+  titleUppercase: z.boolean().default(false),
   weekdayLabels: z.array(z.string()).length(7).default(["S", "M", "T", "W", "T", "F", "S"]),
   highlightDay: z.number().int().min(1).max(31).optional(),
-  font: z.string(), // grid (weekday letters + date numbers)
-  titleFont: z.string(), // the month label — usually a script face
+  // How `highlightDay` is marked in the "grid" variant:
+  //   "heart"    — the heart glyph replaces the date number
+  //   "heartDay" — the date number is drawn *on top of* the heart
+  //   "circle"   — a filled disc behind the date number
+  highlightStyle: z.enum(["heart", "heartDay", "circle"]).default("heart"),
+  font: z.string(), // grid dates ("grid") / the big day number ("day")
+  titleFont: z.string(), // the month label — a script face in "grid", a sans in "day"
   titleSizePx: z.number().positive(),
-  headerSizePx: z.number().positive(),
-  cellSizePx: z.number().positive(),
+  // "day" variant: explicit height of the month-label band, so the text can be
+  // aligned to a background artwork's header instead of being derived from the
+  // font size. Falls back to titleSizePx * 2.2.
+  titleBandPx: z.number().positive().optional(),
+  headerSizePx: z.number().positive(), // weekday letters ("grid" only)
+  cellSizePx: z.number().positive(), // date cell size ("grid") / day-number size ("day")
+  // Per-role weights, so a bold month label can sit over bold weekday letters
+  // and regular date numbers without needing three separate font families.
+  titleWeight: z.number().min(100).max(900).default(400),
+  headerWeight: z.number().min(100).max(900).default(400),
+  weight: z.number().min(100).max(900).default(400), // date numbers
   color: hexColor, // date numbers
   titleColor: hexColor,
   headerColor: hexColor,
   heartColor: hexColor.default("#E23B3B"),
+  // Colour of the date number when it's drawn over the heart/disc.
+  highlightTextColor: hexColor.default("#FFFFFF"),
 });
 
 export const layerSchema = z.discriminatedUnion("type", [

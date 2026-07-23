@@ -61,14 +61,19 @@ function loadTemplateFolder(folder: string): TemplateEntry {
 let cache: TemplateEntry[] | null = null;
 
 export function getTemplates(): TemplateEntry[] {
-  if (cache) return cache;
+  // Cache only in production. These docs are read from disk rather than
+  // imported, so a dev-time edit to template.json would otherwise never be
+  // picked up without restarting the server.
+  const useCache = process.env.NODE_ENV === "production";
+  if (useCache && cache) return cache;
   const folders = fs
     .readdirSync(TEMPLATES_DIR, { withFileTypes: true })
     .filter((entry) => entry.isDirectory())
     .map((entry) => entry.name)
     .sort();
-  cache = folders.map(loadTemplateFolder);
-  return cache;
+  const entries = folders.map(loadTemplateFolder);
+  if (useCache) cache = entries;
+  return entries;
 }
 
 export function getPublishedTemplates(): TemplateEntry[] {
