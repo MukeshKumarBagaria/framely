@@ -157,5 +157,38 @@
       "maxLines": 1,
       "autoFit": true
     }
+  ],
+  "photoLayouts": [
+    {
+      "id": "six-larger",
+      "label": "6 photos (larger)",
+      "slots": [
+        { "id": "q1", "type": "photoSlot", "x": 1620, "y": 1240, "w": 1860, "h": 1310, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "q2", "type": "photoSlot", "x": 1620, "y": 2580, "w": 1860, "h": 1340, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "q3", "type": "photoSlot", "x": 120, "y": 3955, "w": 817, "h": 1065, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "q4", "type": "photoSlot", "x": 967, "y": 3955, "w": 817, "h": 1065, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "q5", "type": "photoSlot", "x": 1814, "y": 3955, "w": 817, "h": 1065, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "q6", "type": "photoSlot", "x": 2661, "y": 3955, "w": 819, "h": 1065, "shape": "rect", "fit": "cover", "focal": "faces" }
+      ]
+    },
+    {
+      "id": "four-large",
+      "label": "4 photos (large)",
+      "slots": [
+        { "id": "r1", "type": "photoSlot", "x": 1620, "y": 1240, "w": 1860, "h": 1310, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "r2", "type": "photoSlot", "x": 1620, "y": 2580, "w": 1860, "h": 1340, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "r3", "type": "photoSlot", "x": 120, "y": 3955, "w": 1660, "h": 1065, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "r4", "type": "photoSlot", "x": 1820, "y": 3955, "w": 1660, "h": 1065, "shape": "rect", "fit": "cover", "focal": "faces" }
+      ]
+    },
+    {
+      "id": "three-hero",
+      "label": "3 photos (extra large)",
+      "slots": [
+        { "id": "s1", "type": "photoSlot", "x": 1620, "y": 1240, "w": 1860, "h": 1620, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "s2", "type": "photoSlot", "x": 1620, "y": 2890, "w": 1860, "h": 1030, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "s3", "type": "photoSlot", "x": 120, "y": 3955, "w": 3360, "h": 1065, "shape": "rect", "fit": "cover", "focal": "faces" }
+      ]
+    }
   ]
 }

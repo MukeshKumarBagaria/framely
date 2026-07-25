@@ -198,6 +198,20 @@ export const fieldSchema = z.object({
   default: z.string().default(""),
 });
 
+// Alternative photo arrangements for the same design (e.g. "8 photos" vs
+// "4 photos, larger"). The `layers` array holds the default arrangement; each
+// entry here is a swap-in set of photo slots the customer can pick instead.
+// Choosing one replaces the design's photo slots and changes how many photos
+// the collage takes — so a merchant can offer "fewer, bigger" without a new
+// template.
+export const photoLayoutSchema = z.object({
+  id: z.string().regex(/^[a-z0-9-]{1,32}$/),
+  label: z.string().min(1).max(40),
+  slots: z.array(photoSlotLayerSchema).min(1).max(40),
+});
+
+export type PhotoLayout = z.infer<typeof photoLayoutSchema>;
+
 export const templateSchema = z
   .object({
     schema: z.literal(1),
@@ -221,6 +235,7 @@ export const templateSchema = z
       fields: z.array(fieldSchema),
     }),
     layers: z.array(layerSchema).min(1).max(60),
+    photoLayouts: z.array(photoLayoutSchema).optional(),
   })
   .superRefine((doc, ctx) => {
     const ids = new Set<string>();
@@ -229,6 +244,28 @@ export const templateSchema = z
         ctx.addIssue({ code: "custom", message: `duplicate layer id "${layer.id}"`, path: ["layers"] });
       }
       ids.add(layer.id);
+    }
+
+    // Each alternative layout: unique ids within the layout, and none may
+    // collide with a non-photo layer id (they're spliced into `layers` at use).
+    const nonPhotoIds = new Set(doc.layers.filter((l) => l.type !== "photoSlot").map((l) => l.id));
+    const layoutIds = new Set<string>();
+    for (const layout of doc.photoLayouts ?? []) {
+      if (layoutIds.has(layout.id)) {
+        ctx.addIssue({ code: "custom", message: `duplicate photoLayout id "${layout.id}"`, path: ["photoLayouts"] });
+      }
+      layoutIds.add(layout.id);
+      const slotIds = new Set<string>();
+      for (const slot of layout.slots) {
+        if (slotIds.has(slot.id) || nonPhotoIds.has(slot.id)) {
+          ctx.addIssue({
+            code: "custom",
+            message: `photoLayout "${layout.id}" slot id "${slot.id}" is duplicated or collides with a layer id`,
+            path: ["photoLayouts"],
+          });
+        }
+        slotIds.add(slot.id);
+      }
     }
 
     const fieldKeys = new Set(doc.inputs.fields.map((f) => f.key));

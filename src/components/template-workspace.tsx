@@ -25,6 +25,8 @@ import {
   FONT_CHOICES,
   maxPhotoCornerRadius,
   photoBorderDefault,
+  activePhotoSlots,
+  photoLayoutOptions,
   resizableFieldKeys,
   textColorDefaults,
   textFontDefaults,
@@ -134,6 +136,8 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
   const [fieldValues, setFieldValues] = useState(() => defaultFieldValues(doc));
   const [photoUrls, setPhotoUrls] = useState<Partial<Record<string, string>>>({});
   const [photoCount, setPhotoCount] = useState(0);
+  // Kept so photos can be re-assigned when the layout variant changes.
+  const [uploadedPhotos, setUploadedPhotos] = useState<{ url: string; area: number }[]>([]);
   const [selectedSlotId, setSelectedSlotId] = useState<string | null>(null);
   const [productSizeId, setProductSizeId] = useState(productId);
   const [adjustments, setAdjustments] = useState<Adjustments>(() => defaultAdjustments(doc));
@@ -167,10 +171,13 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
     return out;
   }, [adjustments.layerOffsets, sx, sy]);
 
+  // The slots for the *currently selected* layout variant (falls back to the
+  // template's default arrangement).
   const photoSlots = useMemo(
-    () => doc.layers.filter((l): l is PhotoSlotLayer => l.type === "photoSlot"),
-    [doc.layers]
+    () => activePhotoSlots(doc, adjustments),
+    [doc, adjustments]
   );
+  const layoutOptions = useMemo(() => photoLayoutOptions(doc), [doc]);
   const hasCalendar = useMemo(() => doc.layers.some((l) => l.type === "calendar"), [doc.layers]);
   const cornerMax = useMemo(() => maxPhotoCornerRadius(doc), [doc]);
   const resizableFields = useMemo(() => resizableFieldKeys(doc), [doc]);
@@ -207,14 +214,31 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
     const withMeta = await Promise.all(picked.map(readImageMeta));
     objectUrlsRef.current.forEach((u) => URL.revokeObjectURL(u));
     objectUrlsRef.current = withMeta.map((m) => m.url);
+    setUploadedPhotos(withMeta);
     setPhotoUrls(assignPhotosToSlots(photoSlots, withMeta));
     setPhotoCount(withMeta.length);
     setSelectedSlotId(null);
   }
 
+  // Switching layout variant: keep the uploaded photos, re-flow them onto the
+  // new slots, and drop crop tweaks tied to slots that no longer exist.
+  function selectLayout(id: string | null) {
+    const nextSlots = activePhotoSlots(doc, { ...adjustments, photoLayoutId: id });
+    const nextIds = new Set(nextSlots.map((s) => s.id));
+    setAdjustments((a) => {
+      const crops = Object.fromEntries(Object.entries(a.photoCrops).filter(([k]) => nextIds.has(k)));
+      return { ...a, photoLayoutId: id, photoCrops: crops };
+    });
+    setPhotoUrls(assignPhotosToSlots(nextSlots, uploadedPhotos));
+    setPhotoCount(Math.min(uploadedPhotos.length, nextSlots.length));
+    setSelectedSlotId(null);
+    setCropSlotId(null);
+  }
+
   function clearPhotos() {
     objectUrlsRef.current.forEach((u) => URL.revokeObjectURL(u));
     objectUrlsRef.current = [];
+    setUploadedPhotos([]);
     setPhotoUrls({});
     setPhotoCount(0);
     setSelectedSlotId(null);
@@ -408,6 +432,26 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
             {photoSlots.length} photo slots · {doc.meta.occasion.join(", ")}
           </p>
         </div>
+
+        {layoutOptions.length > 0 && (
+          <div className="rounded-lg border border-zinc-800 bg-zinc-900/60 p-4">
+            <label className="block text-sm font-medium text-zinc-200">Photo layout</label>
+            <p className="mt-1 text-xs text-zinc-500">
+              Choose how many photos and how big — fewer photos means larger ones.
+            </p>
+            <select
+              value={adjustments.photoLayoutId ?? "default"}
+              onChange={(e) => selectLayout(e.target.value === "default" ? null : e.target.value)}
+              className="mt-2 w-full rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 outline-none focus:border-zinc-400"
+            >
+              {layoutOptions.map((opt) => (
+                <option key={opt.id ?? "default"} value={opt.id ?? "default"}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
         <div className="rounded-lg border border-zinc-800 bg-zinc-900/60 p-4">
           <label className="block text-sm font-medium text-zinc-200">Add up to {photoSlots.length} photos</label>

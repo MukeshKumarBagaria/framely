@@ -17,7 +17,7 @@
 // Offsets live in the *base* (unscaled) template coordinate space, so they
 // survive a resize: applyAdjustments runs on the base doc, then scaleTemplateDoc
 // scales the result — offsets scale along with everything else.
-import type { TemplateDoc, Layer } from "./schema";
+import type { TemplateDoc, Layer, PhotoSlotLayer } from "./schema";
 
 export const MONTH_NAMES = [
   "January",
@@ -73,6 +73,7 @@ export const DEFAULT_CROP: PhotoCrop = { scale: 1, offsetX: 0, offsetY: 0 };
 
 export type Adjustments = {
   layerOffsets: Record<string, LayerOffset>;
+  photoLayoutId: string | null; // null = the template's default arrangement
   photoCornerRadius: number; // base-doc px; 0 = square corners
   photoBorder: PhotoBorder | null; // null = keep each slot's authored border
   photoCrops: Record<string, PhotoCrop>; // slot id → zoom/pan inside the frame
@@ -108,6 +109,7 @@ export function defaultAdjustments(doc: TemplateDoc): Adjustments {
       : null;
   return {
     layerOffsets: {},
+    photoLayoutId: null,
     photoCornerRadius: 0,
     photoBorder: null,
     photoCrops: {},
@@ -304,14 +306,55 @@ function adjustLayer(layer: Layer, adj: Adjustments): Layer {
   }
 }
 
+// --- photo layout variants -------------------------------------------------
+
+// The photo slots that render for the current selection: the chosen alternative
+// layout, or the template's default (the slots authored in `layers`).
+export function activePhotoSlots(doc: TemplateDoc, adj: Adjustments): PhotoSlotLayer[] {
+  if (adj.photoLayoutId && doc.photoLayouts) {
+    const layout = doc.photoLayouts.find((l) => l.id === adj.photoLayoutId);
+    if (layout) return layout.slots;
+  }
+  return doc.layers.filter((l): l is PhotoSlotLayer => l.type === "photoSlot");
+}
+
+export type PhotoLayoutOption = { id: string | null; label: string; count: number };
+
+// Picker options — only meaningful when a template actually offers variants.
+export function photoLayoutOptions(doc: TemplateDoc): PhotoLayoutOption[] {
+  if (!doc.photoLayouts || doc.photoLayouts.length === 0) return [];
+  const defaultCount = doc.layers.filter((l) => l.type === "photoSlot").length;
+  return [
+    { id: null, label: `Default (${defaultCount} photos)`, count: defaultCount },
+    ...doc.photoLayouts.map((l) => ({ id: l.id, label: l.label, count: l.slots.length })),
+  ];
+}
+
+// Replace the run of photoSlot layers with a different set, keeping their
+// z-order slot (so decorative layers drawn after the photos stay on top).
+function swapPhotoSlots(layers: Layer[], slots: PhotoSlotLayer[]): Layer[] {
+  const firstIdx = layers.findIndex((l) => l.type === "photoSlot");
+  const kept = layers.filter((l) => l.type !== "photoSlot");
+  const insertAt =
+    firstIdx < 0 ? kept.length : layers.slice(0, firstIdx).filter((l) => l.type !== "photoSlot").length;
+  const result: Layer[] = [...kept];
+  result.splice(insertAt, 0, ...slots);
+  return result;
+}
+
 // Pure: returns a new doc with the customizations baked in. Does NOT apply
 // layerOffsets (those are applied as live, draggable transforms in the canvas
 // so dragging stays smooth) — it only bakes the value-based customizations that
 // must also be present in the exported print file.
 export function applyAdjustments(doc: TemplateDoc, adj: Adjustments): TemplateDoc {
+  let layers = doc.layers;
+  if (adj.photoLayoutId && doc.photoLayouts) {
+    const layout = doc.photoLayouts.find((l) => l.id === adj.photoLayoutId);
+    if (layout) layers = swapPhotoSlots(doc.layers, layout.slots);
+  }
   return {
     ...doc,
     canvas: adj.background ? { ...doc.canvas, background: adj.background } : doc.canvas,
-    layers: doc.layers.map((layer) => adjustLayer(layer, adj)),
+    layers: layers.map((layer) => adjustLayer(layer, adj)),
   };
 }
