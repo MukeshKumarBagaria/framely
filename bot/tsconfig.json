@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    // Node 26 executes TypeScript directly (type stripping), so there is no
+    // build step: tsc is only ever run as a type checker. `erasableSyntaxOnly`
+    // keeps us inside the subset Node can strip — no enums, no namespaces, no
+    // constructor parameter properties.
+    "target": "es2024",
+    "lib": ["es2024"],
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "erasableSyntaxOnly": true,
+    "verbatimModuleSyntax": true,
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": false,
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "types": ["node"]
+  },
+  "include": ["src/**/*.ts", "test/**/*.ts", "scripts/**/*.ts"]
+}

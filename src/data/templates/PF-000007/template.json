@@ -1,0 +1,218 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "PF-000007",
+    "occasion": ["birthday", "love", "anniversary"]
+  },
+  "canvas": {
+    "widthMm": 304.8,
+    "heightMm": 457.2,
+    "dpi": 300,
+    "bleedMm": 3,
+    "widthPx": 3600,
+    "heightPx": 5400,
+    "background": "#FFFFFF"
+  },
+  "inputs": {
+    "photos": { "min": 7, "max": 7 },
+    "fields": [
+      {
+        "key": "message",
+        "label": "Message / poem",
+        "type": "text",
+        "maxLen": 400,
+        "required": true,
+        "default": "HAPPY BIRTHDAY, MY\nLOVE, MY HEART, MY\nSOUL,\nYOU MAKE MY BROKEN\nPIECES WHOLE.\nWITH YOU, EVERY\nMOMENT FEELS SO\nRIGHT.\nYOU ARE MY HAPPINESS,\nMY SHINING LIGHT. ❤️"
+      },
+      { "key": "greeting", "label": "Script line 1", "type": "text", "maxLen": 16, "required": true, "default": "Happy" },
+      { "key": "occasion", "label": "Script line 2", "type": "text", "maxLen": 16, "required": true, "default": "Birthday" },
+      { "key": "name", "label": "Name", "type": "text", "maxLen": 18, "required": true, "default": "KOMAL" }
+    ]
+  },
+  "layers": [
+    {
+      "id": "calendar-frame",
+      "type": "image",
+      "role": "sticker",
+      "src": "/templates/PF-000007/assets/calendar-frame.png",
+      "x": 210,
+      "y": 1200,
+      "w": 1340,
+      "h": 2010,
+      "locked": true
+    },
+    {
+      "id": "calendar",
+      "type": "calendar",
+      "variant": "grid",
+      "x": 574,
+      "y": 1615,
+      "w": 620,
+      "h": 530,
+      "year": 2026,
+      "month": 7,
+      "highlightDay": 11,
+      "highlightStyle": "heart",
+      "titleAlign": "center",
+      "titleUppercase": true,
+      "weekdayLabels": ["S", "M", "T", "W", "T", "F", "S"],
+      "font": "Playfair Display",
+      "titleFont": "Playfair Display",
+      "titleSizePx": 95,
+      "headerSizePx": 46,
+      "cellSizePx": 44,
+      "titleWeight": 600,
+      "headerWeight": 600,
+      "weight": 400,
+      "color": "#1A1A1A",
+      "titleColor": "#111111",
+      "headerColor": "#111111",
+      "heartColor": "#E23B3B"
+    },
+
+    { "id": "p1", "type": "photoSlot", "x": 1500, "y": 220, "w": 900, "h": 1273, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p2", "type": "photoSlot", "x": 2460, "y": 220, "w": 900, "h": 1273, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p3", "type": "photoSlot", "x": 1500, "y": 1553, "w": 900, "h": 1273, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p4", "type": "photoSlot", "x": 2460, "y": 1553, "w": 900, "h": 1273, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p5", "type": "photoSlot", "x": 1500, "y": 2886, "w": 900, "h": 1273, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p6", "type": "photoSlot", "x": 2460, "y": 2886, "w": 900, "h": 1273, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p7", "type": "photoSlot", "x": 240, "y": 2900, "w": 1200, "h": 1600, "shape": "rect", "fit": "cover", "focal": "faces" },
+
+    {
+      "id": "message",
+      "type": "text",
+      "binds": "message",
+      "x": 200,
+      "y": 210,
+      "w": 1200,
+      "align": "center",
+      "font": "Playfair Display",
+      "weight": 400,
+      "sizePx": 80,
+      "color": "#111111",
+      "maxLines": 14,
+      "lineHeight": 1.45,
+      "letterSpacing": 2
+    },
+    {
+      "id": "sparkle",
+      "type": "text",
+      "label": "Sparkle",
+      "text": "✨",
+      "x": 800,
+      "y": 1400,
+      "w": 300,
+      "align": "center",
+      "font": "Inter",
+      "weight": 400,
+      "sizePx": 90,
+      "color": "#E8A33D",
+      "maxLines": 1,
+      "locked": true
+    },
+
+    {
+      "id": "corner-decor",
+      "type": "image",
+      "role": "sticker",
+      "src": "/templates/PF-000007/assets/left-bottom-corner-flowers.png",
+      "x": 126,
+      "y": 4254,
+      "w": 901,
+      "h": 1352,
+      "locked": true
+    },
+
+    {
+      "id": "greeting",
+      "type": "text",
+      "binds": "greeting",
+      "x": 2226,
+      "y": 4140,
+      "w": 700,
+      "align": "center",
+      "font": "Great Vibes",
+      "weight": 400,
+      "sizePx": 140,
+      "color": "#111111",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "occasion",
+      "type": "text",
+      "binds": "occasion",
+      "x": 1620,
+      "y": 4191,
+      "w": 1740,
+      "align": "center",
+      "font": "Great Vibes",
+      "weight": 400,
+      "sizePx": 490,
+      "color": "#111111",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "name",
+      "type": "text",
+      "binds": "name",
+      "x": 2035,
+      "y": 4751,
+      "w": 1300,
+      "align": "center",
+      "font": "Playfair Display",
+      "weight": 400,
+      "sizePx": 205,
+      "color": "#111111",
+      "maxLines": 1,
+      "letterSpacing": 13,
+      "autoFit": true
+    }
+  ],
+
+  "photoLayouts": [
+    {
+      "id": "six-larger",
+      "label": "6 photos (larger)",
+      "slots": [
+        { "id": "q1", "type": "photoSlot", "x": 1500, "y": 220, "w": 900, "h": 1273, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "q2", "type": "photoSlot", "x": 2460, "y": 220, "w": 900, "h": 1273, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "q3", "type": "photoSlot", "x": 1500, "y": 1553, "w": 900, "h": 1273, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "q4", "type": "photoSlot", "x": 2460, "y": 1553, "w": 900, "h": 1273, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "q5", "type": "photoSlot", "x": 1500, "y": 2886, "w": 1860, "h": 1273, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "q6", "type": "photoSlot", "x": 240, "y": 2900, "w": 1200, "h": 1600, "shape": "rect", "fit": "cover", "focal": "faces" }
+      ]
+    },
+    {
+      "id": "five-larger",
+      "label": "5 photos (larger)",
+      "slots": [
+        { "id": "r1", "type": "photoSlot", "x": 1500, "y": 220, "w": 900, "h": 1273, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "r2", "type": "photoSlot", "x": 2460, "y": 220, "w": 900, "h": 1273, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "r3", "type": "photoSlot", "x": 1500, "y": 1553, "w": 1860, "h": 1273, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "r4", "type": "photoSlot", "x": 1500, "y": 2886, "w": 1860, "h": 1273, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "r5", "type": "photoSlot", "x": 240, "y": 2900, "w": 1200, "h": 1600, "shape": "rect", "fit": "cover", "focal": "faces" }
+      ]
+    },
+    {
+      "id": "four-large",
+      "label": "4 photos (large)",
+      "slots": [
+        { "id": "s1", "type": "photoSlot", "x": 1500, "y": 220, "w": 1860, "h": 1273, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "s2", "type": "photoSlot", "x": 1500, "y": 1553, "w": 1860, "h": 1273, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "s3", "type": "photoSlot", "x": 1500, "y": 2886, "w": 1860, "h": 1273, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "s4", "type": "photoSlot", "x": 240, "y": 2900, "w": 1200, "h": 1600, "shape": "rect", "fit": "cover", "focal": "faces" }
+      ]
+    },
+    {
+      "id": "three-hero",
+      "label": "3 photos (extra large)",
+      "slots": [
+        { "id": "t1", "type": "photoSlot", "x": 1500, "y": 220, "w": 1860, "h": 1940, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "t2", "type": "photoSlot", "x": 1500, "y": 2220, "w": 1860, "h": 1940, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "t3", "type": "photoSlot", "x": 240, "y": 2900, "w": 1200, "h": 1600, "shape": "rect", "fit": "cover", "focal": "faces" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+# Guide §4.2. The whole stack on one Oracle Always Free ARM box.
+#
+#   docker compose up -d db
+#   docker compose run --rm bot npm run migrate && docker compose run --rm bot npm run seed
+#   docker compose up -d
+name: giftmahal
+
+services:
+  caddy:
+    image: caddy:2-alpine
+    ports: ["80:80", "443:443"]
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on: [bot]
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: ${PG_PASSWORD:?set PG_PASSWORD in .env}
+      POSTGRES_DB: giftmahal
+    volumes: [pgdata:/var/lib/postgresql/data]
+    # No published port: only the compose network reaches Postgres.
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d giftmahal"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  bot: # webhook + state machine + dashboard API
+    build: ./bot
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://postgres:${PG_PASSWORD}@db:5432/giftmahal
+      STORAGE_ROOT: /data/customers
+      RENDERER_URL: http://renderer:4000
+    volumes:
+      - /data/customers:/data/customers
+      - /data/meesho:/data/meesho:ro # nightly seller export for reconciliation (§14.5)
+    depends_on:
+      db: { condition: service_healthy }
+    restart: unless-stopped
+
+  renderer: # your existing template renderer — must expose POST /render (§12)
+    build: ./renderer
+    environment:
+      PORT: 4000
+      STORAGE_ROOT: /data/customers
+    volumes:
+      - /data/customers:/data/customers
+    restart: unless-stopped
+
+  chatwoot: # human handoff (§17)
+    image: chatwoot/chatwoot:latest
+    env_file: .env.chatwoot
+    depends_on:
+      db: { condition: service_healthy }
+      redis: { condition: service_started }
+    restart: unless-stopped
+
+  redis: # required by Chatwoot only
+    image: redis:7-alpine
+    volumes: [redisdata:/data]
+    restart: unless-stopped
+
+  n8n: # optional — ops glue (daily summary, sheets sync, backups), not the bot
+    image: n8nio/n8n:latest
+    environment:
+      - N8N_HOST=n8n.giftmahal.in
+      - WEBHOOK_URL=https://n8n.giftmahal.in
+      - GENERIC_TIMEZONE=Asia/Kolkata
+    volumes: [n8ndata:/home/node/.n8n]
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  redisdata:
+  n8ndata:
+  caddy_data:
+  caddy_config:

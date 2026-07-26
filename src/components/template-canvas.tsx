@@ -329,13 +329,19 @@ function ImageLayerNode({ layer }: { layer: ImageLayer }) {
     el.src = layer.src;
   }, [layer.src]);
   if (!img) return null;
+  // Position by centre + offset so flip (negative scale) and rotation both act
+  // around the middle and the drawn box stays exactly [x..x+w] × [y..y+h].
   return (
     <KonvaImage
       image={img}
-      x={layer.x}
-      y={layer.y}
+      x={layer.x + layer.w / 2}
+      y={layer.y + layer.h / 2}
       width={layer.w}
       height={layer.h}
+      offsetX={layer.w / 2}
+      offsetY={layer.h / 2}
+      scaleX={layer.flipX ? -1 : 1}
+      scaleY={layer.flipY ? -1 : 1}
       rotation={layer.rotation}
       opacity={layer.opacity}
     />
@@ -545,21 +551,17 @@ function CalendarNode({ layer }: { layer: CalendarLayer }) {
     const cy = titleH + headerH + row * rowH;
     const marked = d === highlight;
 
-    // "heart" swaps the number out for a glyph; "heartDay"/"circle" keep the
-    // number and draw a marker behind it.
+    const sunday = col === 0 && layer.sundayColor;
+    const dateColor = sunday ? layer.sundayColor! : layer.color;
+
+    // "heart" swaps the number out for a glyph; the others keep the number and
+    // draw a marker behind (filled disc / heart) or around it (hollow ring).
     if (marked && layer.highlightStyle !== "heart") {
       const markerSize = markerBase;
+      const isRing = layer.highlightStyle === "ring";
       cells.push(
         <Group key={`d-${d}`} x={cx} y={cy}>
-          {layer.highlightStyle === "circle" ? (
-            <Ellipse
-              x={colW / 2}
-              y={rowH / 2}
-              radiusX={markerSize / 2}
-              radiusY={markerSize / 2}
-              fill={layer.heartColor}
-            />
-          ) : (
+          {layer.highlightStyle === "heartDay" ? (
             <KonvaText
               width={colW}
               height={rowH}
@@ -571,6 +573,16 @@ function CalendarNode({ layer }: { layer: CalendarLayer }) {
               fontSize={markerSize}
               fill={layer.heartColor}
             />
+          ) : (
+            <Ellipse
+              x={colW / 2}
+              y={rowH / 2}
+              radiusX={markerSize / 2}
+              radiusY={markerSize / 2}
+              fill={isRing ? undefined : layer.heartColor}
+              stroke={isRing ? layer.heartColor : undefined}
+              strokeWidth={isRing ? Math.max(3, layer.cellSizePx * 0.09) : undefined}
+            />
           )}
           <KonvaText
             width={colW}
@@ -581,7 +593,7 @@ function CalendarNode({ layer }: { layer: CalendarLayer }) {
             fontFamily={layer.font}
             fontStyle={konvaFontStyle(layer.weight, false)}
             fontSize={layer.cellSizePx}
-            fill={layer.highlightTextColor}
+            fill={isRing ? dateColor : layer.highlightTextColor}
           />
         </Group>
       );
@@ -602,7 +614,7 @@ function CalendarNode({ layer }: { layer: CalendarLayer }) {
         fontFamily={layer.font}
         fontStyle={konvaFontStyle(layer.weight, false)}
         fontSize={marked ? fitMarkerSize(layer.cellSizePx * 1.15, colW, rowH) : layer.cellSizePx}
-        fill={marked ? layer.heartColor : layer.color}
+        fill={marked ? layer.heartColor : dateColor}
       />
     );
   }
@@ -613,7 +625,7 @@ function CalendarNode({ layer }: { layer: CalendarLayer }) {
         x={0}
         y={0}
         width={layer.w}
-        align="center"
+        align={layer.titleAlign}
         text={title}
         fontFamily={layer.titleFont}
         fontStyle={konvaFontStyle(layer.titleWeight, false)}
@@ -631,7 +643,7 @@ function CalendarNode({ layer }: { layer: CalendarLayer }) {
           fontFamily={layer.font}
           fontStyle={konvaFontStyle(layer.headerWeight, false)}
           fontSize={layer.headerSizePx}
-          fill={layer.headerColor}
+          fill={i === 0 && layer.sundayColor ? layer.sundayColor : layer.headerColor}
         />
       ))}
       {cells}

@@ -1,0 +1,14 @@
+# Auto-TLS via Let's Encrypt, zero config (§4.2).
+api.giftmahal.in {
+	# The dashboard API is bearer-token protected in the app; the webhook is
+	# signature-verified. Caddy just terminates TLS and forwards.
+	reverse_proxy bot:3000
+}
+
+chat.giftmahal.in {
+	reverse_proxy chatwoot:3000
+}
+
+n8n.giftmahal.in {
+	reverse_proxy n8n:5678
+}

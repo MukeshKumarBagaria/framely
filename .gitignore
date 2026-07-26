@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+bot/node_modules
 /.pnp
 .pnp.*
 .yarn/*
@@ -32,6 +33,11 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
+
+# customer photos + renders (§7). Never in git — DPDP retention applies.
+/data
+
 
 # vercel
 .vercel

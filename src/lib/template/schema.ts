@@ -44,6 +44,10 @@ export const imageLayerSchema = layerCommon.extend({
   w: z.number().positive(),
   h: z.number().positive(),
   fit: z.enum(["cover", "contain"]).default("cover"),
+  // Mirror the artwork in place — lets one corner spray/decoration be reused in
+  // all four corners without shipping four files.
+  flipX: z.boolean().default(false),
+  flipY: z.boolean().default(false),
 });
 
 export const photoSlotLayerSchema = layerCommon.extend({
@@ -156,7 +160,12 @@ export const calendarLayerSchema = layerCommon.extend({
   //   "heart"    — the heart glyph replaces the date number
   //   "heartDay" — the date number is drawn *on top of* the heart
   //   "circle"   — a filled disc behind the date number
-  highlightStyle: z.enum(["heart", "heartDay", "circle"]).default("heart"),
+  //   "ring"     — a hollow outline circle around the date number
+  highlightStyle: z.enum(["heart", "heartDay", "circle", "ring"]).default("heart"),
+  // "grid" only: alignment of the month label above the grid.
+  titleAlign: z.enum(["left", "center", "right"]).default("center"),
+  // "grid" only: recolours the Sunday column (header + dates), e.g. red.
+  sundayColor: hexColor.optional(),
   font: z.string(), // grid dates ("grid") / the big day number ("day")
   titleFont: z.string(), // the month label — a script face in "grid", a sans in "day"
   titleSizePx: z.number().positive(),
