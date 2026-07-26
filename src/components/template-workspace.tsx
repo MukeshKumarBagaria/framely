@@ -28,6 +28,7 @@ import {
   activePhotoSlots,
   photoLayoutOptions,
   resizableFieldKeys,
+  scalableLayers,
   textColorDefaults,
   textFontDefaults,
   type Adjustments,
@@ -190,6 +191,7 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
   const baseCalendarColors = useMemo(() => calendarColorDefaults(doc), [doc]);
   const baseBorder = useMemo(() => photoBorderDefault(doc), [doc]);
   const activeBorder = adjustments.photoBorder ?? baseBorder;
+  const sizeableLayers = useMemo(() => scalableLayers(doc), [doc]);
 
   useEffect(() => {
     return () => {
@@ -395,12 +397,33 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
     }));
   }
 
+  function setLayerScale(layerId: string, value: number) {
+    setAdjustments((a) => ({
+      ...a,
+      layerScales: { ...a.layerScales, [layerId]: value },
+    }));
+  }
+
+  function resetLayerScale(layerId: string) {
+    setAdjustments((a) => {
+      const next = { ...a.layerScales };
+      delete next[layerId];
+      return { ...a, layerScales: next };
+    });
+  }
+
+  function resetAllLayerScales() {
+    setAdjustments((a) => ({ ...a, layerScales: {} }));
+  }
+
   const colorsModified =
     Object.keys(adjustments.textColors).length > 0 ||
     Object.keys(adjustments.accentColors).length > 0 ||
     Object.keys(adjustments.calendarColors).length > 0 ||
     adjustments.photoBorder !== null ||
     adjustments.background !== null;
+
+  const sizesModified = Object.keys(adjustments.layerScales).length > 0;
 
   async function handleExport(kind: "png" | "pdf") {
     const stage = stageRef.current;
@@ -781,6 +804,53 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
             </button>
           )}
         </Panel>
+
+        {sizeableLayers.length > 0 && (
+          <Panel title="Element sizes" hint="Scale individual elements up or down. Locked layers are excluded.">
+            {sizeableLayers.map((sl) => {
+              const scale = adjustments.layerScales[sl.id] ?? 1;
+              const modified = sl.id in adjustments.layerScales;
+              return (
+                <div key={sl.id} className="flex flex-col gap-1">
+                  <div className="flex items-center justify-between">
+                    <span className="min-w-0 flex-1 truncate text-xs text-zinc-400">{sl.label}</span>
+                    {modified && (
+                      <button
+                        type="button"
+                        onClick={() => resetLayerScale(sl.id)}
+                        className="text-xs text-zinc-500 underline underline-offset-2 hover:text-zinc-200"
+                      >
+                        Reset
+                      </button>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="range"
+                      min={0.5}
+                      max={3}
+                      step={0.05}
+                      value={scale}
+                      onChange={(e) => setLayerScale(sl.id, Number(e.target.value))}
+                      className="flex-1 accent-zinc-200"
+                    />
+                    <span className="w-9 text-right text-xs text-zinc-500">
+                      {Math.round(scale * 100)}%
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+            {sizesModified && (
+              <button
+                onClick={resetAllLayerScales}
+                className="mt-1 self-start text-xs text-zinc-300 underline underline-offset-2 hover:text-white"
+              >
+                Reset all sizes
+              </button>
+            )}
+          </Panel>
+        )}
 
         <div className="rounded-lg border border-zinc-800 bg-zinc-900/60 p-4">
           <div className="flex items-center justify-between">

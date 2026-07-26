@@ -17,7 +17,7 @@
 // Offsets live in the *base* (unscaled) template coordinate space, so they
 // survive a resize: applyAdjustments runs on the base doc, then scaleTemplateDoc
 // scales the result — offsets scale along with everything else.
-import type { TemplateDoc, Layer, PhotoSlotLayer } from "./schema";
+import type { TemplateDoc, Layer, PhotoSlotLayer, Field } from "./schema";
 
 export const MONTH_NAMES = [
   "January",
@@ -83,6 +83,7 @@ export type Adjustments = {
   textFonts: Record<string, string>; // field key → font-family override
   accentColors: Record<string, string>; // layer id → hex override
   calendarColors: Partial<Record<CalendarColorRole, string>>;
+  layerScales: Record<string, number>; // layer id → uniform size multiplier (default 1)
   background: string | null; // canvas background override
   // A tiny order/batch reference (e.g. a Meesho order id) printed in a corner
   // so a merchant can tell one printed sheet from another. Empty = not shown.
@@ -119,6 +120,7 @@ export function defaultAdjustments(doc: TemplateDoc): Adjustments {
     textFonts: {},
     accentColors: {},
     calendarColors: {},
+    layerScales: {},
     background: null,
     orderId: "",
     orderIdCorner: "bottom-right",
@@ -221,12 +223,94 @@ export function maxPhotoCornerRadius(doc: TemplateDoc): number {
   return Math.min(...slots.map((s) => (s.type === "photoSlot" ? Math.min(s.w, s.h) / 2 : Infinity)));
 }
 
-function adjustLayer(layer: Layer, adj: Adjustments): Layer {
+// Uniformly scale a layer's geometry around its own centre. The factor is the
+// layerScales override (default 1). Each type scales its relevant size fields
+// and recentres x/y so the element grows outward from its midpoint.
+function scaleLayerGeometry(layer: Layer, factor: number): Layer {
+  if (!factor || factor === 1) return layer;
+
   switch (layer.type) {
+    case "image": {
+      const nw = Math.max(1, layer.w * factor);
+      const nh = Math.max(1, layer.h * factor);
+      return {
+        ...layer,
+        x: layer.x - (nw - layer.w) / 2,
+        y: layer.y - (nh - layer.h) / 2,
+        w: nw,
+        h: nh,
+      };
+    }
     case "photoSlot": {
-      let next = layer;
+      const nw = Math.max(200, layer.w * factor);
+      const nh = Math.max(200, layer.h * factor);
+      return {
+        ...layer,
+        x: layer.x - (nw - layer.w) / 2,
+        y: layer.y - (nh - layer.h) / 2,
+        w: nw,
+        h: nh,
+        cornerRadius: layer.cornerRadius !== undefined ? layer.cornerRadius * factor : undefined,
+        border: layer.border
+          ? { ...layer.border, width: Math.max(0, layer.border.width * factor) }
+          : undefined,
+      };
+    }
+    case "text": {
+      const nw = Math.max(1, layer.w * factor);
+      return {
+        ...layer,
+        x: layer.x - (nw - layer.w) / 2,
+        w: nw,
+        sizePx: Math.max(8, Math.min(600, layer.sizePx * factor)),
+        letterSpacing: layer.letterSpacing * factor,
+      };
+    }
+    case "shape": {
+      const nw = Math.max(1, layer.w * factor);
+      const nh = Math.max(1, layer.h * factor);
+      return {
+        ...layer,
+        x: layer.x - (nw - layer.w) / 2,
+        y: layer.y - (nh - layer.h) / 2,
+        w: nw,
+        h: nh,
+        cornerRadius: layer.cornerRadius !== undefined ? layer.cornerRadius * factor : undefined,
+        stroke: layer.stroke
+          ? { ...layer.stroke, width: Math.max(0.5, layer.stroke.width * factor) }
+          : undefined,
+      };
+    }
+    case "calendar": {
+      const nw = Math.max(1, layer.w * factor);
+      const nh = Math.max(1, layer.h * factor);
+      return {
+        ...layer,
+        x: layer.x - (nw - layer.w) / 2,
+        y: layer.y - (nh - layer.h) / 2,
+        w: nw,
+        h: nh,
+        titleSizePx: Math.max(4, layer.titleSizePx * factor),
+        headerSizePx: Math.max(4, layer.headerSizePx * factor),
+        cellSizePx: Math.max(4, layer.cellSizePx * factor),
+        titleBandPx: layer.titleBandPx !== undefined ? layer.titleBandPx * factor : undefined,
+      };
+    }
+  }
+}
+
+function adjustLayer(layer: Layer, adj: Adjustments): Layer {
+  // Apply the per-layer uniform scale first so that subsequent adjustments
+  // (border restyling, colour overrides, etc.) operate on the already-scaled
+  // geometry — matching what the user sees on the canvas.
+  const scaleFactor = adj.layerScales[layer.id];
+  const scaled = scaleLayerGeometry(layer, scaleFactor ?? 1);
+
+  switch (scaled.type) {
+    case "photoSlot": {
+      let next = scaled;
       if (adj.photoCornerRadius > 0) {
-        const maxRadius = Math.min(layer.w, layer.h) / 2;
+        const maxRadius = Math.min(next.w, next.h) / 2;
         next = {
           ...next,
           shape: "rounded" as const,
@@ -234,7 +318,10 @@ function adjustLayer(layer: Layer, adj: Adjustments): Layer {
         };
       }
       // Only restyle slots the template already framed — see photoBorderDefault.
-      if (adj.photoBorder && layer.border) {
+      // Check the original (pre-scale) layer; `scaled` is already narrowed to
+      // PhotoSlotLayer but `layer` is a union, so cast here for the border test.
+      const origSlot = layer as typeof next;
+      if (adj.photoBorder && origSlot.border) {
         next =
           adj.photoBorder.width > 0
             ? { ...next, border: { ...adj.photoBorder } }
@@ -246,7 +333,7 @@ function adjustLayer(layer: Layer, adj: Adjustments): Layer {
     }
 
     case "calendar": {
-      let next = layer;
+      let next = scaled;
       if (adj.dob) {
         next = {
           ...next,
@@ -274,8 +361,8 @@ function adjustLayer(layer: Layer, adj: Adjustments): Layer {
     }
 
     case "text": {
-      let next = layer;
-      if (layer.binds) {
+      let next = scaled;
+      if (layer.type === "text" && layer.binds) {
         const factor = adj.textScale[layer.binds];
         if (factor && factor !== 1) {
           next = { ...next, sizePx: Math.max(8, Math.min(600, next.sizePx * factor)) };
@@ -292,17 +379,18 @@ function adjustLayer(layer: Layer, adj: Adjustments): Layer {
     }
 
     case "shape": {
+      let next = scaled;
       const color = adj.accentColors[layer.id];
-      if (!color) return layer;
+      if (!color) return next;
       // Recolour whichever channel the shape actually draws with: a filled
       // banner takes a new fill, a hairline rule takes a new stroke.
-      if (layer.fill !== "none") return { ...layer, fill: color };
-      if (layer.stroke) return { ...layer, stroke: { ...layer.stroke, color } };
-      return layer;
+      if (next.fill !== "none") return { ...next, fill: color };
+      if (next.stroke) return { ...next, stroke: { ...next.stroke, color } };
+      return next;
     }
 
     default:
-      return layer;
+      return scaled;
   }
 }
 
@@ -357,4 +445,36 @@ export function applyAdjustments(doc: TemplateDoc, adj: Adjustments): TemplateDo
     canvas: adj.background ? { ...doc.canvas, background: adj.background } : doc.canvas,
     layers: layers.map((layer) => adjustLayer(layer, adj)),
   };
+}
+
+// ---------------------------------------------------------------------------
+// Layers eligible for the "Element sizes" panel: non-locked, visible elements
+// that aren't bound text (those already have textScale sliders in the field
+// section). Returns a label derived from the layer's own label, the bound
+// field's label, or the raw id.
+// ---------------------------------------------------------------------------
+export type ScalableLayer = { id: string; label: string; type: string };
+
+export function scalableLayers(doc: TemplateDoc): ScalableLayer[] {
+  const fieldMap = new Map<string, Field>();
+  for (const f of doc.inputs.fields) fieldMap.set(f.key, f);
+
+  const out: ScalableLayer[] = [];
+  for (const layer of doc.layers) {
+    if (layer.locked) continue;
+    if (layer.visible === false) continue;
+    // Bound text already has a textScale slider in the field-input section.
+    if (layer.type === "text" && layer.binds) continue;
+
+    let label: string;
+    if (layer.label) {
+      label = layer.label;
+    } else {
+      // Produce a human-readable fallback from the type + id.
+      const typeName = layer.type === "photoSlot" ? "Photo" : layer.type.charAt(0).toUpperCase() + layer.type.slice(1);
+      label = `${typeName} (${layer.id})`;
+    }
+    out.push({ id: layer.id, label, type: layer.type });
+  }
+  return out;
 }

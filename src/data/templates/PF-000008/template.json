@@ -1,0 +1,171 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "PF-000008",
+    "occasion": ["birthday"]
+  },
+  "canvas": {
+    "widthMm": 304.8,
+    "heightMm": 457.2,
+    "dpi": 300,
+    "bleedMm": 3,
+    "widthPx": 3600,
+    "heightPx": 5400,
+    "background": "#1A1A1A"
+  },
+  "inputs": {
+    "photos": { "min": 8, "max": 8 },
+    "fields": [
+      { "key": "title", "label": "Title", "type": "text", "maxLen": 30, "required": true, "default": "happy birthday" },
+      { "key": "name", "label": "Name", "type": "text", "maxLen": 30, "required": true, "default": "shubham" },
+      { "key": "message", "label": "Message", "type": "text", "maxLen": 300, "required": true, "default": "All the words 🌍 in this world\nwould not suffice 🦋 to\ndescribe what you mean 💖 to\nme.\nThank you 💕 for being there\n🤗 and supporting me 🫂\nthrough my life 🌈.\nI will forever be grateful 💖 for\nyou.\nI hope to have your continuing\nlove 💓 and support 💫.\n💖 Happy birthday dearest\nsister! 🎈🎁\n🌻🌺💃👸🛍️👯‍♀️" }
+    ]
+  },
+  "layers": [
+    { "id": "p1", "type": "photoSlot", "x": 1500, "y": 1300, "w": 900, "h": 1100, "shape": "rounded", "cornerRadius": 30, "fit": "cover", "focal": "faces" },
+    { "id": "p2", "type": "photoSlot", "x": 2500, "y": 1300, "w": 900, "h": 1100, "shape": "rounded", "cornerRadius": 30, "fit": "cover", "focal": "faces" },
+    { "id": "p3", "type": "photoSlot", "x": 1500, "y": 2500, "w": 1900, "h": 1000, "shape": "rounded", "cornerRadius": 30, "fit": "cover", "focal": "faces" },
+    { "id": "p4", "type": "photoSlot", "x": 1500, "y": 3600, "w": 900, "h": 900, "shape": "rounded", "cornerRadius": 30, "fit": "cover", "focal": "faces" },
+    { "id": "p5", "type": "photoSlot", "x": 2500, "y": 3600, "w": 900, "h": 900, "shape": "rounded", "cornerRadius": 30, "fit": "cover", "focal": "faces" },
+    { "id": "p6", "type": "photoSlot", "x": 400, "y": 4600, "w": 900, "h": 700, "shape": "rounded", "cornerRadius": 30, "fit": "cover", "focal": "faces" },
+    { "id": "p7", "type": "photoSlot", "x": 1400, "y": 4600, "w": 900, "h": 700, "shape": "rounded", "cornerRadius": 30, "fit": "cover", "focal": "faces" },
+    { "id": "p8", "type": "photoSlot", "x": 2400, "y": 4600, "w": 1000, "h": 700, "shape": "rounded", "cornerRadius": 30, "fit": "cover", "focal": "faces" },
+
+    {
+      "id": "calendar",
+      "type": "calendar",
+      "variant": "grid",
+      "x": 200,
+      "y": 150,
+      "w": 1100,
+      "h": 1100,
+      "year": 2026,
+      "month": 7,
+      "highlightDay": 17,
+      "highlightStyle": "ring",
+      "titleAlign": "center",
+      "weekdayLabels": ["S", "M", "T", "W", "T", "F", "S"],
+      "font": "Inter",
+      "titleFont": "Playfair Display",
+      "titleUppercase": true,
+      "titleSizePx": 120,
+      "headerSizePx": 45,
+      "cellSizePx": 55,
+      "headerWeight": 400,
+      "color": "#999999",
+      "titleColor": "#FFFFFF",
+      "headerColor": "#999999",
+      "sundayColor": "#999999",
+      "heartColor": "#E3242B"
+    },
+
+    {
+      "id": "title",
+      "type": "text",
+      "binds": "title",
+      "x": 1600,
+      "y": 250,
+      "w": 1800,
+      "align": "center",
+      "font": "Great Vibes",
+      "weight": 400,
+      "sizePx": 190,
+      "color": "#F0F0F0",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "heart",
+      "type": "text",
+      "label": "Heart Emoji",
+      "text": "❤️",
+      "x": 2350,
+      "y": 470,
+      "w": 300,
+      "align": "center",
+      "font": "Inter",
+      "weight": 400,
+      "sizePx": 130,
+      "color": "#FF0000",
+      "maxLines": 1,
+      "locked": true
+    },
+    {
+      "id": "name",
+      "type": "text",
+      "binds": "name",
+      "x": 1600,
+      "y": 680,
+      "w": 1800,
+      "align": "center",
+      "font": "Great Vibes",
+      "weight": 400,
+      "sizePx": 240,
+      "color": "#FFFFFF",
+      "maxLines": 1,
+      "autoFit": true
+    },
+
+    {
+      "id": "message",
+      "type": "text",
+      "binds": "message",
+      "x": 150,
+      "y": 1400,
+      "w": 1200,
+      "align": "center",
+      "font": "Inter",
+      "weight": 400,
+      "sizePx": 60,
+      "color": "#D3D3D3",
+      "lineHeight": 1.4,
+      "maxLines": 25,
+      "autoFit": true
+    },
+
+    {
+      "id": "corner-jellyfish",
+      "type": "image",
+      "role": "sticker",
+      "src": "/templates/PF-000008/assets/top-right-corner.png",
+      "x": 2650,
+      "y": -150,
+      "w": 1050,
+      "h": 1575,
+      "locked": true
+    },
+    {
+      "id": "teddy-bear",
+      "type": "image",
+      "role": "sticker",
+      "src": "/templates/PF-000008/assets/teddy.png",
+      "x": 200,
+      "y": 3000,
+      "w": 1000,
+      "h": 1500,
+      "locked": true
+    },
+    {
+      "id": "flower-bl",
+      "type": "image",
+      "role": "sticker",
+      "src": "/templates/PF-000008/assets/flower-bouqee.png",
+      "x": -150,
+      "y": 4250,
+      "w": 700,
+      "h": 1050,
+      "locked": true
+    },
+    {
+      "id": "flower-br",
+      "type": "image",
+      "role": "sticker",
+      "src": "/templates/PF-000008/assets/flower-bouqee.png",
+      "x": 3050,
+      "y": 4550,
+      "w": 650,
+      "h": 975,
+      "locked": true
+    }
+  ]
+}
