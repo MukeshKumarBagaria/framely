@@ -396,11 +396,87 @@ function adjustLayer(layer: Layer, adj: Adjustments): Layer {
 
 // --- photo layout variants -------------------------------------------------
 
+// Helper to auto-generate fewer-photo layouts by merging adjacent slots
+function generateMergedSlots(slots: PhotoSlotLayer[]): PhotoSlotLayer[] {
+  const pairs: [number, number][] = [];
+  const used = new Set<number>();
+  for (let i = 0; i < slots.length; i++) {
+    if (used.has(i)) continue;
+    for (let j = i + 1; j < slots.length; j++) {
+      if (used.has(j)) continue;
+      const a = slots[i];
+      const b = slots[j];
+      const sameY = Math.abs(a.y - b.y) < 20 && Math.abs(a.h - b.h) < 20;
+      const adjacentX = Math.abs((a.x + a.w) - b.x) < 200 || Math.abs((b.x + b.w) - a.x) < 200;
+      const sameX = Math.abs(a.x - b.x) < 20 && Math.abs(a.w - b.w) < 20;
+      const adjacentY = Math.abs((a.y + a.h) - b.y) < 200 || Math.abs((b.y + b.h) - a.y) < 200;
+
+      if ((sameY && adjacentX) || (sameX && adjacentY)) {
+        pairs.push([i, j]);
+        used.add(i);
+        used.add(j);
+        break;
+      }
+    }
+  }
+
+  if (pairs.length === 0) return slots;
+
+  const result: PhotoSlotLayer[] = [];
+  for (const [i, j] of pairs) {
+    const a = slots[i];
+    const b = slots[j];
+    const minX = Math.min(a.x, b.x);
+    const minY = Math.min(a.y, b.y);
+    const maxX = Math.max(a.x + a.w, b.x + b.w);
+    const maxY = Math.max(a.y + a.h, b.y + b.h);
+    result.push({
+      ...a,
+      id: `${a.id}_${b.id}`,
+      x: minX,
+      y: minY,
+      w: maxX - minX,
+      h: maxY - minY,
+    });
+  }
+  for (let i = 0; i < slots.length; i++) {
+    if (!used.has(i)) result.push(slots[i]);
+  }
+  return result;
+}
+
+function getAvailableLayouts(doc: TemplateDoc): { id: string; label: string; slots: PhotoSlotLayer[] }[] {
+  // If the template has authored layouts, use them.
+  if (doc.photoLayouts && doc.photoLayouts.length > 0) {
+    return doc.photoLayouts.map((l) => ({ id: l.id, label: l.label, slots: l.slots }));
+  }
+
+  // Otherwise, auto-generate by merging adjacent slots
+  const defaultSlots = doc.layers.filter((l): l is PhotoSlotLayer => l.type === "photoSlot");
+  const layouts: { id: string; label: string; slots: PhotoSlotLayer[] }[] = [];
+
+  let current = defaultSlots;
+  for (let step = 1; step <= 3; step++) {
+    const merged = generateMergedSlots(current);
+    if (merged.length === current.length) break; // no more merges possible
+
+    layouts.push({
+      id: `auto-merged-${step}`,
+      label: `${merged.length} photos (${step === 1 ? "larger" : step === 2 ? "large" : "extra large"})`,
+      slots: merged,
+    });
+    current = merged;
+  }
+
+  return layouts;
+}
+
 // The photo slots that render for the current selection: the chosen alternative
 // layout, or the template's default (the slots authored in `layers`).
 export function activePhotoSlots(doc: TemplateDoc, adj: Adjustments): PhotoSlotLayer[] {
-  if (adj.photoLayoutId && doc.photoLayouts) {
-    const layout = doc.photoLayouts.find((l) => l.id === adj.photoLayoutId);
+  if (adj.photoLayoutId) {
+    const layouts = getAvailableLayouts(doc);
+    const layout = layouts.find((l) => l.id === adj.photoLayoutId);
     if (layout) return layout.slots;
   }
   return doc.layers.filter((l): l is PhotoSlotLayer => l.type === "photoSlot");
@@ -408,13 +484,14 @@ export function activePhotoSlots(doc: TemplateDoc, adj: Adjustments): PhotoSlotL
 
 export type PhotoLayoutOption = { id: string | null; label: string; count: number };
 
-// Picker options — only meaningful when a template actually offers variants.
+// Picker options — auto-generated globally or authored per template.
 export function photoLayoutOptions(doc: TemplateDoc): PhotoLayoutOption[] {
-  if (!doc.photoLayouts || doc.photoLayouts.length === 0) return [];
+  const layouts = getAvailableLayouts(doc);
+  if (layouts.length === 0) return [];
   const defaultCount = doc.layers.filter((l) => l.type === "photoSlot").length;
   return [
     { id: null, label: `Default (${defaultCount} photos)`, count: defaultCount },
-    ...doc.photoLayouts.map((l) => ({ id: l.id, label: l.label, count: l.slots.length })),
+    ...layouts.map((l) => ({ id: l.id, label: l.label, count: l.slots.length })),
   ];
 }
 
@@ -436,8 +513,9 @@ function swapPhotoSlots(layers: Layer[], slots: PhotoSlotLayer[]): Layer[] {
 // must also be present in the exported print file.
 export function applyAdjustments(doc: TemplateDoc, adj: Adjustments): TemplateDoc {
   let layers = doc.layers;
-  if (adj.photoLayoutId && doc.photoLayouts) {
-    const layout = doc.photoLayouts.find((l) => l.id === adj.photoLayoutId);
+  if (adj.photoLayoutId) {
+    const layouts = getAvailableLayouts(doc);
+    const layout = layouts.find((l) => l.id === adj.photoLayoutId);
     if (layout) layers = swapPhotoSlots(doc.layers, layout.slots);
   }
   return {

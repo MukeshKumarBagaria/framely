@@ -193,8 +193,6 @@ function PhotoSlotNode({
 }) {
   const [img, setImg] = useState<HTMLImageElement | null>(null);
   const lastPointer = useRef<{ x: number; y: number } | null>(null);
-  // Absolute (stage-space) position the node is pinned to while panning.
-  const dragAnchor = useRef<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
     if (!url) {
@@ -262,18 +260,15 @@ function PhotoSlotNode({
         rotation={layer.rotation}
         opacity={layer.opacity}
         draggable={canPan}
-        // Pin the node in place — the gesture edits the crop, it must never
-        // move the frame. Falls back to the proposed position (never 0,0) so a
-        // missing anchor can't fling the photo into the corner.
-        dragBoundFunc={canPan ? (pos) => dragAnchor.current ?? pos : undefined}
+        // move the frame. Using `this.absolutePosition()` guarantees the node
+        // stays exactly where it is in absolute space.
+        dragBoundFunc={canPan ? function (this: Konva.Node) { return this.absolutePosition(); } : undefined}
         onDragStart={(e) => {
           lastPointer.current = e.target.getStage()?.getPointerPosition() ?? null;
-          dragAnchor.current = e.target.absolutePosition();
         }}
         onDragMove={canPan ? handleDragMove : undefined}
         onDragEnd={(e) => {
           lastPointer.current = null;
-          dragAnchor.current = null;
           // Konva mutates the node's own x/y while dragging; react-konva won't
           // restore them because the props never changed. Reset explicitly.
           e.target.position({ x: layer.x, y: layer.y });
