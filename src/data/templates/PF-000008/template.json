@@ -170,14 +170,14 @@
       "locked": true
     },
 
-    { "id": "p1", "type": "photoSlot", "x": 1605, "y": 1472, "w": 766, "h": 1051, "shape": "rounded", "cornerRadius": 24, "fit": "cover", "focal": "faces" },
-    { "id": "p2", "type": "photoSlot", "x": 2408, "y": 1472, "w": 816, "h": 1166, "shape": "rounded", "cornerRadius": 24, "fit": "cover", "focal": "faces" },
-    { "id": "p3", "type": "photoSlot", "x": 1523, "y": 2675, "w": 784, "h": 755, "shape": "rounded", "cornerRadius": 24, "fit": "cover", "focal": "faces" },
-    { "id": "p4", "type": "photoSlot", "x": 2340, "y": 2675, "w": 903, "h": 765, "shape": "rounded", "cornerRadius": 24, "fit": "cover", "focal": "faces" },
-    { "id": "p5", "type": "photoSlot", "x": 780, "y": 3767, "w": 839, "h": 846, "shape": "rounded", "cornerRadius": 24, "fit": "cover", "focal": "faces" },
-    { "id": "p6", "type": "photoSlot", "x": 1637, "y": 3633, "w": 656, "h": 717, "shape": "rounded", "cornerRadius": 24, "fit": "cover", "focal": "faces" },
-    { "id": "p7", "type": "photoSlot", "x": 2316, "y": 3872, "w": 954, "h": 502, "shape": "rounded", "cornerRadius": 24, "fit": "cover", "focal": "faces" },
-    { "id": "p8", "type": "photoSlot", "x": 757, "y": 4693, "w": 1091, "h": 564, "shape": "rounded", "cornerRadius": 24, "fit": "cover", "focal": "faces" },
-    { "id": "p9", "type": "photoSlot", "x": 1880, "y": 4531, "w": 789, "h": 726, "shape": "rounded", "cornerRadius": 24, "fit": "cover", "focal": "faces" }
+    { "id": "p1", "type": "photoSlot", "x": 1523, "y": 1472, "w": 792, "h": 1160, "shape": "rounded", "cornerRadius": 24, "fit": "cover", "focal": "faces" },
+    { "id": "p2", "type": "photoSlot", "x": 2353, "y": 1472, "w": 917, "h": 1170, "shape": "rounded", "cornerRadius": 24, "fit": "cover", "focal": "faces" },
+    { "id": "p3", "type": "photoSlot", "x": 1523, "y": 2675, "w": 746, "h": 841, "shape": "rounded", "cornerRadius": 24, "fit": "cover", "focal": "faces" },
+    { "id": "p4", "type": "photoSlot", "x": 2307, "y": 2675, "w": 963, "h": 875, "shape": "rounded", "cornerRadius": 24, "fit": "cover", "focal": "faces" },
+    { "id": "p5", "type": "photoSlot", "x": 780, "y": 3756, "w": 704, "h": 752, "shape": "rounded", "cornerRadius": 24, "fit": "cover", "focal": "faces" },
+    { "id": "p6", "type": "photoSlot", "x": 1571, "y": 3632, "w": 685, "h": 808, "shape": "rounded", "cornerRadius": 24, "fit": "cover", "focal": "faces" },
+    { "id": "p7", "type": "photoSlot", "x": 2274, "y": 3742, "w": 996, "h": 711, "shape": "rounded", "cornerRadius": 24, "fit": "cover", "focal": "faces" },
+    { "id": "p8", "type": "photoSlot", "x": 757, "y": 4700, "w": 1019, "h": 557, "shape": "rounded", "cornerRadius": 24, "fit": "cover", "focal": "faces" },
+    { "id": "p9", "type": "photoSlot", "x": 1851, "y": 4508, "w": 778, "h": 749, "shape": "rounded", "cornerRadius": 24, "fit": "cover", "focal": "faces" }
   ]
 }
