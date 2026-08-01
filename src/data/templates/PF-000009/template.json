@@ -1,0 +1,77 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "PF-000009",
+    "occasion": ["birthday", "friendship", "love", "anniversary"]
+  },
+  "canvas": {
+    "widthMm": 304.8,
+    "heightMm": 457.2,
+    "dpi": 300,
+    "bleedMm": 3,
+    "widthPx": 3600,
+    "heightPx": 5400,
+    "background": "#FFFFFF"
+  },
+  "inputs": {
+    "photos": { "min": 13, "max": 13 },
+    "fields": []
+  },
+  "layers": [
+    { "id": "p1", "type": "photoSlot", "x": 120, "y": 260, "w": 822, "h": 1202, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p2", "type": "photoSlot", "x": 966, "y": 260, "w": 822, "h": 1202, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p3", "type": "photoSlot", "x": 1812, "y": 260, "w": 822, "h": 1202, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p4", "type": "photoSlot", "x": 2658, "y": 260, "w": 822, "h": 1202, "shape": "rect", "fit": "cover", "focal": "faces" },
+
+    { "id": "p5", "type": "photoSlot", "x": 120, "y": 1486, "w": 822, "h": 1202, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p6", "type": "photoSlot", "x": 966, "y": 1486, "w": 1668, "h": 2428, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p7", "type": "photoSlot", "x": 2658, "y": 1486, "w": 822, "h": 1202, "shape": "rect", "fit": "cover", "focal": "faces" },
+
+    { "id": "p8", "type": "photoSlot", "x": 120, "y": 2712, "w": 822, "h": 1202, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p9", "type": "photoSlot", "x": 2658, "y": 2712, "w": 822, "h": 1202, "shape": "rect", "fit": "cover", "focal": "faces" },
+
+    { "id": "p10", "type": "photoSlot", "x": 120, "y": 3938, "w": 822, "h": 1202, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p11", "type": "photoSlot", "x": 966, "y": 3938, "w": 822, "h": 1202, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p12", "type": "photoSlot", "x": 1812, "y": 3938, "w": 822, "h": 1202, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p13", "type": "photoSlot", "x": 2658, "y": 3938, "w": 822, "h": 1202, "shape": "rect", "fit": "cover", "focal": "faces" }
+  ],
+  "photoLayouts": [
+    {
+      "id": "nine-grid",
+      "label": "9 photos (larger)",
+      "slots": [
+        { "id": "n1", "type": "photoSlot", "x": 120, "y": 260, "w": 1104, "h": 1610, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "n2", "type": "photoSlot", "x": 1248, "y": 260, "w": 1104, "h": 1610, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "n3", "type": "photoSlot", "x": 2376, "y": 260, "w": 1104, "h": 1610, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "n4", "type": "photoSlot", "x": 120, "y": 1894, "w": 1104, "h": 1610, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "n5", "type": "photoSlot", "x": 1248, "y": 1894, "w": 1104, "h": 1610, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "n6", "type": "photoSlot", "x": 2376, "y": 1894, "w": 1104, "h": 1610, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "n7", "type": "photoSlot", "x": 120, "y": 3528, "w": 1104, "h": 1610, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "n8", "type": "photoSlot", "x": 1248, "y": 3528, "w": 1104, "h": 1610, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "n9", "type": "photoSlot", "x": 2376, "y": 3528, "w": 1104, "h": 1610, "shape": "rect", "fit": "cover", "focal": "faces" }
+      ]
+    },
+    {
+      "id": "six-larger",
+      "label": "6 photos (larger)",
+      "slots": [
+        { "id": "x1", "type": "photoSlot", "x": 120, "y": 260, "w": 1668, "h": 1610, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "x2", "type": "photoSlot", "x": 1812, "y": 260, "w": 1668, "h": 1610, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "x3", "type": "photoSlot", "x": 120, "y": 1894, "w": 1668, "h": 1610, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "x4", "type": "photoSlot", "x": 1812, "y": 1894, "w": 1668, "h": 1610, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "x5", "type": "photoSlot", "x": 120, "y": 3528, "w": 1668, "h": 1610, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "x6", "type": "photoSlot", "x": 1812, "y": 3528, "w": 1668, "h": 1610, "shape": "rect", "fit": "cover", "focal": "faces" }
+      ]
+    },
+    {
+      "id": "four-large",
+      "label": "4 photos (extra large)",
+      "slots": [
+        { "id": "y1", "type": "photoSlot", "x": 120, "y": 260, "w": 1668, "h": 2428, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "y2", "type": "photoSlot", "x": 1812, "y": 260, "w": 1668, "h": 2428, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "y3", "type": "photoSlot", "x": 120, "y": 2712, "w": 1668, "h": 2428, "shape": "rect", "fit": "cover", "focal": "faces" },
+        { "id": "y4", "type": "photoSlot", "x": 1812, "y": 2712, "w": 1668, "h": 2428, "shape": "rect", "fit": "cover", "focal": "faces" }
+      ]
+    }
+  ]
+}
