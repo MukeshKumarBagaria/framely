@@ -1,0 +1,140 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "PF-000012",
+    "occasion": ["birthday", "love", "anniversary"]
+  },
+  "canvas": {
+    "widthMm": 304.8,
+    "heightMm": 457.2,
+    "dpi": 300,
+    "bleedMm": 3,
+    "widthPx": 3600,
+    "heightPx": 5400,
+    "background": "#000000"
+  },
+  "inputs": {
+    "photos": { "min": 6, "max": 6 },
+    "fields": [
+      {
+        "key": "message",
+        "label": "Message",
+        "type": "text",
+        "maxLen": 300,
+        "required": true,
+        "default": "Happy Birthday to the love of my life. You make my world brighter, and my days happier. I'm so lucky to have you by my side."
+      },
+      {
+        "key": "greeting",
+        "label": "Bottom line",
+        "type": "text",
+        "maxLen": 28,
+        "required": true,
+        "default": "Happy Birthday dear"
+      }
+    ]
+  },
+  "layers": [
+    {
+      "id": "calendar",
+      "type": "calendar",
+      "variant": "grid",
+      "x": 236,
+      "y": 60,
+      "w": 1601,
+      "h": 1040,
+      "year": 2026,
+      "month": 7,
+      "highlightDay": 24,
+      "highlightStyle": "heart",
+      "titleAlign": "center",
+      "weekdayLabels": ["", "", "", "", "", "", ""],
+      "font": "Inter",
+      "titleFont": "Kaushan Script",
+      "titleSizePx": 232,
+      "headerSizePx": 2,
+      "cellSizePx": 92,
+      "titleWeight": 400,
+      "weight": 500,
+      "color": "#FFFFFF",
+      "titleColor": "#FFFFFF",
+      "headerColor": "#000000",
+      "sundayColor": "#C1453E",
+      "heartColor": "#E3242B"
+    },
+    {
+      "id": "couple",
+      "type": "image",
+      "label": "Couple illustration",
+      "role": "sticker",
+      "src": "/templates/PF-000012/assets/top-right-corner-emoji.png",
+      "x": 1946,
+      "y": 107,
+      "w": 2240,
+      "h": 1493,
+      "locked": true
+    },
+    {
+      "id": "message",
+      "type": "text",
+      "binds": "message",
+      "x": 228,
+      "y": 1466,
+      "w": 1140,
+      "align": "center",
+      "font": "Playfair Display",
+      "weight": 400,
+      "sizePx": 114,
+      "color": "#FFFFFF",
+      "maxLines": 10,
+      "lineHeight": 1.35
+    },
+    {
+      "id": "locks",
+      "type": "image",
+      "label": "Love locks",
+      "role": "sticker",
+      "src": "/templates/PF-000012/assets/love-locks.png",
+      "x": 34,
+      "y": 2496,
+      "w": 1294,
+      "h": 863,
+      "locked": true
+    },
+
+    { "id": "p1", "type": "photoSlot", "x": 1414, "y": 1128, "w": 897, "h": 1210, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p2", "type": "photoSlot", "x": 2346, "y": 1458, "w": 947, "h": 1091, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p3", "type": "photoSlot", "x": 1414, "y": 2374, "w": 901, "h": 933, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p4", "type": "photoSlot", "x": 2349, "y": 2578, "w": 1110, "h": 1059, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p5", "type": "photoSlot", "x": 205, "y": 3348, "w": 1114, "h": 1165, "shape": "rect", "fit": "cover", "focal": "faces" },
+    { "id": "p6", "type": "photoSlot", "x": 1350, "y": 3343, "w": 969, "h": 1165, "shape": "rect", "fit": "cover", "focal": "faces" },
+
+    {
+      "id": "infinity",
+      "type": "image",
+      "label": "Infinity hearts",
+      "role": "sticker",
+      "src": "/templates/PF-000012/assets/infiintie-love-element.png",
+      "x": 2328,
+      "y": 3887,
+      "w": 1183,
+      "h": 789,
+      "locked": true
+    },
+    {
+      "id": "greeting",
+      "type": "text",
+      "binds": "greeting",
+      "x": 200,
+      "y": 4640,
+      "w": 3200,
+      "align": "center",
+      "font": "Kaushan Script",
+      "weight": 400,
+      "sizePx": 340,
+      "color": "#FFFFFF",
+      "maxLines": 1,
+      "autoFit": true
+    }
+  ]
+}
