@@ -1,0 +1,99 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "PF-000013",
+    "occasion": ["birthday", "anniversary", "love", "friendship", "wedding", "congratulations"]
+  },
+  "canvas": {
+    "widthMm": 304.8,
+    "heightMm": 457.2,
+    "dpi": 300,
+    "bleedMm": 3,
+    "widthPx": 3600,
+    "heightPx": 5400,
+    "background": "#111111"
+  },
+  "inputs": {
+    "photos": { "min": 1, "max": 1 },
+    "fields": [
+      { "key": "heading", "label": "Occasion line", "type": "text", "maxLen": 28, "required": true, "default": "Happy Birthday" },
+      { "key": "name", "label": "Name", "type": "text", "maxLen": 24, "required": true, "default": "ANANYA" },
+      { "key": "message", "label": "Message", "type": "text", "maxLen": 90, "required": false, "default": "To the most amazing person in my life" }
+    ]
+  },
+  "layers": [
+    {
+      "id": "photo",
+      "type": "photoSlot",
+      "x": -36,
+      "y": -36,
+      "w": 3672,
+      "h": 5472,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "bleed": true
+    },
+    {
+      "id": "shade",
+      "type": "shape",
+      "label": "Text shade",
+      "kind": "rect",
+      "x": -36,
+      "y": 3200,
+      "w": 3672,
+      "h": 2272,
+      "fill": "none",
+      "fillGradient": { "from": "#00000000", "to": "#000000F0", "direction": "vertical" },
+      "bleed": true,
+      "locked": true
+    },
+    {
+      "id": "heading",
+      "type": "text",
+      "binds": "heading",
+      "x": 200,
+      "y": 4080,
+      "w": 3200,
+      "align": "center",
+      "font": "Kaushan Script",
+      "weight": 400,
+      "sizePx": 380,
+      "color": "#FFFFFF",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "name",
+      "type": "text",
+      "binds": "name",
+      "x": 400,
+      "y": 4620,
+      "w": 2800,
+      "align": "center",
+      "font": "Playfair Display",
+      "weight": 500,
+      "sizePx": 175,
+      "letterSpacing": 18,
+      "color": "#FFFFFF",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "message",
+      "type": "text",
+      "binds": "message",
+      "x": 400,
+      "y": 4930,
+      "w": 2800,
+      "align": "center",
+      "font": "Playfair Display",
+      "weight": 400,
+      "sizePx": 92,
+      "color": "#E9E5DD",
+      "maxLines": 2,
+      "lineHeight": 1.3,
+      "italic": true
+    }
+  ]
+}
