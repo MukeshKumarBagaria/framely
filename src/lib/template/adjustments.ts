@@ -309,7 +309,11 @@ function adjustLayer(layer: Layer, adj: Adjustments): Layer {
   switch (scaled.type) {
     case "photoSlot": {
       let next = scaled;
-      if (adj.photoCornerRadius > 0) {
+      // Rounding only means anything for a rectangular slot. Circle/heart/
+      // hexagon slots carry their silhouette as the design's intent, so the
+      // global radius must not flatten them back into rounded rectangles.
+      const roundable = next.shape === "rect" || next.shape === "rounded";
+      if (adj.photoCornerRadius > 0 && roundable) {
         const maxRadius = Math.min(next.w, next.h) / 2;
         next = {
           ...next,

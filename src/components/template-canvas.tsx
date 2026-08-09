@@ -178,6 +178,22 @@ function slotRadius(layer: PhotoSlotLayer) {
   return 0;
 }
 
+// Flat-top hexagon inscribed in [w × h], as a flat [x0,y0, x1,y1, …] list:
+// two corners along the top edge, a point at each side, two along the bottom.
+function hexagonPoints(w: number, h: number) {
+  return [w * 0.25, 0, w * 0.75, 0, w, h / 2, w * 0.75, h, w * 0.25, h, 0, h / 2];
+}
+
+// `cornerRadius` can only round a rectangle, so a hexagon slot is drawn by
+// clipping its Group to this path instead.
+function hexagonClip(ctx: Konva.Context, w: number, h: number) {
+  const p = hexagonPoints(w, h);
+  ctx.beginPath();
+  ctx.moveTo(p[0], p[1]);
+  for (let i = 2; i < p.length; i += 2) ctx.lineTo(p[i], p[i + 1]);
+  ctx.closePath();
+}
+
 function PhotoSlotNode({
   layer,
   url,
@@ -246,19 +262,25 @@ function PhotoSlotNode({
       );
     };
 
-    return (
+    // A hexagon slot nests the image inside a clipped Group, so the image draws
+    // at the group's origin and the group carries placement/rotation/opacity.
+    const hex = layer.shape === "hexagon";
+    const ix = hex ? 0 : layer.x;
+    const iy = hex ? 0 : layer.y;
+
+    const image = (
       <KonvaImage
         image={img}
-        x={layer.x}
-        y={layer.y}
+        x={ix}
+        y={iy}
         width={layer.w}
         height={layer.h}
         crop={cropRect}
         cornerRadius={radius}
-        stroke={layer.border?.color}
-        strokeWidth={layer.border?.width}
-        rotation={layer.rotation}
-        opacity={layer.opacity}
+        stroke={hex ? undefined : layer.border?.color}
+        strokeWidth={hex ? undefined : layer.border?.width}
+        rotation={hex ? 0 : layer.rotation}
+        opacity={hex ? 1 : layer.opacity}
         draggable={canPan}
         // move the frame. Using `this.absolutePosition()` guarantees the node
         // stays exactly where it is in absolute space.
@@ -271,7 +293,7 @@ function PhotoSlotNode({
           lastPointer.current = null;
           // Konva mutates the node's own x/y while dragging; react-konva won't
           // restore them because the props never changed. Reset explicitly.
-          e.target.position({ x: layer.x, y: layer.y });
+          e.target.position({ x: ix, y: iy });
         }}
         onMouseEnter={(e) => {
           if (!canPan) return;
@@ -284,22 +306,53 @@ function PhotoSlotNode({
         }}
       />
     );
+
+    if (!hex) return image;
+
+    return (
+      <Group x={layer.x} y={layer.y} rotation={layer.rotation} opacity={layer.opacity}>
+        <Group clipFunc={(ctx) => hexagonClip(ctx, layer.w, layer.h)}>{image}</Group>
+        {layer.border && (
+          <Line
+            points={hexagonPoints(layer.w, layer.h)}
+            closed
+            stroke={layer.border.color}
+            strokeWidth={layer.border.width}
+            lineJoin="round"
+            listening={false}
+          />
+        )}
+      </Group>
+    );
   }
 
   // No photo assigned yet — the "empty template" state a merchant sees in the
   // builder before any customer photos exist.
   return (
     <Group x={layer.x} y={layer.y} rotation={layer.rotation} opacity={layer.opacity}>
-      <Rect
-        width={layer.w}
-        height={layer.h}
-        cornerRadius={radius}
-        fillLinearGradientStartPoint={{ x: 0, y: 0 }}
-        fillLinearGradientEndPoint={{ x: layer.w, y: layer.h }}
-        fillLinearGradientColorStops={[0, "#2A2A2A", 1, "#181818"]}
-        stroke="#3A3A3A"
-        strokeWidth={2}
-      />
+      {layer.shape === "hexagon" ? (
+        <Line
+          points={hexagonPoints(layer.w, layer.h)}
+          closed
+          fillLinearGradientStartPoint={{ x: 0, y: 0 }}
+          fillLinearGradientEndPoint={{ x: layer.w, y: layer.h }}
+          fillLinearGradientColorStops={[0, "#2A2A2A", 1, "#181818"]}
+          stroke={layer.border?.color ?? "#3A3A3A"}
+          strokeWidth={layer.border?.width ?? 2}
+          lineJoin="round"
+        />
+      ) : (
+        <Rect
+          width={layer.w}
+          height={layer.h}
+          cornerRadius={radius}
+          fillLinearGradientStartPoint={{ x: 0, y: 0 }}
+          fillLinearGradientEndPoint={{ x: layer.w, y: layer.h }}
+          fillLinearGradientColorStops={[0, "#2A2A2A", 1, "#181818"]}
+          stroke="#3A3A3A"
+          strokeWidth={2}
+        />
+      )}
       <KonvaText
         text={String(index).padStart(2, "0")}
         width={layer.w}
@@ -535,7 +588,14 @@ function CalendarNode({ layer }: { layer: CalendarLayer }) {
   const headerH = layer.headerSizePx * 2;
   const gridH = layer.h - titleH - headerH;
   const rowH = gridH / Math.max(rowsUsed, 1);
-  const markerBase = fitMarkerSize(layer.cellSizePx * 1.9, colW, rowH);
+  // An explicit highlightSizePx opts out of the row clamp — see the schema note.
+  const markerBase = layer.highlightSizePx ?? fitMarkerSize(layer.cellSizePx * 1.9, colW, rowH);
+  // Box the heart glyph is drawn in, in cell-local coordinates. Clamped to the
+  // cell by default; an authored size gets its own oversized box centred on the
+  // cell so Konva doesn't drop a glyph taller than the row.
+  const markerBox = layer.highlightSizePx
+    ? { x: colW / 2 - markerBase, y: rowH / 2 - markerBase * 0.75, w: markerBase * 2, h: markerBase * 1.5 }
+    : { x: 0, y: 0, w: colW, h: rowH };
 
   const cells: React.ReactNode[] = [];
   for (let d = 1; d <= daysInMonth; d++) {
@@ -558,8 +618,10 @@ function CalendarNode({ layer }: { layer: CalendarLayer }) {
         <Group key={`d-${d}`} x={cx} y={cy}>
           {layer.highlightStyle === "heartDay" ? (
             <KonvaText
-              width={colW}
-              height={rowH}
+              x={markerBox.x}
+              y={markerBox.y}
+              width={markerBox.w}
+              height={markerBox.h}
               align="center"
               verticalAlign="middle"
               wrap="none"
@@ -627,6 +689,20 @@ function CalendarNode({ layer }: { layer: CalendarLayer }) {
         fontSize={layer.titleSizePx}
         fill={layer.titleColor}
       />
+      {layer.showYear && (
+        // Same line as the month label, pushed to the other end of the grid.
+        <KonvaText
+          x={0}
+          y={0}
+          width={layer.w}
+          align={layer.titleAlign === "right" ? "left" : "right"}
+          text={String(layer.year)}
+          fontFamily={layer.titleFont}
+          fontStyle={konvaFontStyle(layer.titleWeight, false)}
+          fontSize={layer.titleSizePx}
+          fill={layer.titleColor}
+        />
+      )}
       {layer.weekdayLabels.map((label, i) => (
         <KonvaText
           key={`h-${i}`}

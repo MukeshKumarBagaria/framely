@@ -54,7 +54,10 @@ export const photoSlotLayerSchema = layerCommon.extend({
   type: z.literal("photoSlot"),
   w: z.number().min(200),
   h: z.number().min(200),
-  shape: z.enum(["rect", "rounded", "circle", "heart"]).default("rect"),
+  // "hexagon" is a flat-top hexagon inscribed in [w × h] — the honeycomb
+  // collage shape. Its natural proportion is w : h = 2 : √3; give the slot that
+  // ratio or the hexagon comes out stretched.
+  shape: z.enum(["rect", "rounded", "circle", "heart", "hexagon"]).default("rect"),
   cornerRadius: z.number().min(0).optional(),
   fit: z.literal("cover").default("cover"),
   focal: z.enum(["faces", "center"]).default("faces"),
@@ -162,8 +165,18 @@ export const calendarLayerSchema = layerCommon.extend({
   //   "circle"   — a filled disc behind the date number
   //   "ring"     — a hollow outline circle around the date number
   highlightStyle: z.enum(["heart", "heartDay", "circle", "ring"]).default("heart"),
+  // Explicit size for the "heartDay" marker glyph. Absent, it's derived from
+  // cellSizePx and clamped to the row height — which caps the heart at barely
+  // wider than a two-digit date. Setting it opts into a marker box of its own,
+  // so the heart can be drawn larger than the row it sits in.
+  highlightSizePx: z.number().positive().optional(),
   // "grid" only: alignment of the month label above the grid.
   titleAlign: z.enum(["left", "center", "right"]).default("center"),
+  // "grid" only: also draw the four-digit year on the title line, at the
+  // opposite end from the month label ("September ⋯ 2022"). Reads `year`, so
+  // the date-of-birth picker moves it along with the month — which a separate
+  // static text layer could not do.
+  showYear: z.boolean().default(false),
   // "grid" only: recolours the Sunday column (header + dates), e.g. red.
   sundayColor: hexColor.optional(),
   font: z.string(), // grid dates ("grid") / the big day number ("day")

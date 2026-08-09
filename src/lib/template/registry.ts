@@ -70,6 +70,11 @@ export function getTemplates(): TemplateEntry[] {
     .readdirSync(TEMPLATES_DIR, { withFileTypes: true })
     .filter((entry) => entry.isDirectory())
     .map((entry) => entry.name)
+    // A folder is only a template once it has a manifest. Skipping the rest
+    // lets a designer stage `<slug>/assets/` on disk while the doc is still
+    // being authored — without that, one half-built folder throws on read and
+    // takes the whole library (every template page) down with it.
+    .filter((name) => fs.existsSync(path.join(TEMPLATES_DIR, name, "manifest.json")))
     .sort();
   const entries = folders.map(loadTemplateFolder);
   if (useCache) cache = entries;

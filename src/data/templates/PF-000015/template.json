@@ -1,0 +1,159 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "PF-000015",
+    "occasion": ["birthday", "anniversary", "love", "friendship"]
+  },
+  "canvas": {
+    "widthMm": 304.8,
+    "heightMm": 457.2,
+    "dpi": 300,
+    "bleedMm": 3,
+    "widthPx": 3600,
+    "heightPx": 5400,
+    "background": "#062E2B"
+  },
+  "inputs": {
+    "photos": { "min": 10, "max": 10 },
+    "fields": [
+      { "key": "heading", "label": "Occasion line", "type": "text", "maxLen": 24, "required": true, "default": "HAPPY BIRTHDAY" },
+      { "key": "name", "label": "Name", "type": "text", "maxLen": 20, "required": true, "default": "Aaradhya" },
+      {
+        "key": "message",
+        "label": "Message",
+        "type": "text",
+        "maxLen": 300,
+        "required": true,
+        "default": "Wishing you beautiful moments, happiness, and dreams that come true. May this year bring you love, laughter, and success in all that you do. Keep shining and inspiring always. May your days be as special as you are!"
+      }
+    ]
+  },
+  "layers": [
+    {
+      "id": "main",
+      "type": "photoSlot",
+      "x": -36,
+      "y": -36,
+      "w": 3672,
+      "h": 5472,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "bleed": true
+    },
+    {
+      "id": "wash-left",
+      "type": "shape",
+      "label": "Left wash",
+      "kind": "rect",
+      "x": -36,
+      "y": -36,
+      "w": 3672,
+      "h": 5472,
+      "fill": "none",
+      "fillGradient": { "from": "#0C4A43CC", "to": "#0C4A4300", "direction": "horizontal" },
+      "bleed": true,
+      "locked": true
+    },
+    {
+      "id": "wash-bottom",
+      "type": "shape",
+      "label": "Bottom wash",
+      "kind": "rect",
+      "x": -36,
+      "y": 2700,
+      "w": 3672,
+      "h": 2736,
+      "fill": "none",
+      "fillGradient": { "from": "#0C4A4300", "to": "#05302CF7", "direction": "vertical" },
+      "bleed": true,
+      "locked": true
+    },
+
+    { "id": "h1", "type": "photoSlot", "x": 160, "y": 290, "w": 850, "h": 736, "shape": "hexagon", "fit": "cover", "focal": "faces", "border": { "width": 18, "color": "#FFFFFF" } },
+    { "id": "h2", "type": "photoSlot", "x": 812, "y": 667, "w": 850, "h": 736, "shape": "hexagon", "fit": "cover", "focal": "faces", "border": { "width": 18, "color": "#FFFFFF" } },
+    { "id": "h3", "type": "photoSlot", "x": 160, "y": 1044, "w": 850, "h": 736, "shape": "hexagon", "fit": "cover", "focal": "faces", "border": { "width": 18, "color": "#FFFFFF" } },
+    { "id": "h4", "type": "photoSlot", "x": 812, "y": 1421, "w": 850, "h": 736, "shape": "hexagon", "fit": "cover", "focal": "faces", "border": { "width": 18, "color": "#FFFFFF" } },
+    { "id": "h5", "type": "photoSlot", "x": 160, "y": 1798, "w": 850, "h": 736, "shape": "hexagon", "fit": "cover", "focal": "faces", "border": { "width": 18, "color": "#FFFFFF" } },
+    { "id": "h6", "type": "photoSlot", "x": 812, "y": 2175, "w": 850, "h": 736, "shape": "hexagon", "fit": "cover", "focal": "faces", "border": { "width": 18, "color": "#FFFFFF" } },
+    { "id": "h7", "type": "photoSlot", "x": 160, "y": 2552, "w": 850, "h": 736, "shape": "hexagon", "fit": "cover", "focal": "faces", "border": { "width": 18, "color": "#FFFFFF" } },
+    { "id": "h8", "type": "photoSlot", "x": 812, "y": 2929, "w": 850, "h": 736, "shape": "hexagon", "fit": "cover", "focal": "faces", "border": { "width": 18, "color": "#FFFFFF" } },
+    { "id": "h9", "type": "photoSlot", "x": 160, "y": 3306, "w": 850, "h": 736, "shape": "hexagon", "fit": "cover", "focal": "faces", "border": { "width": 18, "color": "#FFFFFF" } },
+
+    {
+      "id": "calendar",
+      "type": "calendar",
+      "variant": "grid",
+      "x": 300,
+      "y": 4120,
+      "w": 1480,
+      "h": 1180,
+      "year": 2026,
+      "month": 3,
+      "highlightDay": 17,
+      "highlightStyle": "circle",
+      "titleAlign": "center",
+      "weekdayLabels": ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"],
+      "font": "Inter",
+      "titleFont": "Kaushan Script",
+      "titleSizePx": 200,
+      "headerSizePx": 62,
+      "cellSizePx": 100,
+      "titleWeight": 400,
+      "headerWeight": 700,
+      "weight": 500,
+      "color": "#FFFFFF",
+      "titleColor": "#FFFFFF",
+      "headerColor": "#FFFFFF",
+      "heartColor": "#E8202A",
+      "highlightTextColor": "#FFFFFF"
+    },
+
+    {
+      "id": "heading",
+      "type": "text",
+      "binds": "heading",
+      "x": 1855,
+      "y": 3990,
+      "w": 1650,
+      "align": "center",
+      "font": "Inter",
+      "weight": 700,
+      "sizePx": 130,
+      "letterSpacing": 30,
+      "color": "#FFFFFF",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "name",
+      "type": "text",
+      "binds": "name",
+      "x": 1855,
+      "y": 4180,
+      "w": 1650,
+      "align": "center",
+      "font": "Kaushan Script",
+      "weight": 400,
+      "sizePx": 360,
+      "color": "#FFFFFF",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "message",
+      "type": "text",
+      "binds": "message",
+      "x": 1880,
+      "y": 4680,
+      "w": 1600,
+      "align": "center",
+      "font": "Inter",
+      "weight": 400,
+      "sizePx": 68,
+      "color": "#E6F0EE",
+      "maxLines": 6,
+      "lineHeight": 1.45
+    }
+  ]
+}

@@ -1,0 +1,295 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "PF-000014",
+    "occasion": [
+      "birthday",
+      "love",
+      "anniversary",
+      "friendship"
+    ]
+  },
+  "canvas": {
+    "widthMm": 203.2,
+    "heightMm": 304.8,
+    "dpi": 300,
+    "bleedMm": 3,
+    "widthPx": 2400,
+    "heightPx": 3600,
+    "background": "#000000"
+  },
+  "inputs": {
+    "photos": {
+      "min": 7,
+      "max": 7
+    },
+    "fields": [
+      {
+        "key": "heading",
+        "label": "Occasion line",
+        "type": "text",
+        "maxLen": 24,
+        "required": true,
+        "default": "Happy Birthday"
+      },
+      {
+        "key": "name",
+        "label": "Name",
+        "type": "text",
+        "maxLen": 24,
+        "required": true,
+        "default": "Paramjeet ♡"
+      },
+      {
+        "key": "message",
+        "label": "Message",
+        "type": "text",
+        "maxLen": 300,
+        "required": true,
+        "default": "Wishing you a day filled with happiness and year filled with joy. Hope your special 💗 Day brings you all that your heart desires! Sending you smiles for every moment of your special day... 🤍"
+      },
+      {
+        "key": "occasion",
+        "label": "Date label",
+        "type": "text",
+        "maxLen": 24,
+        "required": true,
+        "default": "Special Day"
+      },
+      {
+        "key": "eventdate",
+        "label": "Date",
+        "type": "text",
+        "maxLen": 24,
+        "required": true,
+        "default": "27 March 2026"
+      }
+    ]
+  },
+  "layers": [
+    {
+      "id": "floral-tl",
+      "type": "image",
+      "label": "Top-left flowers",
+      "role": "sticker",
+      "src": "/templates/PF-000014/assets/top-left-corner-flowers.png",
+      "x": 6,
+      "y": 9,
+      "w": 856,
+      "h": 571,
+      "locked": true
+    },
+    {
+      "id": "floral-br",
+      "type": "image",
+      "label": "Bottom-right flowers",
+      "role": "sticker",
+      "src": "/templates/PF-000014/assets/bottom-right-corner-flowers.png",
+      "x": 1230,
+      "y": 2820,
+      "w": 1171,
+      "h": 781,
+      "locked": true
+    },
+    {
+      "id": "heading",
+      "type": "text",
+      "binds": "heading",
+      "x": 400,
+      "y": 85,
+      "w": 1600,
+      "align": "center",
+      "font": "Playfair Display",
+      "weight": 500,
+      "sizePx": 112,
+      "letterSpacing": 8,
+      "color": "#FFFFFF",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "name",
+      "type": "text",
+      "binds": "name",
+      "x": 300,
+      "y": 262,
+      "w": 1800,
+      "align": "center",
+      "font": "Great Vibes",
+      "weight": 400,
+      "sizePx": 250,
+      "color": "#F5A3C0",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "p1",
+      "type": "photoSlot",
+      "x": 149,
+      "y": 620,
+      "w": 737,
+      "h": 894,
+      "shape": "rounded",
+      "cornerRadius": 28,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 16,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p2",
+      "type": "photoSlot",
+      "x": 927,
+      "y": 620,
+      "w": 528,
+      "h": 580,
+      "shape": "rounded",
+      "cornerRadius": 28,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 16,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p3",
+      "type": "photoSlot",
+      "x": 1496,
+      "y": 620,
+      "w": 754,
+      "h": 894,
+      "shape": "rounded",
+      "cornerRadius": 28,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 16,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p4",
+      "type": "photoSlot",
+      "x": 927,
+      "y": 1232,
+      "w": 528,
+      "h": 588,
+      "shape": "rounded",
+      "cornerRadius": 28,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 16,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p5",
+      "type": "photoSlot",
+      "x": 149,
+      "y": 1549,
+      "w": 737,
+      "h": 908,
+      "shape": "rounded",
+      "cornerRadius": 28,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 16,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p6",
+      "type": "photoSlot",
+      "x": 927,
+      "y": 1855,
+      "w": 528,
+      "h": 602,
+      "shape": "rounded",
+      "cornerRadius": 28,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 16,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p7",
+      "type": "photoSlot",
+      "x": 1496,
+      "y": 1549,
+      "w": 754,
+      "h": 908,
+      "shape": "rounded",
+      "cornerRadius": 28,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 16,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "message",
+      "type": "text",
+      "binds": "message",
+      "x": 490,
+      "y": 2550,
+      "w": 1420,
+      "align": "center",
+      "font": "Playfair Display",
+      "weight": 400,
+      "sizePx": 70,
+      "color": "#F0F0F0",
+      "maxLines": 7,
+      "lineHeight": 1.62
+    },
+    {
+      "id": "occasion",
+      "type": "text",
+      "binds": "occasion",
+      "x": 500,
+      "y": 3170,
+      "w": 1400,
+      "align": "center",
+      "font": "Great Vibes",
+      "weight": 400,
+      "sizePx": 150,
+      "color": "#E5488F",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "divider",
+      "type": "image",
+      "label": "Divider",
+      "role": "sticker",
+      "src": "/templates/PF-000014/assets/special-date-element.png",
+      "x": 815,
+      "y": 3140,
+      "w": 770,
+      "h": 513,
+      "locked": true
+    },
+    {
+      "id": "eventdate",
+      "type": "text",
+      "binds": "eventdate",
+      "x": 500,
+      "y": 3430,
+      "w": 1400,
+      "align": "center",
+      "font": "Playfair Display",
+      "weight": 400,
+      "sizePx": 88,
+      "color": "#FFFFFF",
+      "maxLines": 1,
+      "autoFit": true
+    }
+  ]
+}
