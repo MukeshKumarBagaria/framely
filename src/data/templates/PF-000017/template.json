@@ -1,0 +1,328 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "PF-000017",
+    "occasion": [
+      "birthday",
+      "love",
+      "friendship",
+      "anniversary"
+    ]
+  },
+  "canvas": {
+    "widthMm": 304.8,
+    "heightMm": 457.2,
+    "dpi": 300,
+    "bleedMm": 3,
+    "widthPx": 3600,
+    "heightPx": 5400,
+    "background": "#0B0B0B"
+  },
+  "inputs": {
+    "photos": {
+      "min": 10,
+      "max": 10
+    },
+    "fields": [
+      {
+        "key": "day",
+        "label": "Day",
+        "type": "text",
+        "maxLen": 2,
+        "required": true,
+        "default": "05"
+      },
+      {
+        "key": "month",
+        "label": "Month",
+        "type": "text",
+        "maxLen": 10,
+        "required": true,
+        "default": "JULY"
+      },
+      {
+        "key": "message",
+        "label": "Message",
+        "type": "text",
+        "maxLen": 300,
+        "required": true,
+        "default": "On your special\nday I promise\nI will always\nstand with u\neven if the\nwhole world is\nagainst u,\nalways there for u\nin your bad\nand good times U're\nmy happiness\nMy Smile."
+      },
+      {
+        "key": "greeting",
+        "label": "Greeting",
+        "type": "text",
+        "maxLen": 22,
+        "required": true,
+        "default": "Happiest Birthday"
+      },
+      {
+        "key": "name",
+        "label": "Name",
+        "type": "text",
+        "maxLen": 12,
+        "required": true,
+        "default": "Arya"
+      }
+    ]
+  },
+  "layers": [
+    {
+      "id": "date-ring",
+      "type": "image",
+      "label": "Date ring",
+      "role": "sticker",
+      "src": "/templates/PF-000017/assets/date-ring.png",
+      "x": -192,
+      "y": 68,
+      "w": 1550,
+      "h": 1033,
+      "locked": true
+    },
+    {
+      "id": "day",
+      "type": "text",
+      "binds": "day",
+      "x": 170,
+      "y": 325,
+      "w": 800,
+      "align": "center",
+      "font": "Inter",
+      "weight": 700,
+      "sizePx": 215,
+      "color": "#FFFFFF",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "month",
+      "type": "text",
+      "binds": "month",
+      "x": 170,
+      "y": 560,
+      "w": 800,
+      "align": "center",
+      "font": "Inter",
+      "weight": 700,
+      "sizePx": 185,
+      "color": "#FFFFFF",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "floral-tr",
+      "type": "image",
+      "label": "Top-right flowers",
+      "role": "sticker",
+      "src": "/templates/PF-000017/assets/right-top-corner-flowers.png",
+      "x": 2103,
+      "y": 11,
+      "w": 1525,
+      "h": 1017,
+      "locked": true
+    },
+    {
+      "id": "couple",
+      "type": "image",
+      "label": "Couple",
+      "role": "sticker",
+      "src": "/templates/PF-000017/assets/girl-boy-emoji.png",
+      "x": 2614,
+      "y": 784,
+      "w": 1214,
+      "h": 809,
+      "locked": true
+    },
+    {
+      "id": "message",
+      "type": "text",
+      "binds": "message",
+      "x": 54,
+      "y": 1534,
+      "w": 910,
+      "align": "center",
+      "font": "Inter",
+      "weight": 400,
+      "sizePx": 88,
+      "color": "#FFFFFF",
+      "maxLines": 14,
+      "lineHeight": 2.0
+    },
+    {
+      "id": "p1",
+      "type": "photoSlot",
+      "x": 1974,
+      "y": 403,
+      "w": 793,
+      "h": 1155,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "p2",
+      "type": "photoSlot",
+      "x": 1009,
+      "y": 1287,
+      "w": 946,
+      "h": 2378,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "p3",
+      "type": "photoSlot",
+      "x": 1974,
+      "y": 1576,
+      "w": 1584,
+      "h": 884,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "p4",
+      "type": "photoSlot",
+      "x": 1974,
+      "y": 2478,
+      "w": 793,
+      "h": 1187,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "p5",
+      "type": "photoSlot",
+      "x": 2780,
+      "y": 2478,
+      "w": 778,
+      "h": 1187,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "p6",
+      "type": "photoSlot",
+      "x": 45,
+      "y": 3682,
+      "w": 685,
+      "h": 989,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "p7",
+      "type": "photoSlot",
+      "x": 752,
+      "y": 3682,
+      "w": 685,
+      "h": 989,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "p8",
+      "type": "photoSlot",
+      "x": 1459,
+      "y": 3682,
+      "w": 685,
+      "h": 989,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "p9",
+      "type": "photoSlot",
+      "x": 2166,
+      "y": 3682,
+      "w": 685,
+      "h": 989,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "p10",
+      "type": "photoSlot",
+      "x": 2873,
+      "y": 3682,
+      "w": 685,
+      "h": 989,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "hearts-left",
+      "type": "image",
+      "label": "Left hearts",
+      "role": "sticker",
+      "src": "/templates/PF-000017/assets/left-bottom-hearts.png",
+      "x": 27,
+      "y": 4921,
+      "w": 523,
+      "h": 349,
+      "locked": true
+    },
+    {
+      "id": "greeting",
+      "type": "text",
+      "binds": "greeting",
+      "x": 900,
+      "y": 4930,
+      "w": 1060,
+      "align": "left",
+      "font": "Kaushan Script",
+      "weight": 400,
+      "sizePx": 225,
+      "color": "#FFFFFF",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "name",
+      "type": "text",
+      "binds": "name",
+      "x": 2000,
+      "y": 4930,
+      "w": 520,
+      "align": "left",
+      "font": "Kaushan Script",
+      "weight": 400,
+      "sizePx": 225,
+      "color": "#E01B24",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "heartbeat",
+      "type": "image",
+      "label": "Heartbeat",
+      "role": "sticker",
+      "src": "/templates/PF-000017/assets/hearts-beats.png",
+      "x": 2526,
+      "y": 4913,
+      "w": 638,
+      "h": 425,
+      "locked": true
+    },
+    {
+      "id": "hearts-right",
+      "type": "image",
+      "label": "Right hearts",
+      "role": "sticker",
+      "src": "/templates/PF-000017/assets/right-bottom-hearts.png",
+      "x": 3049,
+      "y": 4925,
+      "w": 526,
+      "h": 351,
+      "locked": true
+    }
+  ]
+}
