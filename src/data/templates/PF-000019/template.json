@@ -1,0 +1,831 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "PF-000019",
+    "occasion": [
+      "birthday",
+      "anniversary",
+      "love",
+      "friendship",
+      "portrait"
+    ]
+  },
+  "canvas": {
+    "widthMm": 304.8,
+    "heightMm": 457.2,
+    "dpi": 300,
+    "bleedMm": 3,
+    "widthPx": 3600,
+    "heightPx": 5400,
+    "background": "#000000"
+  },
+  "inputs": {
+    "photos": {
+      "min": 13,
+      "max": 13
+    },
+    "fields": [
+      {
+        "key": "heading",
+        "label": "Heading (optional)",
+        "type": "text",
+        "maxLen": 28,
+        "required": false,
+        "default": ""
+      },
+      {
+        "key": "name",
+        "label": "Name (optional)",
+        "type": "text",
+        "maxLen": 20,
+        "required": false,
+        "default": ""
+      }
+    ]
+  },
+  "layers": [
+    {
+      "id": "p1",
+      "type": "photoSlot",
+      "x": 60,
+      "y": 60,
+      "w": 840,
+      "h": 1290,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 6,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p2",
+      "type": "photoSlot",
+      "x": 940,
+      "y": 60,
+      "w": 840,
+      "h": 1290,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 6,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p3",
+      "type": "photoSlot",
+      "x": 1820,
+      "y": 60,
+      "w": 840,
+      "h": 1290,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 6,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p4",
+      "type": "photoSlot",
+      "x": 2700,
+      "y": 60,
+      "w": 840,
+      "h": 1290,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 6,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p5",
+      "type": "photoSlot",
+      "x": 60,
+      "y": 1390,
+      "w": 840,
+      "h": 1290,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 6,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p6",
+      "type": "photoSlot",
+      "x": 940,
+      "y": 1390,
+      "w": 1720,
+      "h": 2620,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 6,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p7",
+      "type": "photoSlot",
+      "x": 2700,
+      "y": 1390,
+      "w": 840,
+      "h": 1290,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 6,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p8",
+      "type": "photoSlot",
+      "x": 60,
+      "y": 2720,
+      "w": 840,
+      "h": 1290,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 6,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p9",
+      "type": "photoSlot",
+      "x": 2700,
+      "y": 2720,
+      "w": 840,
+      "h": 1290,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 6,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p10",
+      "type": "photoSlot",
+      "x": 60,
+      "y": 4050,
+      "w": 840,
+      "h": 1290,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 6,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p11",
+      "type": "photoSlot",
+      "x": 940,
+      "y": 4050,
+      "w": 840,
+      "h": 1290,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 6,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p12",
+      "type": "photoSlot",
+      "x": 1820,
+      "y": 4050,
+      "w": 840,
+      "h": 1290,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 6,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p13",
+      "type": "photoSlot",
+      "x": 2700,
+      "y": 4050,
+      "w": 840,
+      "h": 1290,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 6,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "heading",
+      "type": "text",
+      "binds": "heading",
+      "x": 300,
+      "y": 4260,
+      "w": 3000,
+      "align": "center",
+      "font": "Inter",
+      "weight": 700,
+      "sizePx": 150,
+      "letterSpacing": 14,
+      "color": "#FFFFFF",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "name",
+      "type": "text",
+      "binds": "name",
+      "x": 300,
+      "y": 4500,
+      "w": 3000,
+      "align": "center",
+      "font": "Great Vibes",
+      "weight": 400,
+      "sizePx": 320,
+      "color": "#FFFFFF",
+      "maxLines": 1,
+      "autoFit": true
+    }
+  ],
+  "photoLayouts": [
+    {
+      "id": "nine-caption",
+      "label": "9 photos + caption band",
+      "slots": [
+        {
+          "id": "c1",
+          "type": "photoSlot",
+          "x": 60,
+          "y": 60,
+          "w": 840,
+          "h": 1290,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        },
+        {
+          "id": "c2",
+          "type": "photoSlot",
+          "x": 940,
+          "y": 60,
+          "w": 840,
+          "h": 1290,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        },
+        {
+          "id": "c3",
+          "type": "photoSlot",
+          "x": 1820,
+          "y": 60,
+          "w": 840,
+          "h": 1290,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        },
+        {
+          "id": "c4",
+          "type": "photoSlot",
+          "x": 2700,
+          "y": 60,
+          "w": 840,
+          "h": 1290,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        },
+        {
+          "id": "c5",
+          "type": "photoSlot",
+          "x": 60,
+          "y": 1390,
+          "w": 840,
+          "h": 1290,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        },
+        {
+          "id": "c6",
+          "type": "photoSlot",
+          "x": 940,
+          "y": 1390,
+          "w": 1720,
+          "h": 2620,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        },
+        {
+          "id": "c7",
+          "type": "photoSlot",
+          "x": 2700,
+          "y": 1390,
+          "w": 840,
+          "h": 1290,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        },
+        {
+          "id": "c8",
+          "type": "photoSlot",
+          "x": 60,
+          "y": 2720,
+          "w": 840,
+          "h": 1290,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        },
+        {
+          "id": "c9",
+          "type": "photoSlot",
+          "x": 2700,
+          "y": 2720,
+          "w": 840,
+          "h": 1290,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        }
+      ]
+    },
+    {
+      "id": "nine-grid",
+      "label": "9 photos (larger)",
+      "slots": [
+        {
+          "id": "n1",
+          "type": "photoSlot",
+          "x": 60,
+          "y": 60,
+          "w": 1133,
+          "h": 1733,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        },
+        {
+          "id": "n2",
+          "type": "photoSlot",
+          "x": 1233,
+          "y": 60,
+          "w": 1133,
+          "h": 1733,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        },
+        {
+          "id": "n3",
+          "type": "photoSlot",
+          "x": 2406,
+          "y": 60,
+          "w": 1133,
+          "h": 1733,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        },
+        {
+          "id": "n4",
+          "type": "photoSlot",
+          "x": 60,
+          "y": 1833,
+          "w": 1133,
+          "h": 1733,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        },
+        {
+          "id": "n5",
+          "type": "photoSlot",
+          "x": 1233,
+          "y": 1833,
+          "w": 1133,
+          "h": 1733,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        },
+        {
+          "id": "n6",
+          "type": "photoSlot",
+          "x": 2406,
+          "y": 1833,
+          "w": 1133,
+          "h": 1733,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        },
+        {
+          "id": "n7",
+          "type": "photoSlot",
+          "x": 60,
+          "y": 3606,
+          "w": 1133,
+          "h": 1733,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        },
+        {
+          "id": "n8",
+          "type": "photoSlot",
+          "x": 1233,
+          "y": 3606,
+          "w": 1133,
+          "h": 1733,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        },
+        {
+          "id": "n9",
+          "type": "photoSlot",
+          "x": 2406,
+          "y": 3606,
+          "w": 1133,
+          "h": 1733,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        }
+      ]
+    },
+    {
+      "id": "seven-hero",
+      "label": "7 photos (hero + border)",
+      "slots": [
+        {
+          "id": "s1",
+          "type": "photoSlot",
+          "x": 60,
+          "y": 60,
+          "w": 1133,
+          "h": 1290,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        },
+        {
+          "id": "s2",
+          "type": "photoSlot",
+          "x": 1233,
+          "y": 60,
+          "w": 1133,
+          "h": 1290,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        },
+        {
+          "id": "s3",
+          "type": "photoSlot",
+          "x": 2406,
+          "y": 60,
+          "w": 1133,
+          "h": 1290,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        },
+        {
+          "id": "s4",
+          "type": "photoSlot",
+          "x": 60,
+          "y": 1390,
+          "w": 840,
+          "h": 2620,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        },
+        {
+          "id": "s5",
+          "type": "photoSlot",
+          "x": 940,
+          "y": 1390,
+          "w": 1720,
+          "h": 2620,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        },
+        {
+          "id": "s6",
+          "type": "photoSlot",
+          "x": 2700,
+          "y": 1390,
+          "w": 840,
+          "h": 2620,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        },
+        {
+          "id": "s7",
+          "type": "photoSlot",
+          "x": 60,
+          "y": 4050,
+          "w": 3480,
+          "h": 1290,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        }
+      ]
+    },
+    {
+      "id": "six-grid",
+      "label": "6 photos (larger)",
+      "slots": [
+        {
+          "id": "x1",
+          "type": "photoSlot",
+          "x": 60,
+          "y": 60,
+          "w": 1720,
+          "h": 1733,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        },
+        {
+          "id": "x2",
+          "type": "photoSlot",
+          "x": 1820,
+          "y": 60,
+          "w": 1720,
+          "h": 1733,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        },
+        {
+          "id": "x3",
+          "type": "photoSlot",
+          "x": 60,
+          "y": 1833,
+          "w": 1720,
+          "h": 1733,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        },
+        {
+          "id": "x4",
+          "type": "photoSlot",
+          "x": 1820,
+          "y": 1833,
+          "w": 1720,
+          "h": 1733,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        },
+        {
+          "id": "x5",
+          "type": "photoSlot",
+          "x": 60,
+          "y": 3606,
+          "w": 1720,
+          "h": 1733,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        },
+        {
+          "id": "x6",
+          "type": "photoSlot",
+          "x": 1820,
+          "y": 3606,
+          "w": 1720,
+          "h": 1733,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        }
+      ]
+    },
+    {
+      "id": "four-large",
+      "label": "4 photos (extra large)",
+      "slots": [
+        {
+          "id": "y1",
+          "type": "photoSlot",
+          "x": 60,
+          "y": 60,
+          "w": 1720,
+          "h": 2620,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        },
+        {
+          "id": "y2",
+          "type": "photoSlot",
+          "x": 1820,
+          "y": 60,
+          "w": 1720,
+          "h": 2620,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        },
+        {
+          "id": "y3",
+          "type": "photoSlot",
+          "x": 60,
+          "y": 2720,
+          "w": 1720,
+          "h": 2620,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        },
+        {
+          "id": "y4",
+          "type": "photoSlot",
+          "x": 1820,
+          "y": 2720,
+          "w": 1720,
+          "h": 2620,
+          "shape": "rect",
+          "fit": "cover",
+          "focal": "faces",
+          "border": {
+            "width": 6,
+            "color": "#FFFFFF"
+          }
+        }
+      ]
+    }
+  ]
+}
