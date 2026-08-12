@@ -783,6 +783,11 @@ export default function TemplateCanvas({
                 key={layer.id}
                 x={offset.dx}
                 y={offset.dy}
+                // Konva hit-tests an image by its bounding box, not its alpha,
+                // so a decorative corner spray drawn *after* a photo swallows
+                // the drag meant for the photo underneath it. While adjusting
+                // photo fit, only the photo slots may listen.
+                listening={editable || (photoAdjust && layer.type === "photoSlot")}
                 draggable={editable}
                 onDragEnd={(e) => onLayerDrag?.(layer.id, e.target.x(), e.target.y())}
                 onMouseEnter={(e) => {
