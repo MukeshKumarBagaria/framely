@@ -1,0 +1,379 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "PF-000020",
+    "occasion": [
+      "birthday",
+      "love",
+      "friendship",
+      "anniversary"
+    ]
+  },
+  "canvas": {
+    "widthMm": 304.8,
+    "heightMm": 457.2,
+    "dpi": 300,
+    "bleedMm": 3,
+    "widthPx": 3600,
+    "heightPx": 5400,
+    "background": "#FFFFFF"
+  },
+  "inputs": {
+    "photos": {
+      "min": 9,
+      "max": 9
+    },
+    "fields": [
+      {
+        "key": "heading1",
+        "label": "Heading line 1",
+        "type": "text",
+        "maxLen": 16,
+        "required": true,
+        "default": "Happy"
+      },
+      {
+        "key": "heading2",
+        "label": "Heading line 2",
+        "type": "text",
+        "maxLen": 16,
+        "required": true,
+        "default": "Birthday"
+      },
+      {
+        "key": "heading3",
+        "label": "Heading line 3 (e.g. Dear or a name)",
+        "type": "text",
+        "maxLen": 14,
+        "required": true,
+        "default": "Dear"
+      },
+      {
+        "key": "message",
+        "label": "Message",
+        "type": "text",
+        "maxLen": 80,
+        "required": true,
+        "default": "May Blessed EveryTime\nwith your Happiness"
+      },
+      {
+        "key": "date",
+        "label": "Date (optional)",
+        "type": "text",
+        "maxLen": 24,
+        "required": false,
+        "default": ""
+      }
+    ]
+  },
+  "layers": [
+    {
+      "id": "heading1",
+      "type": "text",
+      "binds": "heading1",
+      "x": 465,
+      "y": 58,
+      "w": 1000,
+      "align": "left",
+      "font": "Ms Madi",
+      "weight": 700,
+      "sizePx": 207,
+      "color": "#111111",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "heading2",
+      "type": "text",
+      "binds": "heading2",
+      "x": 580,
+      "y": 224,
+      "w": 1450,
+      "align": "left",
+      "font": "Ms Madi",
+      "weight": 700,
+      "sizePx": 374,
+      "color": "#111111",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "heading3",
+      "type": "text",
+      "binds": "heading3",
+      "x": 1555,
+      "y": 623,
+      "w": 560,
+      "align": "left",
+      "font": "Ms Madi",
+      "weight": 700,
+      "sizePx": 286,
+      "color": "#111111",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "dear-heart",
+      "type": "image",
+      "label": "Heart doodle (after Dear)",
+      "role": "sticker",
+      "src": "/templates/PF-000020/assets/doodle-heart.png",
+      "x": 2101,
+      "y": 694,
+      "w": 156,
+      "h": 304
+    },
+    {
+      "id": "date",
+      "type": "text",
+      "binds": "date",
+      "x": 1349,
+      "y": 100,
+      "w": 1445,
+      "align": "center",
+      "font": "Hurricane",
+      "weight": 700,
+      "sizePx": 193,
+      "color": "#111111",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "h1",
+      "type": "photoSlot",
+      "label": "Photo 1",
+      "x": 2178,
+      "y": 408,
+      "w": 1305,
+      "h": 1130,
+      "shape": "hexagon",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "h2",
+      "type": "photoSlot",
+      "label": "Photo 2",
+      "x": 1148,
+      "y": 1046,
+      "w": 1305,
+      "h": 1130,
+      "shape": "hexagon",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "h3",
+      "type": "photoSlot",
+      "label": "Photo 3",
+      "x": 103,
+      "y": 1663,
+      "w": 1305,
+      "h": 1130,
+      "shape": "hexagon",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "h4",
+      "type": "photoSlot",
+      "label": "Photo 4",
+      "x": 2205,
+      "y": 1637,
+      "w": 1305,
+      "h": 1130,
+      "shape": "hexagon",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "h5",
+      "type": "photoSlot",
+      "label": "Photo 5",
+      "x": 1160,
+      "y": 2264,
+      "w": 1305,
+      "h": 1130,
+      "shape": "hexagon",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "h6",
+      "type": "photoSlot",
+      "label": "Photo 6",
+      "x": 102,
+      "y": 2847,
+      "w": 1305,
+      "h": 1130,
+      "shape": "hexagon",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "h7",
+      "type": "photoSlot",
+      "label": "Photo 7",
+      "x": 2235,
+      "y": 2836,
+      "w": 1305,
+      "h": 1130,
+      "shape": "hexagon",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "h8",
+      "type": "photoSlot",
+      "label": "Photo 8",
+      "x": 1166,
+      "y": 3465,
+      "w": 1305,
+      "h": 1130,
+      "shape": "hexagon",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "h9",
+      "type": "photoSlot",
+      "label": "Photo 9",
+      "x": 79,
+      "y": 4053,
+      "w": 1305,
+      "h": 1130,
+      "shape": "hexagon",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "balloons",
+      "type": "image",
+      "label": "Heart balloons",
+      "role": "sticker",
+      "src": "/templates/PF-000020/assets/heart-balloons.png",
+      "x": 401,
+      "y": 845,
+      "w": 596,
+      "h": 815,
+      "opacity": 0.88
+    },
+    {
+      "id": "daisy-top",
+      "type": "image",
+      "label": "Daisy (top right)",
+      "role": "sticker",
+      "src": "/templates/PF-000020/assets/lavender-daisy.png",
+      "x": 2885,
+      "y": 112,
+      "w": 526,
+      "h": 506
+    },
+    {
+      "id": "flower",
+      "type": "image",
+      "label": "Pink flower",
+      "role": "sticker",
+      "src": "/templates/PF-000020/assets/doodle-flower.png",
+      "x": 2286,
+      "y": 1282,
+      "w": 469,
+      "h": 472
+    },
+    {
+      "id": "teddy",
+      "type": "image",
+      "label": "Teddy bear",
+      "role": "sticker",
+      "src": "/templates/PF-000020/assets/teddy-heart.png",
+      "x": 1213,
+      "y": 1991,
+      "w": 391,
+      "h": 555
+    },
+    {
+      "id": "red-heart",
+      "type": "image",
+      "label": "Red heart",
+      "role": "sticker",
+      "src": "/templates/PF-000020/assets/red-heart.png",
+      "x": 137,
+      "y": 2564,
+      "w": 472,
+      "h": 405,
+      "rotation": -6.4
+    },
+    {
+      "id": "purple-heart",
+      "type": "image",
+      "label": "Purple heart",
+      "role": "sticker",
+      "src": "/templates/PF-000020/assets/purple-heart.png",
+      "x": 2370,
+      "y": 2658,
+      "w": 321,
+      "h": 261,
+      "rotation": 1.5
+    },
+    {
+      "id": "daisy-mid",
+      "type": "image",
+      "label": "Daisy (middle)",
+      "role": "sticker",
+      "src": "/templates/PF-000020/assets/lavender-daisy.png",
+      "x": 1189,
+      "y": 3152,
+      "w": 526,
+      "h": 506
+    },
+    {
+      "id": "butterfly",
+      "type": "image",
+      "label": "Butterfly",
+      "role": "sticker",
+      "src": "/templates/PF-000020/assets/butterfly.png",
+      "x": 1221,
+      "y": 4397,
+      "w": 433,
+      "h": 329,
+      "rotation": -2.2
+    },
+    {
+      "id": "hands",
+      "type": "image",
+      "label": "Heart hands",
+      "role": "sticker",
+      "src": "/templates/PF-000020/assets/heart-hands.png",
+      "x": 2515,
+      "y": 4146,
+      "w": 833,
+      "h": 471
+    },
+    {
+      "id": "message",
+      "type": "text",
+      "binds": "message",
+      "x": 1454,
+      "y": 4767,
+      "w": 2000,
+      "align": "center",
+      "font": "Hurricane",
+      "weight": 700,
+      "sizePx": 238,
+      "color": "#111111",
+      "maxLines": 3,
+      "lineHeight": 0.918
+    },
+    {
+      "id": "pink-heart",
+      "type": "image",
+      "label": "Pink heart",
+      "role": "sticker",
+      "src": "/templates/PF-000020/assets/pink-heart.png",
+      "x": 3239,
+      "y": 4953,
+      "w": 237,
+      "h": 243
+    }
+  ]
+}

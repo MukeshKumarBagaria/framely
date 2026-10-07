@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="122 198 48 64" width="1344" height="1792">
+<defs>
+<radialGradient id="fur" cx="45%" cy="38%" r="70%"><stop offset="0" stop-color="#FCF5EB"/><stop offset="0.65" stop-color="#F6EAD9"/><stop offset="1" stop-color="#EADAC4"/></radialGradient>
+<radialGradient id="fur2" cx="50%" cy="40%" r="75%"><stop offset="0" stop-color="#F9EFE2"/><stop offset="1" stop-color="#E8D6C0"/></radialGradient>
+<radialGradient id="hrt" cx="40%" cy="35%" r="75%"><stop offset="0" stop-color="#FCEEEE"/><stop offset="0.5" stop-color="#F8DCDB"/><stop offset="1" stop-color="#F0C8C8"/></radialGradient>
+</defs>
+<circle cx="135.2" cy="207.0" r="4.9" fill="url(#fur2)"/><circle cx="135.5" cy="207.4" r="2.6" fill="#EEDCC7"/>
+<circle cx="157.0" cy="208.2" r="5.0" fill="url(#fur2)"/><circle cx="156.7" cy="208.6" r="2.7" fill="#EEDCC7"/>
+<ellipse cx="146.6" cy="240.5" rx="13.2" ry="12.5" fill="url(#fur2)"/>
+<ellipse cx="139.3" cy="253.2" rx="3.7" ry="4.6" fill="url(#fur2)"/>
+<ellipse cx="154.6" cy="254.4" rx="3.8" ry="4.8" fill="url(#fur2)"/>
+<ellipse cx="146.6" cy="217.4" rx="14.2" ry="12.2" fill="url(#fur)"/>
+<ellipse cx="147.4" cy="222.4" rx="4.6" ry="3.4" fill="#FBF4EA"/>
+<circle cx="142.6" cy="217.9" r="1.05" fill="#2F2522"/><circle cx="152.1" cy="217.9" r="1.05" fill="#2F2522"/>
+<ellipse cx="147.4" cy="221.4" rx="1.25" ry="0.9" fill="#2F2522"/>
+<path d="M146.0 223.1 Q146.7 224.3 147.4 222.7 Q148.1 224.3 148.8 223.1" fill="none" stroke="#2F2522" stroke-width="0.42" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M146.20 250.20 C133.00 244.57 126.20 238.68 126.20 232.79 C126.20 227.67 131.00 224.60 137.00 224.60 C141.40 224.60 144.60 226.39 146.20 229.46 C147.80 226.39 151.00 224.60 155.40 224.60 C161.40 224.60 166.20 227.67 166.20 232.79 C166.20 238.68 159.40 244.57 146.20 250.20 Z" fill="url(#hrt)" stroke="#EBC0BF" stroke-width="0.5"/>
+<path d="M130.4 230.4 C130.6 228.0 132.5 226.6 134.8 226.6" fill="none" stroke="#FFFFFF" stroke-opacity="0.7" stroke-width="1.0" stroke-linecap="round"/>
+<ellipse cx="131.0" cy="228.6" rx="3.4" ry="2.8" transform="rotate(-28 131.0 228.6)" fill="url(#fur2)"/>
+<ellipse cx="162.2" cy="228.6" rx="3.4" ry="2.8" transform="rotate(28 162.2 228.6)" fill="url(#fur2)"/>
+</svg>

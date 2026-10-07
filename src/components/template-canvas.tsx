@@ -7,7 +7,17 @@
 // portable.
 import { useEffect, useMemo, useRef, useState } from "react";
 import type Konva from "konva";
-import { Stage, Layer, Rect, Ellipse, Line, Text as KonvaText, Image as KonvaImage, Group } from "react-konva";
+import {
+  Stage,
+  Layer,
+  Rect,
+  Ellipse,
+  Line,
+  Shape,
+  Text as KonvaText,
+  Image as KonvaImage,
+  Group,
+} from "react-konva";
 import type {
   TemplateDoc,
   ImageLayer,
@@ -107,7 +117,15 @@ function OrderIdBadge({
   );
 }
 
-const FONT_FAMILIES = ["Inter", "Playfair Display", "Great Vibes", "Pinyon Script", "Kaushan Script"];
+const FONT_FAMILIES = [
+  "Inter",
+  "Playfair Display",
+  "Great Vibes",
+  "Pinyon Script",
+  "Kaushan Script",
+  "Ms Madi",
+  "Hurricane",
+];
 
 function useFontsReady() {
   const [ready, setReady] = useState(false);
@@ -185,13 +203,45 @@ function hexagonPoints(w: number, h: number) {
 }
 
 // `cornerRadius` can only round a rectangle, so a hexagon slot is drawn by
-// clipping its Group to this path instead.
-function hexagonClip(ctx: Konva.Context, w: number, h: number) {
+// clipping its Group to this path instead. A radius softens the six corners
+// (arcTo trims each one tangentially) without losing the hexagon silhouette;
+// at its maximum of h/2 a regular hexagon becomes its inscribed circle.
+function hexagonPath(ctx: Konva.Context, w: number, h: number, radius = 0) {
   const p = hexagonPoints(w, h);
+  const r = Math.max(0, Math.min(radius, h / 2, (w * Math.sqrt(3)) / 4));
   ctx.beginPath();
-  ctx.moveTo(p[0], p[1]);
-  for (let i = 2; i < p.length; i += 2) ctx.lineTo(p[i], p[i + 1]);
+  if (r === 0) {
+    ctx.moveTo(p[0], p[1]);
+    for (let i = 2; i < p.length; i += 2) ctx.lineTo(p[i], p[i + 1]);
+  } else {
+    // Start mid-way along the top edge so the first corner is rounded too.
+    ctx.moveTo(w / 2, 0);
+    for (let i = 2; i <= p.length; i += 2) {
+      const corner = i % p.length;
+      const next = (i + 2) % p.length;
+      ctx.arcTo(p[corner], p[corner + 1], p[next], p[next + 1], r);
+    }
+  }
   ctx.closePath();
+}
+
+// The hexagon outline as a Konva shape, for the frame stroke and the empty
+// placeholder; style props (fill, stroke, gradients…) pass straight through.
+function HexagonShape({
+  w,
+  h,
+  radius,
+  ...style
+}: { w: number; h: number; radius: number } & Konva.ShapeConfig) {
+  return (
+    <Shape
+      {...style}
+      sceneFunc={(ctx, shape) => {
+        hexagonPath(ctx, w, h, radius);
+        ctx.fillStrokeShape(shape);
+      }}
+    />
+  );
 }
 
 function PhotoSlotNode({
@@ -225,6 +275,7 @@ function PhotoSlotNode({
   }, [url]);
 
   const radius = slotRadius(layer);
+  const hexRadius = layer.shape === "hexagon" ? (layer.cornerRadius ?? 0) : 0;
 
   if (img) {
     const cropRect = coverCrop(img.naturalWidth, img.naturalHeight, layer.w, layer.h, layer.crop);
@@ -311,11 +362,12 @@ function PhotoSlotNode({
 
     return (
       <Group x={layer.x} y={layer.y} rotation={layer.rotation} opacity={layer.opacity}>
-        <Group clipFunc={(ctx) => hexagonClip(ctx, layer.w, layer.h)}>{image}</Group>
+        <Group clipFunc={(ctx) => hexagonPath(ctx, layer.w, layer.h, hexRadius)}>{image}</Group>
         {layer.border && (
-          <Line
-            points={hexagonPoints(layer.w, layer.h)}
-            closed
+          <HexagonShape
+            w={layer.w}
+            h={layer.h}
+            radius={hexRadius}
             stroke={layer.border.color}
             strokeWidth={layer.border.width}
             lineJoin="round"
@@ -331,9 +383,10 @@ function PhotoSlotNode({
   return (
     <Group x={layer.x} y={layer.y} rotation={layer.rotation} opacity={layer.opacity}>
       {layer.shape === "hexagon" ? (
-        <Line
-          points={hexagonPoints(layer.w, layer.h)}
-          closed
+        <HexagonShape
+          w={layer.w}
+          h={layer.h}
+          radius={hexRadius}
           fillLinearGradientStartPoint={{ x: 0, y: 0 }}
           fillLinearGradientEndPoint={{ x: layer.w, y: layer.h }}
           fillLinearGradientColorStops={[0, "#2A2A2A", 1, "#181818"]}

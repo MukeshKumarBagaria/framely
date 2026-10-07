@@ -137,6 +137,8 @@ export const FONT_CHOICES: { value: string; label: string }[] = [
   { value: "Great Vibes", label: "Great Vibes (script)" },
   { value: "Pinyon Script", label: "Pinyon Script (script)" },
   { value: "Kaushan Script", label: "Kaushan Script (brush)" },
+  { value: "Ms Madi", label: "Ms Madi (signature)" },
+  { value: "Hurricane", label: "Hurricane (brush script)" },
 ];
 
 // The template's own font for each bound field, so the picker opens on the real
@@ -309,9 +311,10 @@ function adjustLayer(layer: Layer, adj: Adjustments): Layer {
   switch (scaled.type) {
     case "photoSlot": {
       let next = scaled;
-      // Rounding only means anything for a rectangular slot. Circle/heart/
-      // hexagon slots carry their silhouette as the design's intent, so the
-      // global radius must not flatten them back into rounded rectangles.
+      // Circle/heart/hexagon slots carry their silhouette as the design's
+      // intent, so the global radius must not flatten them back into rounded
+      // rectangles. A hexagon keeps its shape and only has its six corners
+      // softened (the renderer reads cornerRadius for that).
       const roundable = next.shape === "rect" || next.shape === "rounded";
       if (adj.photoCornerRadius > 0 && roundable) {
         const maxRadius = Math.min(next.w, next.h) / 2;
@@ -320,6 +323,8 @@ function adjustLayer(layer: Layer, adj: Adjustments): Layer {
           shape: "rounded" as const,
           cornerRadius: Math.min(adj.photoCornerRadius, maxRadius),
         };
+      } else if (adj.photoCornerRadius > 0 && next.shape === "hexagon") {
+        next = { ...next, cornerRadius: Math.min(adj.photoCornerRadius, Math.min(next.w, next.h) / 2) };
       }
       // Only restyle slots the template already framed — see photoBorderDefault.
       // Check the original (pre-scale) layer; `scaled` is already narrowed to
@@ -400,14 +405,21 @@ function adjustLayer(layer: Layer, adj: Adjustments): Layer {
 
 // --- photo layout variants -------------------------------------------------
 
+// A merged slot is the pair's bounding box drawn in the first slot's shape.
+// That only works for rectangles — two hexagons (or circles/hearts) merged
+// that way come out as one stretched, distorted shape.
+function isMergeable(slot: PhotoSlotLayer) {
+  return slot.shape === "rect" || slot.shape === "rounded";
+}
+
 // Helper to auto-generate fewer-photo layouts by merging adjacent slots
 function generateMergedSlots(slots: PhotoSlotLayer[]): PhotoSlotLayer[] {
   const pairs: [number, number][] = [];
   const used = new Set<number>();
   for (let i = 0; i < slots.length; i++) {
-    if (used.has(i)) continue;
+    if (used.has(i) || !isMergeable(slots[i])) continue;
     for (let j = i + 1; j < slots.length; j++) {
-      if (used.has(j)) continue;
+      if (used.has(j) || !isMergeable(slots[j])) continue;
       const a = slots[i];
       const b = slots[j];
       const sameY = Math.abs(a.y - b.y) < 20 && Math.abs(a.h - b.h) < 20;
