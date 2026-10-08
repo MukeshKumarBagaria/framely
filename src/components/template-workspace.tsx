@@ -8,6 +8,7 @@
 //   • reposition any element (edit-layout) • reset positions
 //   • recolour text, accents, the calendar, photo frames and the background
 //   • resize to another print size         • export a max-quality print file
+//   • cut a hero photo out of its background (cutout slots)
 import { useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import type Konva from "konva";
@@ -37,6 +38,11 @@ import {
   type PhotoCrop,
 } from "@/lib/template/adjustments";
 import { downloadPdf, downloadPng, slugifyFilename } from "@/lib/export/print-export";
+import { removeBackground } from "@/lib/cutout/remove-background";
+
+// Background removal for a cutout slot's photo, keyed by the original photo's
+// URL so a swap or layout change reuses work already done.
+type CutoutJob = { status: "working" } | { status: "done"; url: string } | { status: "error"; message: string };
 
 const TemplateCanvas = dynamic(() => import("@/components/template-canvas"), {
   ssr: false,
@@ -147,6 +153,9 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
   const [cropSlotId, setCropSlotId] = useState<string | null>(null);
   const [exporting, setExporting] = useState<"png" | "pdf" | null>(null);
   const [exportError, setExportError] = useState<string | null>(null);
+  const [cutoutJobs, setCutoutJobs] = useState<Record<string, CutoutJob>>({});
+  const [cutoutEnabled, setCutoutEnabled] = useState(true);
+  const cutoutUrlsRef = useRef<string[]>([]);
   const objectUrlsRef = useRef<string[]>([]);
   const stageRef = useRef<Konva.Stage | null>(null);
   const previewBoxRef = useRef<HTMLDivElement | null>(null);
@@ -196,8 +205,57 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
   useEffect(() => {
     return () => {
       objectUrlsRef.current.forEach((u) => URL.revokeObjectURL(u));
+      cutoutUrlsRef.current.forEach((u) => URL.revokeObjectURL(u));
     };
   }, []);
+
+  // Cutout slots show their photo with the background removed. Each photo that
+  // lands in one is processed once, in the background; until it's done the
+  // slot shows the photo as-is.
+  const cutoutSlots = useMemo(() => photoSlots.filter((s) => s.cutout), [photoSlots]);
+  useEffect(() => {
+    if (!cutoutEnabled) return;
+    for (const slot of cutoutSlots) {
+      const src = photoUrls[slot.id];
+      if (!src || cutoutJobs[src]) continue;
+      setCutoutJobs((jobs) => ({ ...jobs, [src]: { status: "working" } }));
+      removeBackground(src)
+        .then((blob) => {
+          const url = URL.createObjectURL(blob);
+          cutoutUrlsRef.current.push(url);
+          setCutoutJobs((jobs) => (src in jobs ? { ...jobs, [src]: { status: "done", url } } : jobs));
+        })
+        .catch((err: unknown) => {
+          const message = err instanceof Error ? err.message : "Background removal failed";
+          setCutoutJobs((jobs) => (src in jobs ? { ...jobs, [src]: { status: "error", message } } : jobs));
+        });
+    }
+  }, [cutoutSlots, photoUrls, cutoutJobs, cutoutEnabled]);
+
+  const canvasPhotoUrls = useMemo(() => {
+    if (!cutoutEnabled || cutoutSlots.length === 0) return photoUrls;
+    const out = { ...photoUrls };
+    for (const slot of cutoutSlots) {
+      const src = photoUrls[slot.id];
+      const job = src ? cutoutJobs[src] : undefined;
+      if (job?.status === "done") out[slot.id] = job.url;
+    }
+    return out;
+  }, [photoUrls, cutoutSlots, cutoutJobs, cutoutEnabled]);
+
+  function retryCutout(src: string) {
+    setCutoutJobs((jobs) => {
+      const next = { ...jobs };
+      delete next[src];
+      return next;
+    });
+  }
+
+  function resetCutouts() {
+    cutoutUrlsRef.current.forEach((u) => URL.revokeObjectURL(u));
+    cutoutUrlsRef.current = [];
+    setCutoutJobs({});
+  }
 
   // Keep the stage exactly as wide as its container.
   useEffect(() => {
@@ -216,6 +274,7 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
     const withMeta = await Promise.all(picked.map(readImageMeta));
     objectUrlsRef.current.forEach((u) => URL.revokeObjectURL(u));
     objectUrlsRef.current = withMeta.map((m) => m.url);
+    resetCutouts();
     setUploadedPhotos(withMeta);
     setPhotoUrls(assignPhotosToSlots(photoSlots, withMeta));
     setPhotoCount(withMeta.length);
@@ -240,6 +299,7 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
   function clearPhotos() {
     objectUrlsRef.current.forEach((u) => URL.revokeObjectURL(u));
     objectUrlsRef.current = [];
+    resetCutouts();
     setUploadedPhotos([]);
     setPhotoUrls({});
     setPhotoCount(0);
@@ -536,6 +596,51 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
             </div>
           )}
         </div>
+
+        {cutoutSlots.length > 0 && (
+          <Panel
+            title="Cut-out photo"
+            hint="The big photo is cut out of its background automatically, like a sticker. The first one takes a little longer while the cut-out tool downloads. A PNG that's already cut out is used as-is."
+          >
+            <label className="flex items-center justify-between gap-3 text-xs text-zinc-400">
+              <span>Remove background</span>
+              <input
+                type="checkbox"
+                checked={cutoutEnabled}
+                onChange={(e) => setCutoutEnabled(e.target.checked)}
+                className="h-4 w-4 cursor-pointer accent-zinc-200"
+              />
+            </label>
+            {cutoutEnabled &&
+              cutoutSlots.map((slot) => {
+                const src = photoUrls[slot.id];
+                const job = src ? cutoutJobs[src] : undefined;
+                return (
+                  <div key={slot.id} className="flex items-center justify-between gap-3 text-xs">
+                    <span className="min-w-0 flex-1 truncate text-zinc-400">{slot.label ?? "Photo"}</span>
+                    {!src ? (
+                      <span className="text-zinc-500">Add photos first</span>
+                    ) : job?.status === "done" ? (
+                      <span className="text-emerald-400">Background removed</span>
+                    ) : job?.status === "error" ? (
+                      <span className="text-red-400" title={job.message}>
+                        Couldn&apos;t cut out —{" "}
+                        <button
+                          type="button"
+                          onClick={() => retryCutout(src)}
+                          className="underline underline-offset-2 hover:text-red-300"
+                        >
+                          retry
+                        </button>
+                      </span>
+                    ) : (
+                      <span className="animate-pulse text-amber-300">Removing background…</span>
+                    )}
+                  </div>
+                );
+              })}
+          </Panel>
+        )}
 
         {doc.inputs.fields.length > 0 && (
           <div className="flex flex-col gap-4 rounded-lg border border-zinc-800 bg-zinc-900/60 p-4">
@@ -1006,7 +1111,7 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
           <TemplateCanvas
             doc={renderDoc}
             fieldValues={fieldValues}
-            photoUrls={photoUrls}
+            photoUrls={canvasPhotoUrls}
             displayWidth={previewWidth}
             stageRef={stageRef}
             editable={editMode}

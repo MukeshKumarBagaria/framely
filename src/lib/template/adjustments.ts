@@ -10,7 +10,7 @@
 //   • textScale         — resize any bound text
 //   • textColors        — recolour any bound text
 //   • accentColors      — recolour decorative shapes and static text (hearts,
-//                         rules, name banners…)
+//                         rules, name banners…) and cutout outlines
 //   • calendarColors    — recolour each part of a calendar independently
 //   • background        — recolour the page itself
 //
@@ -139,6 +139,11 @@ export const FONT_CHOICES: { value: string; label: string }[] = [
   { value: "Kaushan Script", label: "Kaushan Script (brush)" },
   { value: "Ms Madi", label: "Ms Madi (signature)" },
   { value: "Hurricane", label: "Hurricane (brush script)" },
+  { value: "Lobster Two", label: "Lobster Two (bold script)" },
+  { value: "Parisienne", label: "Parisienne (calligraphy)" },
+  { value: "Montserrat", label: "Montserrat (geometric sans)" },
+  { value: "Gilda Display", label: "Gilda Display (elegant serif)" },
+  { value: "Poppins", label: "Poppins (rounded sans)" },
 ];
 
 // The template's own font for each bound field, so the picker opens on the real
@@ -190,6 +195,8 @@ export function accentLayers(doc: TemplateDoc): AccentLayer[] {
       out.push({ id: layer.id, label: layer.label, color: layer.stroke.color });
     } else if (layer.type === "text" && !layer.binds) {
       out.push({ id: layer.id, label: layer.label, color: layer.color });
+    } else if (layer.type === "photoSlot" && layer.cutout) {
+      out.push({ id: layer.id, label: `${layer.label} outline`, color: layer.cutout.outlineColor });
     }
   }
   return out;
@@ -256,6 +263,7 @@ function scaleLayerGeometry(layer: Layer, factor: number): Layer {
         border: layer.border
           ? { ...layer.border, width: Math.max(0, layer.border.width * factor) }
           : undefined,
+        cutout: layer.cutout ? { ...layer.cutout, outlineWidth: layer.cutout.outlineWidth * factor } : undefined,
       };
     }
     case "text": {
@@ -266,6 +274,7 @@ function scaleLayerGeometry(layer: Layer, factor: number): Layer {
         w: nw,
         sizePx: Math.max(8, Math.min(600, layer.sizePx * factor)),
         letterSpacing: layer.letterSpacing * factor,
+        glow: layer.glow ? { ...layer.glow, blur: layer.glow.blur * factor } : undefined,
       };
     }
     case "shape": {
@@ -296,6 +305,8 @@ function scaleLayerGeometry(layer: Layer, factor: number): Layer {
         headerSizePx: Math.max(4, layer.headerSizePx * factor),
         cellSizePx: Math.max(4, layer.cellSizePx * factor),
         titleBandPx: layer.titleBandPx !== undefined ? layer.titleBandPx * factor : undefined,
+        headerBandPx: layer.headerBandPx !== undefined ? layer.headerBandPx * factor : undefined,
+        highlightSizePx: layer.highlightSizePx !== undefined ? layer.highlightSizePx * factor : undefined,
       };
     }
   }
@@ -314,8 +325,9 @@ function adjustLayer(layer: Layer, adj: Adjustments): Layer {
       // Circle/heart/hexagon slots carry their silhouette as the design's
       // intent, so the global radius must not flatten them back into rounded
       // rectangles. A hexagon keeps its shape and only has its six corners
-      // softened (the renderer reads cornerRadius for that).
-      const roundable = next.shape === "rect" || next.shape === "rounded";
+      // softened (the renderer reads cornerRadius for that). A cutout has no
+      // frame edge to round — its outline follows the subject.
+      const roundable = (next.shape === "rect" || next.shape === "rounded") && !next.cutout;
       if (adj.photoCornerRadius > 0 && roundable) {
         const maxRadius = Math.min(next.w, next.h) / 2;
         next = {
@@ -338,6 +350,8 @@ function adjustLayer(layer: Layer, adj: Adjustments): Layer {
       }
       const crop = adj.photoCrops[layer.id];
       if (crop) next = { ...next, crop };
+      const outline = adj.accentColors[layer.id];
+      if (outline && next.cutout) next = { ...next, cutout: { ...next.cutout, outlineColor: outline } };
       return next;
     }
 
@@ -374,7 +388,11 @@ function adjustLayer(layer: Layer, adj: Adjustments): Layer {
       if (layer.type === "text" && layer.binds) {
         const factor = adj.textScale[layer.binds];
         if (factor && factor !== 1) {
-          next = { ...next, sizePx: Math.max(8, Math.min(600, next.sizePx * factor)) };
+          next = {
+            ...next,
+            sizePx: Math.max(8, Math.min(600, next.sizePx * factor)),
+            glow: next.glow ? { ...next.glow, blur: next.glow.blur * factor } : undefined,
+          };
         }
         const color = adj.textColors[layer.binds];
         if (color) next = { ...next, color };
@@ -407,9 +425,10 @@ function adjustLayer(layer: Layer, adj: Adjustments): Layer {
 
 // A merged slot is the pair's bounding box drawn in the first slot's shape.
 // That only works for rectangles — two hexagons (or circles/hearts) merged
-// that way come out as one stretched, distorted shape.
+// that way come out as one stretched, distorted shape. A cutout is a single
+// free-standing subject, never half of a pair.
 function isMergeable(slot: PhotoSlotLayer) {
-  return slot.shape === "rect" || slot.shape === "rounded";
+  return (slot.shape === "rect" || slot.shape === "rounded") && !slot.cutout;
 }
 
 // Helper to auto-generate fewer-photo layouts by merging adjacent slots

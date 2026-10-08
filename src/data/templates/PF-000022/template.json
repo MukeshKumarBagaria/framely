@@ -1,0 +1,427 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "PF-000022",
+    "occasion": [
+      "birthday",
+      "love",
+      "friendship",
+      "anniversary"
+    ]
+  },
+  "canvas": {
+    "widthMm": 304.8,
+    "heightMm": 457.2,
+    "dpi": 300,
+    "bleedMm": 3,
+    "widthPx": 3600,
+    "heightPx": 5400,
+    "background": "#000000"
+  },
+  "inputs": {
+    "photos": {
+      "min": 8,
+      "max": 8
+    },
+    "fields": [
+      {
+        "key": "heading",
+        "label": "Heading",
+        "type": "text",
+        "maxLen": 24,
+        "required": true,
+        "default": "Happy Birthday"
+      },
+      {
+        "key": "name",
+        "label": "Name",
+        "type": "text",
+        "maxLen": 16,
+        "required": true,
+        "default": "Ravi"
+      },
+      {
+        "key": "message",
+        "label": "Message",
+        "type": "text",
+        "maxLen": 320,
+        "required": true,
+        "default": "Thank you for continually inspiring me ✨\n💪 to do my best ✴️🌺. You help me\nstrive towards my goals 🎯💘. I found\nguidance 📚🌸, friendship💛💞,\ndiscipline ✏️💫 and love ❤️✨ —\neverything in one person 😌. And that\nperson is you 🥺💐. 🌞"
+      }
+    ]
+  },
+  "layers": [
+    {
+      "id": "wreath",
+      "type": "image",
+      "label": "Heart wreath",
+      "role": "sticker",
+      "src": "/templates/PF-000022/assets/wreath.png",
+      "x": 116,
+      "y": 144,
+      "w": 1613,
+      "h": 1480
+    },
+    {
+      "id": "cal-month",
+      "type": "calendar",
+      "label": "Calendar month",
+      "variant": "month",
+      "x": 555,
+      "y": 380,
+      "w": 698,
+      "h": 300,
+      "year": 2022,
+      "month": 8,
+      "highlightDay": 17,
+      "titleAlign": "center",
+      "font": "Poppins",
+      "titleFont": "Pinyon Script",
+      "titleSizePx": 196,
+      "headerSizePx": 60,
+      "cellSizePx": 64,
+      "color": "#FFFFFF",
+      "titleColor": "#FFFFFF",
+      "headerColor": "#FFFFFF",
+      "heartColor": "#D42F66",
+      "highlightTextColor": "#FFFFFF"
+    },
+    {
+      "id": "calendar",
+      "type": "calendar",
+      "label": "Calendar",
+      "variant": "grid",
+      "x": 612,
+      "y": 735,
+      "w": 698,
+      "h": 598,
+      "year": 2022,
+      "month": 8,
+      "highlightDay": 17,
+      "showTitle": false,
+      "headerBandPx": 93,
+      "highlightStyle": "heartShape",
+      "highlightSizePx": 100,
+      "weekdayLabels": [
+        "S",
+        "M",
+        "T",
+        "W",
+        "T",
+        "F",
+        "S"
+      ],
+      "font": "Poppins",
+      "headerFont": "Playfair Display",
+      "titleFont": "Pinyon Script",
+      "titleSizePx": 196,
+      "headerSizePx": 58,
+      "cellSizePx": 62,
+      "titleWeight": 400,
+      "headerWeight": 700,
+      "weight": 600,
+      "color": "#FFFFFF",
+      "titleColor": "#FFFFFF",
+      "headerColor": "#FFFFFF",
+      "heartColor": "#D42F66",
+      "highlightTextColor": "#FFFFFF"
+    },
+    {
+      "id": "sparkle-cal",
+      "type": "image",
+      "label": "Sparkle (calendar)",
+      "role": "sticker",
+      "src": "/templates/PF-000022/assets/sparkle.png",
+      "x": 1227,
+      "y": 633,
+      "w": 60,
+      "h": 60
+    },
+    {
+      "id": "save-date",
+      "type": "image",
+      "label": "Save the Date",
+      "role": "sticker",
+      "src": "/templates/PF-000022/assets/save-the-date.png",
+      "x": 1901,
+      "y": 799,
+      "w": 608,
+      "h": 340
+    },
+    {
+      "id": "ribbon",
+      "type": "image",
+      "label": "Heart ribbon",
+      "role": "sticker",
+      "src": "/templates/PF-000022/assets/heart-ribbon.png",
+      "x": 2615,
+      "y": 338,
+      "w": 429,
+      "h": 725
+    },
+    {
+      "id": "butterfly",
+      "type": "image",
+      "label": "Butterfly",
+      "role": "sticker",
+      "src": "/templates/PF-000022/assets/butterfly.png",
+      "x": 3052,
+      "y": 105,
+      "w": 433,
+      "h": 533
+    },
+    {
+      "id": "good-vibes",
+      "type": "image",
+      "label": "Good vibes note",
+      "role": "sticker",
+      "src": "/templates/PF-000022/assets/good-vibes.png",
+      "x": 2966,
+      "y": 698,
+      "w": 531,
+      "h": 581
+    },
+    {
+      "id": "message",
+      "type": "text",
+      "binds": "message",
+      "x": 91,
+      "y": 1742,
+      "w": 2000,
+      "align": "center",
+      "font": "Inter",
+      "weight": 400,
+      "sizePx": 99,
+      "color": "#FFFFFF",
+      "lineHeight": 1.508,
+      "maxLines": 10
+    },
+    {
+      "id": "p1",
+      "type": "photoSlot",
+      "label": "Photo 1",
+      "x": 2147,
+      "y": 1408,
+      "w": 679,
+      "h": 896,
+      "shape": "rounded",
+      "cornerRadius": 42,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 12,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p2",
+      "type": "photoSlot",
+      "label": "Photo 2",
+      "x": 2874,
+      "y": 1408,
+      "w": 628,
+      "h": 896,
+      "shape": "rounded",
+      "cornerRadius": 42,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 12,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p3",
+      "type": "photoSlot",
+      "label": "Photo 3",
+      "x": 2147,
+      "y": 2349,
+      "w": 679,
+      "h": 929,
+      "shape": "rounded",
+      "cornerRadius": 42,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 12,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p4",
+      "type": "photoSlot",
+      "label": "Photo 4",
+      "x": 2874,
+      "y": 2349,
+      "w": 628,
+      "h": 929,
+      "shape": "rounded",
+      "cornerRadius": 42,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 12,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p5",
+      "type": "photoSlot",
+      "label": "Photo 5",
+      "x": 130,
+      "y": 3034,
+      "w": 909,
+      "h": 1195,
+      "shape": "rounded",
+      "cornerRadius": 42,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 12,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p6",
+      "type": "photoSlot",
+      "label": "Photo 6",
+      "x": 1083,
+      "y": 3034,
+      "w": 1015,
+      "h": 1195,
+      "shape": "rounded",
+      "cornerRadius": 42,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 12,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p7",
+      "type": "photoSlot",
+      "label": "Photo 7",
+      "x": 2147,
+      "y": 3338,
+      "w": 679,
+      "h": 891,
+      "shape": "rounded",
+      "cornerRadius": 42,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 12,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p8",
+      "type": "photoSlot",
+      "label": "Photo 8",
+      "x": 2874,
+      "y": 3338,
+      "w": 628,
+      "h": 891,
+      "shape": "rounded",
+      "cornerRadius": 42,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 12,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "pink-hearts",
+      "type": "image",
+      "label": "Pink hearts",
+      "role": "sticker",
+      "src": "/templates/PF-000022/assets/pink-hearts.png",
+      "x": 78,
+      "y": 4426,
+      "w": 1013,
+      "h": 691
+    },
+    {
+      "id": "roses",
+      "type": "image",
+      "label": "Rose bouquet",
+      "role": "sticker",
+      "src": "/templates/PF-000022/assets/rose-bouquet.png",
+      "x": 2237,
+      "y": 4395,
+      "w": 1300,
+      "h": 898,
+      "rotation": -15
+    },
+    {
+      "id": "sparkle-1",
+      "type": "image",
+      "label": "Sparkle (above heading)",
+      "role": "sticker",
+      "src": "/templates/PF-000022/assets/sparkle.png",
+      "x": 969,
+      "y": 4320,
+      "w": 115,
+      "h": 115
+    },
+    {
+      "id": "sparkle-3",
+      "type": "image",
+      "label": "Sparkle (by roses)",
+      "role": "sticker",
+      "src": "/templates/PF-000022/assets/sparkle.png",
+      "x": 3404,
+      "y": 4836,
+      "w": 130,
+      "h": 130
+    },
+    {
+      "id": "sparkle-2",
+      "type": "image",
+      "label": "Sparkle (by name)",
+      "role": "sticker",
+      "src": "/templates/PF-000022/assets/sparkle.png",
+      "x": 1205,
+      "y": 4742,
+      "w": 270,
+      "h": 270
+    },
+    {
+      "id": "heading",
+      "type": "text",
+      "binds": "heading",
+      "x": 0,
+      "y": 4473,
+      "w": 3600,
+      "align": "center",
+      "font": "Gilda Display",
+      "weight": 400,
+      "sizePx": 186,
+      "color": "#FFFFFF",
+      "maxLines": 1,
+      "autoFit": true,
+      "glow": {
+        "color": "#FFFFFF",
+        "blur": 34,
+        "opacity": 1
+      }
+    },
+    {
+      "id": "name",
+      "type": "text",
+      "binds": "name",
+      "x": 710,
+      "y": 4774,
+      "w": 2000,
+      "align": "center",
+      "font": "Pinyon Script",
+      "weight": 400,
+      "sizePx": 197,
+      "color": "#FFFFFF",
+      "maxLines": 1,
+      "autoFit": true
+    }
+  ]
+}

@@ -13,6 +13,21 @@
   --foreground: #f4f4f5;
 }
 
+/*
+ * Montserrat ExtraBold with its tabular figures made the default digits
+ * (footed "1", equal widths). Canvas text can't switch on the `tnum`
+ * OpenType feature, so calendars that need printed-calendar figures use this
+ * build instead. Derived from Montserrat (SIL OFL 1.1, see
+ * /fonts/OFL-Montserrat.txt); Latin subset.
+ */
+@font-face {
+  font-family: "Montserrat Tabular";
+  src: url("/fonts/montserrat-tabular-800.woff2") format("woff2");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="342 500 34 32" width="1360" height="1280">
+<defs>
+<radialGradient id="hb" cx="42%" cy="40%" r="72%"><stop offset="0" stop-color="#F57483"/><stop offset="0.55" stop-color="#EC4558"/><stop offset="1" stop-color="#DA3449"/></radialGradient>
+<radialGradient id="hs" cx="42%" cy="40%" r="72%"><stop offset="0" stop-color="#F27887"/><stop offset="0.55" stop-color="#E64C5F"/><stop offset="1" stop-color="#D53A4F"/></radialGradient>
+</defs>
+<path d="M345.0 513.9 Q350.0 508.7 359.8 508.3 Q351.0 510.2 345.0 513.9 Z" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="0.8" stroke-linejoin="round"/>
+<g transform="translate(365.80 509.40) rotate(14) translate(-6.50 -5.80)"><path d="M6.50 11.60 C2.60 9.28 0 6.73 0 3.83 C0 1.28 1.69 -0.23 3.64 -0.23 C5.07 -0.23 5.98 0.70 6.50 1.97 C7.02 0.70 7.93 -0.23 9.36 -0.23 C11.31 -0.23 13.00 1.28 13.00 3.83 C13.00 6.73 10.40 9.28 6.50 11.60 Z" fill="url(#hs)"/></g>
+<path d="M357.6 524.8 Q367.2 523.9 371.9 516.4 Q366.4 521.8 357.6 524.8 Z" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="0.8" stroke-linejoin="round"/>
+<g transform="translate(353.70 520.00) rotate(-4) translate(-8.80 -7.90)"><path d="M8.80 15.80 C3.52 12.64 0 9.16 0 5.21 C0 1.74 2.29 -0.32 4.93 -0.32 C6.86 -0.32 8.10 0.95 8.80 2.69 C9.50 0.95 10.74 -0.32 12.67 -0.32 C15.31 -0.32 17.60 1.74 17.60 5.21 C17.60 9.16 14.08 12.64 8.80 15.80 Z" fill="url(#hb)"/></g>
+</svg>

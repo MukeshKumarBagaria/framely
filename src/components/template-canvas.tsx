@@ -125,6 +125,12 @@ const FONT_FAMILIES = [
   "Kaushan Script",
   "Ms Madi",
   "Hurricane",
+  "Lobster Two",
+  "Parisienne",
+  "Montserrat",
+  "Montserrat Tabular",
+  "Gilda Display",
+  "Poppins",
 ];
 
 function useFontsReady() {
@@ -136,6 +142,7 @@ function useFontsReady() {
         document.fonts.load(`400 32px "${f}"`),
         document.fonts.load(`700 32px "${f}"`),
         document.fonts.load(`800 32px "${f}"`),
+        document.fonts.load(`900 32px "${f}"`),
         document.fonts.load(`italic 400 32px "${f}"`),
       ])
     )
@@ -155,7 +162,10 @@ function useFontsReady() {
 function konvaFontStyle(weight: number, italic: boolean) {
   const parts: string[] = [];
   if (italic) parts.push("italic");
-  if (weight >= 600) parts.push("bold");
+  // Extra-bold and black pass through as numbers so a real 800/900 face
+  // draws; lighter weights keep the original regular/bold split.
+  if (weight >= 800) parts.push(String(weight));
+  else if (weight >= 600) parts.push("bold");
   return parts.join(" ") || "normal";
 }
 
@@ -244,6 +254,183 @@ function HexagonShape({
   );
 }
 
+function makeCanvas(w: number, h: number) {
+  const c = document.createElement("canvas");
+  c.width = Math.max(1, Math.round(w));
+  c.height = Math.max(1, Math.round(h));
+  return c;
+}
+
+// Longest side of the working copy the outline is grown on. Small enough that
+// stamping the silhouette dozens of times stays instant, large enough that the
+// outline (scaled back up, which also anti-aliases it) keeps a clean edge.
+const OUTLINE_MASK_SIDE = 720;
+
+// A cutout photo as a die-cut sticker: the subject's silhouette grown by
+// `width` source px and filled with `color`, drawn under the subject itself.
+// The silhouette is thresholded first, so soft hair alpha doesn't fray the
+// outline. Built at the photo's own resolution; panning only moves the crop
+// window over the result.
+function buildSticker(img: HTMLImageElement, width: number, color: string) {
+  const W = img.naturalWidth;
+  const H = img.naturalHeight;
+  const s = Math.min(1, OUTLINE_MASK_SIDE / Math.max(W, H));
+  const sw = Math.max(1, Math.round(W * s));
+  const sh = Math.max(1, Math.round(H * s));
+
+  const mask = makeCanvas(sw, sh);
+  const mctx = mask.getContext("2d", { willReadFrequently: true })!;
+  mctx.drawImage(img, 0, 0, sw, sh);
+  const px = mctx.getImageData(0, 0, sw, sh);
+  for (let i = 0; i < px.data.length; i += 4) {
+    const on = px.data[i + 3] > 96;
+    px.data[i] = px.data[i + 1] = px.data[i + 2] = 255;
+    px.data[i + 3] = on ? 255 : 0;
+  }
+  mctx.putImageData(px, 0, 0);
+
+  const grown = makeCanvas(sw, sh);
+  const gctx = grown.getContext("2d")!;
+  const r = width * s;
+  gctx.drawImage(mask, 0, 0);
+  if (r > 0) {
+    // A filled disc of offsets: an outer ring plus inner ones, so thin strands
+    // get a solid outline rather than a hollow halo.
+    for (const ring of [1, 0.66, 0.33]) {
+      const rr = r * ring;
+      const steps = Math.max(12, Math.ceil(rr * 2.5));
+      for (let k = 0; k < steps; k++) {
+        const a = (k / steps) * Math.PI * 2;
+        gctx.drawImage(mask, Math.cos(a) * rr, Math.sin(a) * rr);
+      }
+    }
+  }
+  gctx.globalCompositeOperation = "source-in";
+  gctx.fillStyle = color;
+  gctx.fillRect(0, 0, sw, sh);
+
+  const out = makeCanvas(W, H);
+  const octx = out.getContext("2d")!;
+  octx.imageSmoothingQuality = "high";
+  octx.drawImage(grown, 0, 0, W, H);
+  octx.drawImage(img, 0, 0);
+  return out;
+}
+
+// Longest side of the silhouette used for hit-testing a cutout.
+const HIT_MASK_SIDE = 320;
+
+// Renders a `cutout` slot: the sticker cropped like any photo, with the lower
+// edge faded out. Hit-testing follows the silhouette, not the bounding box, so
+// the cutout doesn't swallow drags meant for the photos around it.
+function CutoutImage({
+  img,
+  layer,
+  cropRect,
+  ...rest
+}: {
+  img: HTMLImageElement;
+  layer: PhotoSlotLayer;
+  cropRect: { x: number; y: number; width: number; height: number };
+} & Konva.ImageConfig) {
+  const cutout = layer.cutout!;
+  // Outline width in source px, so it prints at `outlineWidth` doc px whatever
+  // the zoom. Rounded so small zoom changes reuse the same sticker.
+  const srcWidth = Math.round((cutout.outlineWidth * cropRect.width) / layer.w);
+  const sticker = useMemo(
+    () => buildSticker(img, srcWidth, cutout.outlineColor),
+    [img, srcWidth, cutout.outlineColor]
+  );
+
+  const { x: cx, y: cy, width: cw, height: ch } = cropRect;
+  const fade = cutout.fadeBottom;
+  const { canvas, hitMask } = useMemo(() => {
+    const c = makeCanvas(cw, ch);
+    const ctx = c.getContext("2d")!;
+    ctx.drawImage(sticker, cx, cy, cw, ch, 0, 0, c.width, c.height);
+    if (fade > 0) {
+      const top = c.height * (1 - fade);
+      const g = ctx.createLinearGradient(0, top, 0, c.height);
+      g.addColorStop(0, "rgba(0,0,0,1)");
+      g.addColorStop(0.5, "rgba(0,0,0,0.55)");
+      g.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.globalCompositeOperation = "destination-in";
+      ctx.fillStyle = "#000";
+      ctx.fillRect(0, 0, c.width, top);
+      ctx.fillStyle = g;
+      ctx.fillRect(0, top, c.width, c.height - top);
+    }
+    const hs = Math.min(1, HIT_MASK_SIDE / Math.max(c.width, c.height));
+    const m = makeCanvas(c.width * hs, c.height * hs);
+    const mctx = m.getContext("2d", { willReadFrequently: true })!;
+    mctx.drawImage(c, 0, 0, m.width, m.height);
+    return { canvas: c, hitMask: mctx.getImageData(0, 0, m.width, m.height) };
+  }, [sticker, cx, cy, cw, ch, fade]);
+
+  // Paint the opaque parts of the silhouette in this node's hit colour. Drawn
+  // as runs of solid rects (never a scaled bitmap) so no blended edge pixel
+  // can carry a colour that maps to some other node.
+  const hitFunc = (ctx: Konva.Context, shape: Konva.Shape) => {
+    const { width: mw, height: mh, data } = hitMask;
+    const sx = layer.w / mw;
+    const sy = layer.h / mh;
+    ctx.beginPath();
+    for (let row = 0; row < mh; row++) {
+      let start = -1;
+      for (let col = 0; col <= mw; col++) {
+        const on = col < mw && data[(row * mw + col) * 4 + 3] > 128;
+        if (on && start < 0) start = col;
+        if (!on && start >= 0) {
+          ctx.rect(start * sx, row * sy, (col - start) * sx, sy + 0.5);
+          start = -1;
+        }
+      }
+    }
+    ctx.fillShape(shape);
+  };
+
+  return <KonvaImage {...rest} image={canvas} width={layer.w} height={layer.h} hitFunc={hitFunc} />;
+}
+
+// Empty cutout slot: a head-and-shoulders silhouette with the sticker outline,
+// so the merchant sees where (and roughly how big) the cut-out subject sits.
+function CutoutPlaceholder({ layer, index }: { layer: PhotoSlotLayer; index: number }) {
+  const { w, h } = layer;
+  const outline = layer.cutout!.outlineWidth;
+  return (
+    <Group x={layer.x} y={layer.y} rotation={layer.rotation} opacity={layer.opacity}>
+      <Shape
+        sceneFunc={(ctx, shape) => {
+          ctx.beginPath();
+          ctx.ellipse(w / 2, h * 0.3, w * 0.2, h * 0.2, 0, 0, Math.PI * 2);
+          ctx.moveTo(w * 0.06, h);
+          ctx.bezierCurveTo(w * 0.06, h * 0.62, w * 0.3, h * 0.55, w / 2, h * 0.55);
+          ctx.bezierCurveTo(w * 0.7, h * 0.55, w * 0.94, h * 0.62, w * 0.94, h);
+          ctx.closePath();
+          ctx.fillStrokeShape(shape);
+        }}
+        fillLinearGradientStartPoint={{ x: 0, y: 0 }}
+        fillLinearGradientEndPoint={{ x: w, y: h }}
+        fillLinearGradientColorStops={[0, "#2A2A2A", 1, "#181818"]}
+        stroke={layer.cutout!.outlineColor}
+        strokeWidth={outline}
+        fillAfterStrokeEnabled
+      />
+      <KonvaText
+        text={String(index).padStart(2, "0")}
+        y={h * 0.1}
+        width={w}
+        height={h * 0.4}
+        align="center"
+        verticalAlign="middle"
+        fontFamily="Inter"
+        fontSize={w * 0.12}
+        fill="#5A5A5A"
+      />
+    </Group>
+  );
+}
+
 function PhotoSlotNode({
   layer,
   url,
@@ -319,6 +506,50 @@ function PhotoSlotNode({
     const ix = hex ? 0 : layer.x;
     const iy = hex ? 0 : layer.y;
 
+    const panProps: Konva.ImageConfig = {
+      draggable: canPan,
+      // move the frame. Using `this.absolutePosition()` guarantees the node
+      // stays exactly where it is in absolute space.
+      dragBoundFunc: canPan ? function (this: Konva.Node) { return this.absolutePosition(); } : undefined,
+    };
+    const panHandlers = {
+      onDragStart: (e: Konva.KonvaEventObject<DragEvent>) => {
+        lastPointer.current = e.target.getStage()?.getPointerPosition() ?? null;
+      },
+      onDragMove: canPan ? handleDragMove : undefined,
+      onDragEnd: (e: Konva.KonvaEventObject<DragEvent>) => {
+        lastPointer.current = null;
+        // Konva mutates the node's own x/y while dragging; react-konva won't
+        // restore them because the props never changed. Reset explicitly.
+        e.target.position({ x: ix, y: iy });
+      },
+      onMouseEnter: (e: Konva.KonvaEventObject<MouseEvent>) => {
+        if (!canPan) return;
+        const stage = e.target.getStage();
+        if (stage) stage.container().style.cursor = "grab";
+      },
+      onMouseLeave: (e: Konva.KonvaEventObject<MouseEvent>) => {
+        const stage = e.target.getStage();
+        if (stage) stage.container().style.cursor = "default";
+      },
+    };
+
+    if (layer.cutout) {
+      return (
+        <CutoutImage
+          img={img}
+          layer={layer}
+          cropRect={cropRect}
+          x={layer.x}
+          y={layer.y}
+          rotation={layer.rotation}
+          opacity={layer.opacity}
+          {...panProps}
+          {...panHandlers}
+        />
+      );
+    }
+
     const image = (
       <KonvaImage
         image={img}
@@ -332,29 +563,8 @@ function PhotoSlotNode({
         strokeWidth={hex ? undefined : layer.border?.width}
         rotation={hex ? 0 : layer.rotation}
         opacity={hex ? 1 : layer.opacity}
-        draggable={canPan}
-        // move the frame. Using `this.absolutePosition()` guarantees the node
-        // stays exactly where it is in absolute space.
-        dragBoundFunc={canPan ? function (this: Konva.Node) { return this.absolutePosition(); } : undefined}
-        onDragStart={(e) => {
-          lastPointer.current = e.target.getStage()?.getPointerPosition() ?? null;
-        }}
-        onDragMove={canPan ? handleDragMove : undefined}
-        onDragEnd={(e) => {
-          lastPointer.current = null;
-          // Konva mutates the node's own x/y while dragging; react-konva won't
-          // restore them because the props never changed. Reset explicitly.
-          e.target.position({ x: ix, y: iy });
-        }}
-        onMouseEnter={(e) => {
-          if (!canPan) return;
-          const stage = e.target.getStage();
-          if (stage) stage.container().style.cursor = "grab";
-        }}
-        onMouseLeave={(e) => {
-          const stage = e.target.getStage();
-          if (stage) stage.container().style.cursor = "default";
-        }}
+        {...panProps}
+        {...panHandlers}
       />
     );
 
@@ -380,6 +590,7 @@ function PhotoSlotNode({
 
   // No photo assigned yet — the "empty template" state a merchant sees in the
   // builder before any customer photos exist.
+  if (layer.cutout) return <CutoutPlaceholder layer={layer} index={index} />;
   return (
     <Group x={layer.x} y={layer.y} rotation={layer.rotation} opacity={layer.opacity}>
       {layer.shape === "hexagon" ? (
@@ -546,7 +757,9 @@ function fitFontSize(layer: TextLayer, text: string) {
   const minSize = layer.sizePx * 0.6;
   let size = layer.sizePx;
   while (size > minSize) {
-    ctx.font = `${layer.weight >= 600 ? "bold" : ""} ${size}px "${layer.font}"`.trim();
+    // Measure with exactly the style the text is drawn in, or an 800/900
+    // weight measures as bold, overflows the box and gets ellipsised.
+    ctx.font = `${konvaFontStyle(layer.weight, layer.italic)} ${size}px "${layer.font}"`;
     if (ctx.measureText(text).width <= layer.w) break;
     size -= 4;
   }
@@ -573,6 +786,55 @@ function TextNode({ layer, value }: { layer: TextLayer; value: string }) {
       ellipsis
       rotation={layer.rotation}
       opacity={layer.opacity}
+      // Konva multiplies shadowBlur by the absolute scale, so the halo keeps
+      // its proportions in the small preview and the full-res export alike.
+      shadowEnabled={!!layer.glow}
+      shadowColor={layer.glow?.color}
+      shadowBlur={layer.glow?.blur}
+      shadowOpacity={layer.glow?.opacity}
+    />
+  );
+}
+
+// `color` mixed toward white by `amount` (0..1), as an rgb() string.
+function tint(color: string, amount: number) {
+  const h = color.replace("#", "");
+  const full = h.length === 3 ? h.split("").map((c) => c + c).join("") : h.slice(0, 6);
+  const mix = (i: number) => {
+    const v = parseInt(full.slice(i, i + 2), 16) || 0;
+    return Math.round(v + (255 - v) * amount);
+  };
+  return `rgb(${mix(0)}, ${mix(2)}, ${mix(4)})`;
+}
+
+// The "heartShape" calendar marker: a classic point-down heart centred on
+// (cx, cy), `width` wide and a little less tall, lit softly from the upper
+// middle like a glossy sticker. Drawn as a path so it doesn't depend on which
+// fallback font happens to supply a ♥ glyph on the device.
+function HeartMarker({ cx, cy, width, color }: { cx: number; cy: number; width: number; color: string }) {
+  const w = width;
+  const h = width * 0.85;
+  return (
+    <Shape
+      x={cx - w / 2}
+      y={cy - h / 2}
+      sceneFunc={(ctx, shape) => {
+        ctx.beginPath();
+        ctx.moveTo(w / 2, h);
+        ctx.bezierCurveTo(w * 0.17, h * 0.78, 0, h * 0.55, 0, h * 0.32);
+        ctx.bezierCurveTo(0, h * 0.12, w * 0.12, 0, w * 0.27, 0);
+        ctx.bezierCurveTo(w * 0.38, 0, w * 0.46, h * 0.07, w / 2, h * 0.19);
+        ctx.bezierCurveTo(w * 0.54, h * 0.07, w * 0.62, 0, w * 0.73, 0);
+        ctx.bezierCurveTo(w * 0.88, 0, w, h * 0.12, w, h * 0.32);
+        ctx.bezierCurveTo(w, h * 0.55, w * 0.83, h * 0.78, w / 2, h);
+        ctx.closePath();
+        ctx.fillStrokeShape(shape);
+      }}
+      fillRadialGradientStartPoint={{ x: w / 2, y: h * 0.38 }}
+      fillRadialGradientEndPoint={{ x: w / 2, y: h * 0.38 }}
+      fillRadialGradientStartRadius={0}
+      fillRadialGradientEndRadius={w * 0.62}
+      fillRadialGradientColorStops={[0, tint(color, 0.3), 1, color]}
     />
   );
 }
@@ -636,9 +898,27 @@ function CalendarNode({ layer }: { layer: CalendarLayer }) {
     );
   }
 
+  // Free-standing month or year label, styled with the title settings.
+  if (layer.variant === "month" || layer.variant === "year") {
+    return (
+      <Group x={layer.x} y={layer.y} rotation={layer.rotation} opacity={layer.opacity}>
+        <KonvaText
+          width={layer.w}
+          align={layer.titleAlign}
+          wrap="none"
+          text={layer.variant === "month" ? title : String(layer.year)}
+          fontFamily={layer.titleFont}
+          fontStyle={konvaFontStyle(layer.titleWeight, false)}
+          fontSize={layer.titleSizePx}
+          fill={layer.titleColor}
+        />
+      </Group>
+    );
+  }
+
   const colW = layer.w / cols;
-  const titleH = layer.titleSizePx * 1.5;
-  const headerH = layer.headerSizePx * 2;
+  const titleH = layer.showTitle ? layer.titleSizePx * 1.5 : 0;
+  const headerH = layer.headerBandPx ?? layer.headerSizePx * 2;
   const gridH = layer.h - titleH - headerH;
   const rowH = gridH / Math.max(rowsUsed, 1);
   // An explicit highlightSizePx opts out of the row clamp — see the schema note.
@@ -651,6 +931,30 @@ function CalendarNode({ layer }: { layer: CalendarLayer }) {
     : { x: 0, y: 0, w: colW, h: rowH };
 
   const cells: React.ReactNode[] = [];
+  if (layer.showLeadingDays) {
+    const prevMonthDays = new Date(layer.year, layer.month - 1, 0).getDate();
+    for (let col = 0; col < firstWeekday; col++) {
+      const d = prevMonthDays - firstWeekday + 1 + col;
+      cells.push(
+        <KonvaText
+          key={`p-${d}`}
+          x={col * colW}
+          y={titleH + headerH}
+          width={colW}
+          height={rowH}
+          align="center"
+          verticalAlign="middle"
+          wrap="none"
+          text={String(d)}
+          fontFamily={layer.font}
+          fontStyle={konvaFontStyle(layer.weight, false)}
+          fontSize={layer.cellSizePx}
+          fill={col === 0 && layer.sundayColor ? layer.sundayColor : layer.color}
+          opacity={layer.leadingDaysOpacity}
+        />
+      );
+    }
+  }
   for (let d = 1; d <= daysInMonth; d++) {
     const index = firstWeekday + (d - 1);
     const col = index % cols;
@@ -683,6 +987,8 @@ function CalendarNode({ layer }: { layer: CalendarLayer }) {
               fontSize={markerSize}
               fill={layer.heartColor}
             />
+          ) : layer.highlightStyle === "heartShape" ? (
+            <HeartMarker cx={colW / 2} cy={rowH / 2} width={markerSize} color={layer.heartColor} />
           ) : (
             <Ellipse
               x={colW / 2}
@@ -731,18 +1037,20 @@ function CalendarNode({ layer }: { layer: CalendarLayer }) {
 
   return (
     <Group x={layer.x} y={layer.y} rotation={layer.rotation} opacity={layer.opacity}>
-      <KonvaText
-        x={0}
-        y={0}
-        width={layer.w}
-        align={layer.titleAlign}
-        text={title}
-        fontFamily={layer.titleFont}
-        fontStyle={konvaFontStyle(layer.titleWeight, false)}
-        fontSize={layer.titleSizePx}
-        fill={layer.titleColor}
-      />
-      {layer.showYear && (
+      {layer.showTitle && (
+        <KonvaText
+          x={0}
+          y={0}
+          width={layer.w}
+          align={layer.titleAlign}
+          text={title}
+          fontFamily={layer.titleFont}
+          fontStyle={konvaFontStyle(layer.titleWeight, false)}
+          fontSize={layer.titleSizePx}
+          fill={layer.titleColor}
+        />
+      )}
+      {layer.showTitle && layer.showYear && (
         // Same line as the month label, pushed to the other end of the grid.
         <KonvaText
           x={0}
@@ -764,7 +1072,7 @@ function CalendarNode({ layer }: { layer: CalendarLayer }) {
           width={colW}
           align="center"
           text={label}
-          fontFamily={layer.font}
+          fontFamily={layer.headerFont ?? layer.font}
           fontStyle={konvaFontStyle(layer.headerWeight, false)}
           fontSize={layer.headerSizePx}
           fill={i === 0 && layer.sundayColor ? layer.sundayColor : layer.headerColor}

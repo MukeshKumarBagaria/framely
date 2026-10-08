@@ -38,6 +38,7 @@ function scaleLayer(layer: Layer, scaleX: number, scaleY: number): Layer {
         h: Math.max(1, layer.h * scaleY),
         cornerRadius: layer.cornerRadius !== undefined ? layer.cornerRadius * avg : undefined,
         border: layer.border ? { ...layer.border, width: Math.max(0, layer.border.width * avg) } : undefined,
+        cutout: layer.cutout ? { ...layer.cutout, outlineWidth: layer.cutout.outlineWidth * avg } : undefined,
       };
     case "text":
       return {
@@ -47,6 +48,7 @@ function scaleLayer(layer: Layer, scaleX: number, scaleY: number): Layer {
         w: Math.max(1, layer.w * scaleX),
         sizePx: clamp(layer.sizePx * avg, 8, 900),
         letterSpacing: layer.letterSpacing * avg,
+        glow: layer.glow ? { ...layer.glow, blur: layer.glow.blur * avg } : undefined,
       };
     case "shape":
       return {
@@ -67,6 +69,9 @@ function scaleLayer(layer: Layer, scaleX: number, scaleY: number): Layer {
         titleSizePx: Math.max(4, layer.titleSizePx * avg),
         headerSizePx: Math.max(4, layer.headerSizePx * avg),
         cellSizePx: Math.max(4, layer.cellSizePx * avg),
+        titleBandPx: layer.titleBandPx !== undefined ? layer.titleBandPx * scaleY : undefined,
+        headerBandPx: layer.headerBandPx !== undefined ? layer.headerBandPx * scaleY : undefined,
+        highlightSizePx: layer.highlightSizePx !== undefined ? layer.highlightSizePx * avg : undefined,
       };
   }
 }

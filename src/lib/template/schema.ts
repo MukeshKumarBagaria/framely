@@ -78,6 +78,19 @@ export const photoSlotLayerSchema = layerCommon.extend({
       color: hexColor,
     })
     .optional(),
+  // Sticker-style hero photo: the subject is cut out of its background (the
+  // workspace removes it in the browser) and drawn with a solid outline that
+  // hugs the silhouette instead of a rectangular frame. The slot box only
+  // bounds the cover-fit — its transparent parts show whatever lies beneath.
+  cutout: z
+    .object({
+      outlineWidth: z.number().min(0).max(200).default(20),
+      outlineColor: hexColor.default("#FFFFFF"),
+      // Share of the slot height over which the lower edge fades out, so a body
+      // cropped by the photo's bottom dissolves instead of ending in a hard line.
+      fadeBottom: z.number().min(0).max(0.5).default(0),
+    })
+    .optional(),
 });
 
 export const textLayerSchema = layerCommon
@@ -98,6 +111,16 @@ export const textLayerSchema = layerCommon
     letterSpacing: z.number().min(-5).max(50).default(0),
     autoFit: z.boolean().default(false),
     italic: z.boolean().default(false),
+    // Soft halo behind the glyphs (a canvas shadow with no offset) — the
+    // glowing-headline look on dark designs. `blur` is in px at this doc's
+    // resolution, so it scales along with the text.
+    glow: z
+      .object({
+        color: hexColor,
+        blur: z.number().min(0).max(300),
+        opacity: z.number().min(0).max(1).default(1),
+      })
+      .optional(),
   })
   .refine((l) => (l.binds ? !l.text : !!l.text), {
     message: "text layer must set exactly one of `binds` or `text`",
@@ -141,11 +164,14 @@ export const shapeLayerSchema = layerCommon.extend({
 export const calendarLayerSchema = layerCommon.extend({
   type: z.literal("calendar"),
   // Presentation:
-  //   "grid" — a full month grid, heart on `highlightDay`
-  //   "day"  — a tear-off day card: month label above a large day number
-  // Both read the same year/month/highlightDay, so one date-of-birth picker
-  // drives either style.
-  variant: z.enum(["grid", "day"]).default("grid"),
+  //   "grid"  — a full month grid, heart on `highlightDay`
+  //   "day"   — a tear-off day card: month label above a large day number
+  //   "month" — just the month name, as a free-standing label
+  //   "year"  — just the four-digit year, as a free-standing label
+  // All read the same year/month/highlightDay, so one date-of-birth picker
+  // drives every style — a design can place the month and year on their own
+  // (any size or position) and they still follow the picker.
+  variant: z.enum(["grid", "day", "month", "year"]).default("grid"),
   w: z.number().positive(),
   h: z.number().positive(),
   year: z.number().int().min(1900).max(2200),
@@ -164,8 +190,12 @@ export const calendarLayerSchema = layerCommon.extend({
   //   "heartDay" — the date number is drawn *on top of* the heart
   //   "circle"   — a filled disc behind the date number
   //   "ring"     — a hollow outline circle around the date number
-  highlightStyle: z.enum(["heart", "heartDay", "circle", "ring"]).default("heart"),
-  // Explicit size for the "heartDay" marker glyph. Absent, it's derived from
+  //   "heartShape" — like "heartDay", but the heart is drawn as a vector shape
+  //                  (wider than tall, softly lit) instead of the font's ♥
+  //                  glyph, so it looks the same on every device
+  highlightStyle: z.enum(["heart", "heartDay", "circle", "ring", "heartShape"]).default("heart"),
+  // Explicit size for the "heartDay" marker glyph (for "heartShape": the
+  // heart's width). Absent, it's derived from
   // cellSizePx and clamped to the row height — which caps the heart at barely
   // wider than a two-digit date. Setting it opts into a marker box of its own,
   // so the heart can be drawn larger than the row it sits in.
@@ -177,9 +207,23 @@ export const calendarLayerSchema = layerCommon.extend({
   // the date-of-birth picker moves it along with the month — which a separate
   // static text layer could not do.
   showYear: z.boolean().default(false),
+  // "grid" only: draw the month label above the grid. Turn it off when the
+  // month/year are laid out as separate "month"/"year" calendar layers; the
+  // weekday band then starts at the top of the box.
+  showTitle: z.boolean().default(true),
+  // "grid" only: explicit height of the weekday band, so the gap down to the
+  // first row of dates can match a design. Falls back to headerSizePx * 2.
+  headerBandPx: z.number().positive().optional(),
+  // "grid" only: fill the empty cells before the 1st with the previous month's
+  // closing dates, drawn faded (the "31" under Sunday on a printed calendar).
+  showLeadingDays: z.boolean().default(false),
+  leadingDaysOpacity: z.number().min(0).max(1).default(0.4),
   // "grid" only: recolours the Sunday column (header + dates), e.g. red.
   sundayColor: hexColor.optional(),
   font: z.string(), // grid dates ("grid") / the big day number ("day")
+  // "grid" only: a separate face for the weekday letters (e.g. serif initials
+  // over sans dates). Falls back to `font`.
+  headerFont: z.string().optional(),
   titleFont: z.string(), // the month label — a script face in "grid", a sans in "day"
   titleSizePx: z.number().positive(),
   // "day" variant: explicit height of the month-label band, so the text can be

@@ -1,0 +1,304 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "PF-000021",
+    "occasion": [
+      "birthday",
+      "love",
+      "friendship",
+      "anniversary"
+    ]
+  },
+  "canvas": {
+    "widthMm": 304.8,
+    "heightMm": 457.2,
+    "dpi": 300,
+    "bleedMm": 3,
+    "widthPx": 3600,
+    "heightPx": 5400,
+    "background": "#000000"
+  },
+  "inputs": {
+    "photos": {
+      "min": 5,
+      "max": 5
+    },
+    "fields": [
+      {
+        "key": "heading",
+        "label": "Greeting",
+        "type": "text",
+        "maxLen": 24,
+        "required": true,
+        "default": "Happy Birthday"
+      },
+      {
+        "key": "name",
+        "label": "Name",
+        "type": "text",
+        "maxLen": 18,
+        "required": true,
+        "default": "Anjali"
+      }
+    ]
+  },
+  "layers": [
+    {
+      "id": "main",
+      "type": "photoSlot",
+      "label": "Main photo",
+      "x": -36,
+      "y": -36,
+      "w": 3672,
+      "h": 5472,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "bleed": true
+    },
+    {
+      "id": "fade",
+      "type": "shape",
+      "kind": "rect",
+      "x": -36,
+      "y": 3780,
+      "w": 3672,
+      "h": 1276,
+      "fill": "none",
+      "fillGradient": {
+        "from": "#00000000",
+        "to": "#000000",
+        "direction": "vertical"
+      },
+      "bleed": true,
+      "locked": true
+    },
+    {
+      "id": "fade-base",
+      "type": "shape",
+      "kind": "rect",
+      "x": -36,
+      "y": 5054,
+      "w": 3672,
+      "h": 382,
+      "fill": "#000000",
+      "bleed": true,
+      "locked": true
+    },
+    {
+      "id": "p1",
+      "type": "photoSlot",
+      "label": "Photo 1",
+      "x": 2618,
+      "y": 398,
+      "w": 918,
+      "h": 1031,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 35,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p2",
+      "type": "photoSlot",
+      "label": "Photo 2",
+      "x": 2310,
+      "y": 1335,
+      "w": 918,
+      "h": 1031,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 35,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p3",
+      "type": "photoSlot",
+      "label": "Photo 3",
+      "x": 2618,
+      "y": 2294,
+      "w": 918,
+      "h": 1031,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 35,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p4",
+      "type": "photoSlot",
+      "label": "Photo 4",
+      "x": 2312,
+      "y": 3262,
+      "w": 918,
+      "h": 1031,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 35,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "calendar",
+      "type": "calendar",
+      "label": "Calendar",
+      "variant": "grid",
+      "x": 136,
+      "y": 4515,
+      "w": 1767,
+      "h": 793,
+      "year": 2025,
+      "month": 9,
+      "highlightDay": 4,
+      "font": "Montserrat Tabular",
+      "titleFont": "Montserrat",
+      "headerSizePx": 65,
+      "cellSizePx": 83,
+      "headerWeight": 800,
+      "weight": 800,
+      "color": "#FFFFFF",
+      "titleColor": "#FFFFFF",
+      "headerColor": "#FFFFFF",
+      "heartColor": "#E23A4E",
+      "highlightTextColor": "#FFFFFF",
+      "titleSizePx": 178,
+      "titleWeight": 900,
+      "showTitle": false,
+      "headerBandPx": 101.9,
+      "weekdayLabels": [
+        "SUN",
+        "MON",
+        "TUE",
+        "WED",
+        "THU",
+        "FRI",
+        "SAT"
+      ],
+      "highlightStyle": "heartShape",
+      "highlightSizePx": 183,
+      "showLeadingDays": true,
+      "leadingDaysOpacity": 0.4
+    },
+    {
+      "id": "cal-month",
+      "type": "calendar",
+      "label": "Calendar month",
+      "variant": "month",
+      "x": 167,
+      "y": 4292,
+      "w": 1350,
+      "h": 222,
+      "year": 2025,
+      "month": 9,
+      "highlightDay": 4,
+      "font": "Montserrat Tabular",
+      "titleFont": "Montserrat",
+      "headerSizePx": 65,
+      "cellSizePx": 83,
+      "headerWeight": 800,
+      "weight": 800,
+      "color": "#FFFFFF",
+      "titleColor": "#FFFFFF",
+      "headerColor": "#FFFFFF",
+      "heartColor": "#E23A4E",
+      "highlightTextColor": "#FFFFFF",
+      "titleSizePx": 178,
+      "titleWeight": 900,
+      "titleAlign": "left"
+    },
+    {
+      "id": "cal-year",
+      "type": "calendar",
+      "label": "Calendar year",
+      "variant": "year",
+      "x": 1455,
+      "y": 4369,
+      "w": 520,
+      "h": 154,
+      "year": 2025,
+      "month": 9,
+      "highlightDay": 4,
+      "font": "Montserrat Tabular",
+      "titleFont": "Montserrat",
+      "headerSizePx": 65,
+      "cellSizePx": 83,
+      "headerWeight": 800,
+      "weight": 800,
+      "color": "#FFFFFF",
+      "titleColor": "#FFFFFF",
+      "headerColor": "#FFFFFF",
+      "heartColor": "#E23A4E",
+      "highlightTextColor": "#FFFFFF",
+      "titleSizePx": 123,
+      "titleWeight": 900,
+      "titleAlign": "left"
+    },
+    {
+      "id": "cal-rule",
+      "type": "shape",
+      "label": "Calendar rule",
+      "kind": "line",
+      "x": 159,
+      "y": 4481,
+      "w": 1709,
+      "h": 12,
+      "fill": "none",
+      "stroke": {
+        "width": 11,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "heading",
+      "type": "text",
+      "binds": "heading",
+      "x": 2031,
+      "y": 4402,
+      "w": 1569,
+      "align": "center",
+      "font": "Lobster Two",
+      "weight": 700,
+      "sizePx": 243,
+      "color": "#FFFFFF",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "name",
+      "type": "text",
+      "binds": "name",
+      "x": 1857,
+      "y": 4802,
+      "w": 1300,
+      "align": "right",
+      "font": "Parisienne",
+      "weight": 400,
+      "sizePx": 262,
+      "color": "#FFFFFF",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "hearts",
+      "type": "image",
+      "label": "Hearts",
+      "role": "sticker",
+      "src": "/templates/PF-000021/assets/red-double-heart.png",
+      "x": 3231,
+      "y": 4798,
+      "w": 264,
+      "h": 238
+    }
+  ]
+}
