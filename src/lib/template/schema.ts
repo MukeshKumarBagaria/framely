@@ -212,7 +212,8 @@ export const calendarLayerSchema = layerCommon.extend({
   //                  glyph, so it looks the same on every device
   highlightStyle: z.enum(["heart", "heartDay", "circle", "ring", "heartShape"]).default("heart"),
   // Explicit size for the "heartDay" marker glyph (for "heartShape": the
-  // heart's width). Absent, it's derived from
+  // heart's width; for "heart": the replacing glyph, still kept within its
+  // row). Absent, it's derived from
   // cellSizePx and clamped to the row height — which caps the heart at barely
   // wider than a two-digit date. Setting it opts into a marker box of its own,
   // so the heart can be drawn larger than the row it sits in.

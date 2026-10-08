@@ -202,7 +202,7 @@ const clamp1 = (n: number) => Math.max(-1, Math.min(1, n));
 
 function slotRadius(layer: PhotoSlotLayer) {
   if (layer.shape === "circle") return Math.min(layer.w, layer.h) / 2;
-  if (layer.shape === "rounded" || layer.shape === "heart") return layer.cornerRadius ?? 24;
+  if (layer.shape === "rounded") return layer.cornerRadius ?? 24;
   return 0;
 }
 
@@ -235,19 +235,46 @@ function hexagonPath(ctx: Konva.Context, w: number, h: number, radius = 0) {
   ctx.closePath();
 }
 
-// The hexagon outline as a Konva shape, for the frame stroke and the empty
-// placeholder; style props (fill, stroke, gradients…) pass straight through.
-function HexagonShape({
+// A heart inscribed in [w × h]: two round lobes meeting in a dip at the top
+// centre, tapering to a point at the bottom centre.
+function heartPath(ctx: Konva.Context, w: number, h: number) {
+  ctx.beginPath();
+  ctx.moveTo(w / 2, h);
+  ctx.bezierCurveTo(w * 0.18, h * 0.8, 0, h * 0.58, 0, h * 0.3);
+  ctx.bezierCurveTo(0, h * 0.1, w * 0.12, 0, w * 0.27, 0);
+  ctx.bezierCurveTo(w * 0.38, 0, w * 0.46, h * 0.06, w / 2, h * 0.18);
+  ctx.bezierCurveTo(w * 0.54, h * 0.06, w * 0.62, 0, w * 0.73, 0);
+  ctx.bezierCurveTo(w * 0.88, 0, w, h * 0.1, w, h * 0.3);
+  ctx.bezierCurveTo(w, h * 0.58, w * 0.82, h * 0.8, w / 2, h);
+  ctx.closePath();
+}
+
+// Slots that aren't rectangles are drawn by clipping to their outline path.
+function clippedSlotPath(shape: PhotoSlotLayer["shape"]) {
+  if (shape === "hexagon") return hexagonPath;
+  if (shape === "heart") return heartPath;
+  return null;
+}
+
+// A clipped slot's outline as a Konva shape, for the frame stroke and the
+// empty placeholder; style props (fill, stroke, gradients…) pass straight through.
+function SlotOutline({
   w,
   h,
   radius,
+  path,
   ...style
-}: { w: number; h: number; radius: number } & Konva.ShapeConfig) {
+}: {
+  w: number;
+  h: number;
+  radius: number;
+  path: (ctx: Konva.Context, w: number, h: number, radius?: number) => void;
+} & Konva.ShapeConfig) {
   return (
     <Shape
       {...style}
       sceneFunc={(ctx, shape) => {
-        hexagonPath(ctx, w, h, radius);
+        path(ctx, w, h, radius);
         ctx.fillStrokeShape(shape);
       }}
     />
@@ -524,9 +551,11 @@ function PhotoSlotNode({
       );
     };
 
-    // A hexagon slot nests the image inside a clipped Group, so the image draws
-    // at the group's origin and the group carries placement/rotation/opacity.
-    const hex = layer.shape === "hexagon";
+    // A hexagon or heart slot nests the image inside a clipped Group, so the
+    // image draws at the group's origin and the group carries
+    // placement/rotation/opacity.
+    const outlinePath = clippedSlotPath(layer.shape);
+    const hex = outlinePath !== null;
     const ix = hex ? 0 : layer.x;
     const iy = hex ? 0 : layer.y;
 
@@ -596,12 +625,13 @@ function PhotoSlotNode({
 
     return (
       <Group x={layer.x} y={layer.y} rotation={layer.rotation} opacity={layer.opacity}>
-        <Group clipFunc={(ctx) => hexagonPath(ctx, layer.w, layer.h, hexRadius)}>{image}</Group>
+        <Group clipFunc={(ctx) => outlinePath!(ctx, layer.w, layer.h, hexRadius)}>{image}</Group>
         {layer.border && (
-          <HexagonShape
+          <SlotOutline
             w={layer.w}
             h={layer.h}
             radius={hexRadius}
+            path={outlinePath!}
             stroke={layer.border.color}
             strokeWidth={layer.border.width}
             lineJoin="round"
@@ -617,11 +647,12 @@ function PhotoSlotNode({
   if (layer.cutout) return <CutoutPlaceholder layer={layer} index={index} />;
   return (
     <Group x={layer.x} y={layer.y} rotation={layer.rotation} opacity={layer.opacity}>
-      {layer.shape === "hexagon" ? (
-        <HexagonShape
+      {clippedSlotPath(layer.shape) ? (
+        <SlotOutline
           w={layer.w}
           h={layer.h}
           radius={hexRadius}
+          path={clippedSlotPath(layer.shape)!}
           fillLinearGradientStartPoint={{ x: 0, y: 0 }}
           fillLinearGradientEndPoint={{ x: layer.w, y: layer.h }}
           fillLinearGradientColorStops={[0, "#2A2A2A", 1, "#181818"]}
@@ -1067,7 +1098,7 @@ function CalendarNode({ layer }: { layer: CalendarLayer }) {
         text={marked ? "♥" : String(d)}
         fontFamily={layer.font}
         fontStyle={konvaFontStyle(layer.weight, false)}
-        fontSize={marked ? fitMarkerSize(layer.cellSizePx * 1.15, colW, rowH) : layer.cellSizePx}
+        fontSize={marked ? fitMarkerSize(layer.highlightSizePx ?? layer.cellSizePx * 1.15, colW, rowH) : layer.cellSizePx}
         fill={marked ? layer.heartColor : dateColor}
       />
     );

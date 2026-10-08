@@ -1,0 +1,547 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "PF-000026",
+    "occasion": [
+      "birthday",
+      "love",
+      "friendship",
+      "anniversary"
+    ]
+  },
+  "canvas": {
+    "widthMm": 304.8,
+    "heightMm": 457.2,
+    "dpi": 300,
+    "bleedMm": 3,
+    "widthPx": 3600,
+    "heightPx": 5400,
+    "background": "#FFFFFF"
+  },
+  "inputs": {
+    "photos": {
+      "min": 10,
+      "max": 10
+    },
+    "fields": [
+      {
+        "key": "heading1",
+        "label": "Heading line 1",
+        "type": "text",
+        "maxLen": 16,
+        "required": true,
+        "default": "Happy"
+      },
+      {
+        "key": "heading2",
+        "label": "Heading line 2",
+        "type": "text",
+        "maxLen": 16,
+        "required": true,
+        "default": "Birthday"
+      },
+      {
+        "key": "subheading",
+        "label": "Sub-heading",
+        "type": "text",
+        "maxLen": 20,
+        "required": false,
+        "default": "To you"
+      },
+      {
+        "key": "message",
+        "label": "Message",
+        "type": "text",
+        "maxLen": 220,
+        "required": false,
+        "default": "Make every day special with\nlove, joy, and happiness 💗. Let\nyour heart smile, your memories\nshine,\nand your moments stay forever\nbeautiful ✨"
+      }
+    ]
+  },
+  "layers": [
+    {
+      "id": "floral-tr",
+      "type": "image",
+      "label": "Top-right flowers",
+      "role": "sticker",
+      "src": "/templates/PF-000026/assets/floral-top-right.png",
+      "x": 1226,
+      "y": -10,
+      "w": 2443,
+      "h": 1603
+    },
+    {
+      "id": "gold-corner",
+      "type": "image",
+      "label": "Gold corner",
+      "role": "sticker",
+      "src": "/templates/PF-000026/assets/gold-corner.png",
+      "x": -8,
+      "y": -5,
+      "w": 413,
+      "h": 402
+    },
+    {
+      "id": "flourish-title",
+      "type": "image",
+      "label": "Gold flourish (month)",
+      "role": "sticker",
+      "src": "/templates/PF-000026/assets/gold-heart-flourish.png",
+      "x": 744,
+      "y": 70,
+      "w": 869,
+      "h": 290
+    },
+    {
+      "id": "cal-month",
+      "type": "calendar",
+      "label": "Month",
+      "variant": "month",
+      "x": 365,
+      "y": 55,
+      "w": 900,
+      "h": 300,
+      "titleAlign": "center",
+      "year": 2026,
+      "month": 7,
+      "highlightDay": 15,
+      "font": "Inter",
+      "titleFont": "Playfair Display",
+      "titleSizePx": 268,
+      "titleWeight": 700,
+      "headerSizePx": 58,
+      "cellSizePx": 85,
+      "headerWeight": 700,
+      "weight": 700,
+      "color": "#333333",
+      "titleColor": "#13307A",
+      "headerColor": "#3A3A3A",
+      "sundayColor": "#C2547E",
+      "heartColor": "#6E4FC9",
+      "highlightTextColor": "#FFFFFF"
+    },
+    {
+      "id": "calendar",
+      "type": "calendar",
+      "label": "Calendar",
+      "variant": "grid",
+      "x": 74,
+      "y": 427,
+      "w": 1624,
+      "h": 915.5,
+      "showTitle": false,
+      "headerBandPx": 90.5,
+      "highlightStyle": "heart",
+      "highlightSizePx": 160,
+      "weekdayLabels": [
+        "SUN",
+        "MON",
+        "TUE",
+        "WED",
+        "THU",
+        "FRI",
+        "SAT"
+      ],
+      "year": 2026,
+      "month": 7,
+      "highlightDay": 15,
+      "font": "Inter",
+      "titleFont": "Playfair Display",
+      "titleSizePx": 268,
+      "titleWeight": 700,
+      "headerSizePx": 58,
+      "cellSizePx": 85,
+      "headerWeight": 700,
+      "weight": 700,
+      "color": "#333333",
+      "titleColor": "#13307A",
+      "headerColor": "#3A3A3A",
+      "sundayColor": "#C2547E",
+      "heartColor": "#6E4FC9",
+      "highlightTextColor": "#FFFFFF"
+    },
+    {
+      "id": "flourish-divider",
+      "type": "image",
+      "label": "Gold divider",
+      "role": "sticker",
+      "src": "/templates/PF-000026/assets/gold-heart-flourish.png",
+      "x": 158,
+      "y": 1188,
+      "w": 1043,
+      "h": 348
+    },
+    {
+      "id": "p1",
+      "type": "photoSlot",
+      "label": "Photo 1",
+      "x": 1770,
+      "y": 570,
+      "w": 650,
+      "h": 1170,
+      "shape": "rounded",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 20,
+        "color": "#4A4A8E"
+      },
+      "cornerRadius": 75
+    },
+    {
+      "id": "p2",
+      "type": "photoSlot",
+      "label": "Photo 2 (heart)",
+      "x": 83,
+      "y": 1533,
+      "w": 750,
+      "h": 700,
+      "shape": "heart",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 20,
+        "color": "#4A4A8E"
+      }
+    },
+    {
+      "id": "p3",
+      "type": "photoSlot",
+      "label": "Photo 3",
+      "x": 927,
+      "y": 1507,
+      "w": 733,
+      "h": 1066,
+      "shape": "rounded",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 20,
+        "color": "#4A4A8E"
+      },
+      "cornerRadius": 75
+    },
+    {
+      "id": "p4",
+      "type": "photoSlot",
+      "label": "Photo 4",
+      "x": 93,
+      "y": 2283,
+      "w": 734,
+      "h": 1067,
+      "shape": "rounded",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 20,
+        "color": "#4A4A8E"
+      },
+      "cornerRadius": 75
+    },
+    {
+      "id": "p5",
+      "type": "photoSlot",
+      "label": "Photo 5",
+      "x": 907,
+      "y": 2640,
+      "w": 740,
+      "h": 977,
+      "shape": "rounded",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 20,
+        "color": "#4A4A8E"
+      },
+      "cornerRadius": 75
+    },
+    {
+      "id": "p6",
+      "type": "photoSlot",
+      "label": "Photo 6",
+      "x": 1700,
+      "y": 2957,
+      "w": 660,
+      "h": 1003,
+      "shape": "rounded",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 20,
+        "color": "#4A4A8E"
+      },
+      "cornerRadius": 75
+    },
+    {
+      "id": "p7",
+      "type": "photoSlot",
+      "label": "Photo 7",
+      "x": 2410,
+      "y": 3157,
+      "w": 650,
+      "h": 1036,
+      "shape": "rounded",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 20,
+        "color": "#4A4A8E"
+      },
+      "cornerRadius": 75
+    },
+    {
+      "id": "p8",
+      "type": "photoSlot",
+      "label": "Photo 8",
+      "x": 3107,
+      "y": 3490,
+      "w": 476,
+      "h": 793,
+      "shape": "rounded",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 20,
+        "color": "#4A4A8E"
+      },
+      "cornerRadius": 75
+    },
+    {
+      "id": "p9",
+      "type": "photoSlot",
+      "label": "Photo 9",
+      "x": 1683,
+      "y": 4027,
+      "w": 650,
+      "h": 980,
+      "shape": "rounded",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 20,
+        "color": "#4A4A8E"
+      },
+      "cornerRadius": 75
+    },
+    {
+      "id": "p10",
+      "type": "photoSlot",
+      "label": "Photo 10",
+      "x": 1150,
+      "y": 4500,
+      "w": 477,
+      "h": 767,
+      "shape": "rounded",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 20,
+        "color": "#4A4A8E"
+      },
+      "cornerRadius": 75
+    },
+    {
+      "id": "floral-bl",
+      "type": "image",
+      "label": "Bottom-left flowers",
+      "role": "sticker",
+      "src": "/templates/PF-000026/assets/floral-bottom-left.png",
+      "x": -89,
+      "y": 3540,
+      "w": 1460,
+      "h": 1906
+    },
+    {
+      "id": "teddy",
+      "type": "image",
+      "label": "Teddy bear",
+      "role": "sticker",
+      "src": "/templates/PF-000026/assets/teddy.png",
+      "x": 2170,
+      "y": 4297,
+      "w": 1424,
+      "h": 1104
+    },
+    {
+      "id": "heart-scroll",
+      "type": "image",
+      "label": "Blue heart scroll",
+      "role": "sticker",
+      "src": "/templates/PF-000026/assets/blue-heart-scroll.png",
+      "x": 1350,
+      "y": 5213,
+      "w": 738,
+      "h": 246
+    },
+    {
+      "id": "blue-heart-1",
+      "type": "image",
+      "label": "Blue heart (top)",
+      "role": "sticker",
+      "src": "/templates/PF-000026/assets/blue-heart.png",
+      "x": 2100,
+      "y": 275,
+      "w": 100,
+      "h": 100
+    },
+    {
+      "id": "blue-heart-2",
+      "type": "image",
+      "label": "Blue heart (left)",
+      "role": "sticker",
+      "src": "/templates/PF-000026/assets/blue-heart.png",
+      "x": 62,
+      "y": 1990,
+      "w": 105,
+      "h": 105
+    },
+    {
+      "id": "blue-heart-3",
+      "type": "image",
+      "label": "Blue heart (right)",
+      "role": "sticker",
+      "src": "/templates/PF-000026/assets/blue-heart.png",
+      "x": 3415,
+      "y": 2765,
+      "w": 105,
+      "h": 105
+    },
+    {
+      "id": "pink-heart-1",
+      "type": "image",
+      "label": "Pink heart (message)",
+      "role": "sticker",
+      "src": "/templates/PF-000026/assets/pink-heart.png",
+      "x": 3400,
+      "y": 2112,
+      "w": 100,
+      "h": 100
+    },
+    {
+      "id": "pink-heart-2",
+      "type": "image",
+      "label": "Pink heart (to you)",
+      "role": "sticker",
+      "src": "/templates/PF-000026/assets/pink-heart.png",
+      "x": 1003,
+      "y": 4440,
+      "w": 110,
+      "h": 110
+    },
+    {
+      "id": "sparkle-1",
+      "type": "image",
+      "label": "Gold sparkle 1",
+      "role": "sticker",
+      "src": "/templates/PF-000026/assets/gold-sparkle.png",
+      "x": 3283,
+      "y": 3050,
+      "w": 100,
+      "h": 100
+    },
+    {
+      "id": "sparkle-2",
+      "type": "image",
+      "label": "Gold sparkle 2",
+      "role": "sticker",
+      "src": "/templates/PF-000026/assets/gold-sparkle.png",
+      "x": 3405,
+      "y": 3335,
+      "w": 62,
+      "h": 62
+    },
+    {
+      "id": "sparkle-3",
+      "type": "image",
+      "label": "Gold sparkle 3",
+      "role": "sticker",
+      "src": "/templates/PF-000026/assets/gold-sparkle.png",
+      "x": 462,
+      "y": 3450,
+      "w": 80,
+      "h": 80
+    },
+    {
+      "id": "sparkle-4",
+      "type": "image",
+      "label": "Gold sparkle 4",
+      "role": "sticker",
+      "src": "/templates/PF-000026/assets/gold-sparkle.png",
+      "x": 2440,
+      "y": 555,
+      "w": 60,
+      "h": 60
+    },
+    {
+      "id": "sparkle-5",
+      "type": "image",
+      "label": "Gold sparkle 5",
+      "role": "sticker",
+      "src": "/templates/PF-000026/assets/gold-sparkle.png",
+      "x": 1985,
+      "y": 5165,
+      "w": 55,
+      "h": 55
+    },
+    {
+      "id": "message",
+      "type": "text",
+      "binds": "message",
+      "x": 1815,
+      "y": 1791,
+      "w": 1600,
+      "align": "center",
+      "font": "Parisienne",
+      "weight": 700,
+      "sizePx": 136,
+      "color": "#4B4A92",
+      "maxLines": 8,
+      "lineHeight": 1.33
+    },
+    {
+      "id": "heading1",
+      "type": "text",
+      "binds": "heading1",
+      "x": 510,
+      "y": 3661,
+      "w": 1300,
+      "align": "left",
+      "font": "Playfair Display",
+      "weight": 700,
+      "sizePx": 225,
+      "color": "#0F2D74",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "heading2",
+      "type": "text",
+      "binds": "heading2",
+      "x": 476,
+      "y": 3877,
+      "w": 1300,
+      "align": "left",
+      "font": "Playfair Display",
+      "weight": 700,
+      "sizePx": 225,
+      "color": "#0F2D74",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "subheading",
+      "type": "text",
+      "binds": "subheading",
+      "x": 740,
+      "y": 4174,
+      "w": 900,
+      "align": "left",
+      "font": "Great Vibes",
+      "weight": 400,
+      "sizePx": 219,
+      "color": "#C2557F",
+      "maxLines": 1,
+      "autoFit": true
+    }
+  ]
+}
