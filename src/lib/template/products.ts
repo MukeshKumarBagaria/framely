@@ -64,4 +64,14 @@ export const products: Record<string, Product> = {
     dpi: 300,
     orientation: "portrait",
   },
+  "frame-20x14-landscape": {
+    id: "frame-20x14-landscape",
+    name: '20×14" Landscape Frame',
+    widthMm: 508,
+    heightMm: 355.6,
+    bleedMm: 3,
+    safeMm: 5,
+    dpi: 300,
+    orientation: "landscape",
+  },
 };
