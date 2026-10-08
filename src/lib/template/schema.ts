@@ -101,6 +101,20 @@ export const textLayerSchema = layerCommon
     type: z.literal("text"),
     binds: fieldKey.optional(),
     text: z.string().optional(),
+    // A block of optional details ("Age: 1 Year", "Blood Group: O+"…), one
+    // line per field. Lines whose field is empty are left out and the rest
+    // close up, so a customer shows only the details they fill in.
+    lines: z
+      .array(
+        z.object({
+          binds: fieldKey,
+          prefix: z.string().max(40).default(""),
+          suffix: z.string().max(40).default(""),
+        })
+      )
+      .min(1)
+      .max(12)
+      .optional(),
     font: z.string(),
     weight: z.number().min(100).max(900).default(400),
     sizePx: z.number().min(24).max(600),
@@ -125,8 +139,8 @@ export const textLayerSchema = layerCommon
       })
       .optional(),
   })
-  .refine((l) => (l.binds ? !l.text : !!l.text), {
-    message: "text layer must set exactly one of `binds` or `text`",
+  .refine((l) => [l.binds, l.text, l.lines].filter((v) => v !== undefined && v !== "").length === 1, {
+    message: "text layer must set exactly one of `binds`, `text` or `lines`",
   });
 
 export const shapeLayerSchema = layerCommon.extend({
@@ -342,12 +356,15 @@ export const templateSchema = z
       ctx.addIssue({ code: "custom", message: "duplicate field keys in inputs.fields", path: ["inputs", "fields"] });
     }
     for (const layer of doc.layers) {
-      if (layer.type === "text" && layer.binds && !fieldKeys.has(layer.binds)) {
-        ctx.addIssue({
-          code: "custom",
-          message: `text layer "${layer.id}" binds to missing field "${layer.binds}"`,
-          path: ["layers"],
-        });
+      if (layer.type !== "text") continue;
+      for (const key of [layer.binds, ...(layer.lines ?? []).map((l) => l.binds)]) {
+        if (key && !fieldKeys.has(key)) {
+          ctx.addIssue({
+            code: "custom",
+            message: `text layer "${layer.id}" binds to missing field "${key}"`,
+            path: ["layers"],
+          });
+        }
       }
     }
 

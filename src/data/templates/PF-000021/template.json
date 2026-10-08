@@ -39,6 +39,54 @@
         "maxLen": 18,
         "required": true,
         "default": "Anjali"
+      },
+      {
+        "key": "info_name",
+        "label": "Name (optional)",
+        "type": "text",
+        "maxLen": 30,
+        "required": false,
+        "default": ""
+      },
+      {
+        "key": "age",
+        "label": "Age (optional)",
+        "type": "text",
+        "maxLen": 30,
+        "required": false,
+        "default": ""
+      },
+      {
+        "key": "blood_group",
+        "label": "Blood group (optional)",
+        "type": "text",
+        "maxLen": 30,
+        "required": false,
+        "default": ""
+      },
+      {
+        "key": "weight",
+        "label": "Weight (optional)",
+        "type": "text",
+        "maxLen": 30,
+        "required": false,
+        "default": ""
+      },
+      {
+        "key": "day",
+        "label": "Day (optional)",
+        "type": "text",
+        "maxLen": 30,
+        "required": false,
+        "default": ""
+      },
+      {
+        "key": "place",
+        "label": "Place (optional)",
+        "type": "text",
+        "maxLen": 30,
+        "required": false,
+        "default": ""
       }
     ]
   },
@@ -299,6 +347,53 @@
       "y": 4798,
       "w": 264,
       "h": 238
+    },
+    {
+      "id": "details",
+      "type": "text",
+      "label": "Details (name, age, blood group\u2026)",
+      "lines": [
+        {
+          "binds": "info_name",
+          "prefix": "Name: "
+        },
+        {
+          "binds": "age",
+          "prefix": "Age: "
+        },
+        {
+          "binds": "blood_group",
+          "prefix": "Blood Group: "
+        },
+        {
+          "binds": "weight",
+          "prefix": "Weight: "
+        },
+        {
+          "binds": "day",
+          "prefix": "Day: "
+        },
+        {
+          "binds": "place",
+          "prefix": "Place: "
+        }
+      ],
+      "x": 150,
+      "y": 170,
+      "w": 2300,
+      "align": "left",
+      "font": "Poppins",
+      "weight": 600,
+      "sizePx": 112,
+      "color": "#FFFFFF",
+      "maxLines": 12,
+      "lineHeight": 1.35,
+      "letterSpacing": 1,
+      "glow": {
+        "color": "#000000",
+        "blur": 24,
+        "opacity": 0.9
+      }
     }
   ]
 }

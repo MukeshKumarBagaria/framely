@@ -790,8 +790,22 @@ function fitFontSize(layer: TextLayer, text: string) {
   return size;
 }
 
-function TextNode({ layer, value }: { layer: TextLayer; value: string }) {
-  const text = layer.binds ? value : layer.text ?? "";
+// The text a layer draws: its bound field, its fixed text, or — for a details
+// block — one "prefix value suffix" line per filled-in field.
+function layerText(layer: TextLayer, fieldValues: Record<string, string>) {
+  if (layer.lines) {
+    return layer.lines
+      .map((line) => {
+        const value = (fieldValues[line.binds] ?? "").trim();
+        return value ? `${line.prefix}${value}${line.suffix}` : null;
+      })
+      .filter((line) => line !== null)
+      .join("\n");
+  }
+  return layer.binds ? fieldValues[layer.binds] ?? "" : layer.text ?? "";
+}
+
+function TextNode({ layer, text }: { layer: TextLayer; text: string }) {
   const fontSize = useMemo(() => fitFontSize(layer, text), [layer, text]);
   return (
     <KonvaText
@@ -1147,8 +1161,8 @@ export default function TemplateCanvas({
         />
       );
     }
-    const value = layer.binds ? fieldValues[layer.binds] ?? "" : layer.text ?? "";
-    return <TextNode layer={layer} value={value} />;
+    const text = layerText(layer, fieldValues);
+    return <TextNode layer={layer} text={text} />;
   }
 
   return (
