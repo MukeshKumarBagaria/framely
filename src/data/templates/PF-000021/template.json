@@ -81,6 +81,14 @@
         "default": ""
       },
       {
+        "key": "time",
+        "label": "Time (optional)",
+        "type": "text",
+        "maxLen": 30,
+        "required": false,
+        "default": ""
+      },
+      {
         "key": "place",
         "label": "Place (optional)",
         "type": "text",
@@ -372,6 +380,10 @@
         {
           "binds": "day",
           "prefix": "Day: "
+        },
+        {
+          "binds": "time",
+          "prefix": "Time: "
         },
         {
           "binds": "place",
