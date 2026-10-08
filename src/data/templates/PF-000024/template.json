@@ -5,17 +5,18 @@
     "occasion": [
       "wedding",
       "anniversary",
+      "love",
       "family"
     ]
   },
   "canvas": {
-    "widthMm": 508.0,
+    "widthMm": 508,
     "heightMm": 355.6,
     "dpi": 300,
     "bleedMm": 3,
     "widthPx": 6000,
     "heightPx": 4200,
-    "background": "#000000"
+    "background": "#F2EAF0"
   },
   "inputs": {
     "photos": {
@@ -29,176 +30,176 @@
       "id": "p1",
       "type": "photoSlot",
       "label": "Photo 1",
-      "x": 180,
-      "y": 318,
-      "w": 2000,
-      "h": 1042,
+      "x": 54.0,
+      "y": 54.0,
+      "w": 1913.3,
+      "h": 966.0,
       "shape": "rect",
       "fit": "cover",
       "focal": "faces",
       "border": {
-        "width": 42,
-        "color": "#FFFFFF"
+        "width": 46,
+        "color": "#2B2B33"
       }
     },
     {
       "id": "p2",
       "type": "photoSlot",
       "label": "Photo 2",
-      "x": 2254,
-      "y": 318,
-      "w": 1227,
-      "h": 1042,
+      "x": 2043.3,
+      "y": 54.0,
+      "w": 1913.3,
+      "h": 966.0,
       "shape": "rect",
       "fit": "cover",
       "focal": "faces",
       "border": {
-        "width": 42,
-        "color": "#FFFFFF"
+        "width": 46,
+        "color": "#2B2B33"
       }
     },
     {
       "id": "p3",
       "type": "photoSlot",
       "label": "Photo 3",
-      "x": 3566,
-      "y": 318,
-      "w": 2053,
-      "h": 1042,
+      "x": 4032.7,
+      "y": 54.0,
+      "w": 1913.3,
+      "h": 966.0,
       "shape": "rect",
       "fit": "cover",
       "focal": "faces",
       "border": {
-        "width": 42,
-        "color": "#FFFFFF"
+        "width": 46,
+        "color": "#2B2B33"
       }
     },
     {
       "id": "p4",
       "type": "photoSlot",
       "label": "Photo 4",
-      "x": 180,
-      "y": 1360,
-      "w": 2000,
-      "h": 1096,
+      "x": 54,
+      "y": 1096.0,
+      "w": 1310.4,
+      "h": 966.0,
       "shape": "rect",
       "fit": "cover",
       "focal": "faces",
       "border": {
-        "width": 42,
-        "color": "#FFFFFF"
+        "width": 46,
+        "color": "#2B2B33"
       }
     },
     {
       "id": "p5",
       "type": "photoSlot",
       "label": "Photo 5",
-      "x": 180,
-      "y": 2456,
-      "w": 2000,
-      "h": 1097,
+      "x": 54,
+      "y": 2138.0,
+      "w": 1310.4,
+      "h": 966.0,
       "shape": "rect",
       "fit": "cover",
       "focal": "faces",
       "border": {
-        "width": 42,
-        "color": "#E8A8C0"
+        "width": 46,
+        "color": "#2B2B33"
       }
     },
     {
       "id": "hero",
       "type": "photoSlot",
-      "label": "Photo 6",
-      "x": 2254,
-      "y": 1360,
-      "w": 1683,
-      "h": 2193,
+      "label": "Centre photo",
+      "x": 1440.4,
+      "y": 1096.0,
+      "w": 3119.1,
+      "h": 2008.0,
       "shape": "rect",
       "fit": "cover",
       "focal": "faces",
       "border": {
-        "width": 42,
-        "color": "#FFFFFF"
+        "width": 46,
+        "color": "#2B2B33"
       }
     },
     {
       "id": "p6",
       "type": "photoSlot",
       "label": "Photo 7",
-      "x": 4021,
-      "y": 1360,
-      "w": 1598,
-      "h": 1096,
+      "x": 4635.6,
+      "y": 1096.0,
+      "w": 1310.4,
+      "h": 966.0,
       "shape": "rect",
       "fit": "cover",
       "focal": "faces",
       "border": {
-        "width": 42,
-        "color": "#FFFFFF"
+        "width": 46,
+        "color": "#2B2B33"
       }
     },
     {
       "id": "p7",
       "type": "photoSlot",
       "label": "Photo 8",
-      "x": 4021,
-      "y": 2456,
-      "w": 1598,
-      "h": 1097,
+      "x": 4635.6,
+      "y": 2138.0,
+      "w": 1310.4,
+      "h": 966.0,
       "shape": "rect",
       "fit": "cover",
       "focal": "faces",
       "border": {
-        "width": 42,
-        "color": "#E8A8C0"
+        "width": 46,
+        "color": "#2B2B33"
       }
     },
     {
       "id": "p8",
       "type": "photoSlot",
       "label": "Photo 9",
-      "x": 180,
-      "y": 3553,
-      "w": 2000,
-      "h": 548,
+      "x": 54.0,
+      "y": 3180.0,
+      "w": 1913.3,
+      "h": 966.0,
       "shape": "rect",
       "fit": "cover",
       "focal": "faces",
       "border": {
-        "width": 42,
-        "color": "#E8A8C0"
+        "width": 46,
+        "color": "#2B2B33"
       }
     },
     {
       "id": "p9",
       "type": "photoSlot",
       "label": "Photo 10",
-      "x": 2254,
-      "y": 3553,
-      "w": 1683,
-      "h": 548,
+      "x": 2043.3,
+      "y": 3180.0,
+      "w": 1913.3,
+      "h": 966.0,
       "shape": "rect",
       "fit": "cover",
       "focal": "faces",
       "border": {
-        "width": 42,
-        "color": "#E8A8C0"
+        "width": 46,
+        "color": "#2B2B33"
       }
     },
     {
       "id": "p10",
       "type": "photoSlot",
       "label": "Photo 11",
-      "x": 4021,
-      "y": 3553,
-      "w": 1598,
-      "h": 548,
+      "x": 4032.7,
+      "y": 3180.0,
+      "w": 1913.3,
+      "h": 966.0,
       "shape": "rect",
       "fit": "cover",
       "focal": "faces",
       "border": {
-        "width": 42,
-        "color": "#E8A8C0"
+        "width": 46,
+        "color": "#2B2B33"
       }
     }
   ]
