@@ -40,9 +40,10 @@ import {
 import { downloadPdf, downloadPng, slugifyFilename } from "@/lib/export/print-export";
 import { removeBackground } from "@/lib/cutout/remove-background";
 
-// Background removal for a cutout slot's photo, keyed by the original photo's
-// URL so a swap or layout change reuses work already done.
-type CutoutJob = { status: "working" } | { status: "done"; url: string } | { status: "error"; message: string };
+// Finished background removal for a cutout slot's photo, keyed by the original
+// photo's URL so a swap or layout change reuses work already done. A photo
+// that's been started but has no entry yet is still being processed.
+type CutoutJob = { status: "done"; url: string } | { status: "error"; message: string };
 
 const TemplateCanvas = dynamic(() => import("@/components/template-canvas"), {
   ssr: false,
@@ -156,6 +157,7 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
   const [cutoutJobs, setCutoutJobs] = useState<Record<string, CutoutJob>>({});
   const [cutoutEnabled, setCutoutEnabled] = useState(true);
   const cutoutUrlsRef = useRef<string[]>([]);
+  const cutoutStartedRef = useRef(new Set<string>());
   const objectUrlsRef = useRef<string[]>([]);
   const stageRef = useRef<Konva.Stage | null>(null);
   const previewBoxRef = useRef<HTMLDivElement | null>(null);
@@ -215,22 +217,26 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
   const cutoutSlots = useMemo(() => photoSlots.filter((s) => s.cutout), [photoSlots]);
   useEffect(() => {
     if (!cutoutEnabled) return;
+    const started = cutoutStartedRef.current;
     for (const slot of cutoutSlots) {
       const src = photoUrls[slot.id];
-      if (!src || cutoutJobs[src]) continue;
-      setCutoutJobs((jobs) => ({ ...jobs, [src]: { status: "working" } }));
+      if (!src || started.has(src)) continue;
+      started.add(src);
       removeBackground(src)
         .then((blob) => {
+          // Photos replaced or cleared meanwhile: drop the stale result.
+          if (cutoutStartedRef.current !== started || !started.has(src)) return;
           const url = URL.createObjectURL(blob);
           cutoutUrlsRef.current.push(url);
-          setCutoutJobs((jobs) => (src in jobs ? { ...jobs, [src]: { status: "done", url } } : jobs));
+          setCutoutJobs((jobs) => ({ ...jobs, [src]: { status: "done", url } }));
         })
         .catch((err: unknown) => {
+          if (cutoutStartedRef.current !== started || !started.has(src)) return;
           const message = err instanceof Error ? err.message : "Background removal failed";
-          setCutoutJobs((jobs) => (src in jobs ? { ...jobs, [src]: { status: "error", message } } : jobs));
+          setCutoutJobs((jobs) => ({ ...jobs, [src]: { status: "error", message } }));
         });
     }
-  }, [cutoutSlots, photoUrls, cutoutJobs, cutoutEnabled]);
+  }, [cutoutSlots, photoUrls, cutoutJobs, cutoutEnabled]); // cutoutJobs: a retry clears its entry to re-run this
 
   const canvasPhotoUrls = useMemo(() => {
     if (!cutoutEnabled || cutoutSlots.length === 0) return photoUrls;
@@ -244,6 +250,7 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
   }, [photoUrls, cutoutSlots, cutoutJobs, cutoutEnabled]);
 
   function retryCutout(src: string) {
+    cutoutStartedRef.current.delete(src);
     setCutoutJobs((jobs) => {
       const next = { ...jobs };
       delete next[src];
@@ -254,6 +261,7 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
   function resetCutouts() {
     cutoutUrlsRef.current.forEach((u) => URL.revokeObjectURL(u));
     cutoutUrlsRef.current = [];
+    cutoutStartedRef.current = new Set();
     setCutoutJobs({});
   }
 

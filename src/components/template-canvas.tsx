@@ -332,7 +332,7 @@ function CutoutImage({
   img: HTMLImageElement;
   layer: PhotoSlotLayer;
   cropRect: { x: number; y: number; width: number; height: number };
-} & Konva.ImageConfig) {
+} & Omit<Konva.ImageConfig, "image">) {
   const cutout = layer.cutout!;
   // Outline width in source px, so it prints at `outlineWidth` doc px whatever
   // the zoom. Rounded so small zoom changes reuse the same sticker.
@@ -506,7 +506,7 @@ function PhotoSlotNode({
     const ix = hex ? 0 : layer.x;
     const iy = hex ? 0 : layer.y;
 
-    const panProps: Konva.ImageConfig = {
+    const panProps = {
       draggable: canPan,
       // move the frame. Using `this.absolutePosition()` guarantees the node
       // stays exactly where it is in absolute space.
