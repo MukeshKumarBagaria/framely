@@ -89,6 +89,9 @@ export const photoSlotLayerSchema = layerCommon.extend({
       // Share of the slot height over which the lower edge fades out, so a body
       // cropped by the photo's bottom dissolves instead of ending in a hard line.
       fadeBottom: z.number().min(0).max(0.5).default(0),
+      // Silhouette artwork (drawn into the slot box) shown while the slot has
+      // no photo, so the empty template already reads as the finished design.
+      placeholder: imageSrc.optional(),
     })
     .optional(),
 });

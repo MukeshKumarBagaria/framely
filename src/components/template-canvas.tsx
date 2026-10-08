@@ -349,16 +349,16 @@ function CutoutImage({
     const ctx = c.getContext("2d")!;
     ctx.drawImage(sticker, cx, cy, cw, ch, 0, 0, c.width, c.height);
     if (fade > 0) {
-      const top = c.height * (1 - fade);
-      const g = ctx.createLinearGradient(0, top, 0, c.height);
+      // One full-height fill: destination-in also clears everything outside
+      // the shape being drawn, so the mask can't be painted in pieces.
+      const g = ctx.createLinearGradient(0, 0, 0, c.height);
       g.addColorStop(0, "rgba(0,0,0,1)");
-      g.addColorStop(0.5, "rgba(0,0,0,0.55)");
+      g.addColorStop(1 - fade, "rgba(0,0,0,1)");
+      g.addColorStop(1 - fade / 2, "rgba(0,0,0,0.55)");
       g.addColorStop(1, "rgba(0,0,0,0)");
       ctx.globalCompositeOperation = "destination-in";
-      ctx.fillStyle = "#000";
-      ctx.fillRect(0, 0, c.width, top);
       ctx.fillStyle = g;
-      ctx.fillRect(0, top, c.width, c.height - top);
+      ctx.fillRect(0, 0, c.width, c.height);
     }
     const hs = Math.min(1, HIT_MASK_SIDE / Math.max(c.width, c.height));
     const m = makeCanvas(c.width * hs, c.height * hs);
@@ -392,11 +392,45 @@ function CutoutImage({
   return <KonvaImage {...rest} image={canvas} width={layer.w} height={layer.h} hitFunc={hitFunc} />;
 }
 
-// Empty cutout slot: a head-and-shoulders silhouette with the sticker outline,
-// so the merchant sees where (and roughly how big) the cut-out subject sits.
+// Empty cutout slot: the template's own silhouette artwork when it ships one,
+// otherwise a generic head-and-shoulders shape with the sticker outline — so
+// the merchant sees where (and how big) the cut-out subject sits.
 function CutoutPlaceholder({ layer, index }: { layer: PhotoSlotLayer; index: number }) {
   const { w, h } = layer;
   const outline = layer.cutout!.outlineWidth;
+  const src = layer.cutout!.placeholder;
+  const [art, setArt] = useState<HTMLImageElement | null>(null);
+  useEffect(() => {
+    if (!src || src.startsWith("asset://")) return;
+    const el = new window.Image();
+    el.crossOrigin = "anonymous";
+    el.onload = () => setArt(el);
+    el.src = src;
+    return () => {
+      el.onload = null;
+    };
+  }, [src]);
+  const label = (
+    <KonvaText
+      text={String(index).padStart(2, "0")}
+      y={h * 0.1}
+      width={w}
+      height={h * 0.25}
+      align="center"
+      verticalAlign="middle"
+      fontFamily="Inter"
+      fontSize={w * 0.1}
+      fill="#5A5A5A"
+    />
+  );
+  if (src) {
+    return (
+      <Group x={layer.x} y={layer.y} rotation={layer.rotation} opacity={layer.opacity}>
+        {art && <KonvaImage image={art} width={w} height={h} />}
+        {art && label}
+      </Group>
+    );
+  }
   return (
     <Group x={layer.x} y={layer.y} rotation={layer.rotation} opacity={layer.opacity}>
       <Shape
@@ -416,17 +450,7 @@ function CutoutPlaceholder({ layer, index }: { layer: PhotoSlotLayer; index: num
         strokeWidth={outline}
         fillAfterStrokeEnabled
       />
-      <KonvaText
-        text={String(index).padStart(2, "0")}
-        y={h * 0.1}
-        width={w}
-        height={h * 0.4}
-        align="center"
-        verticalAlign="middle"
-        fontFamily="Inter"
-        fontSize={w * 0.12}
-        fill="#5A5A5A"
-      />
+      {label}
     </Group>
   );
 }

@@ -371,13 +371,21 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
   }
 
   // --- photo fit (zoom/pan inside the frame) ---
+  // A slot may author its own starting crop (e.g. a cut-out pinned to the top
+  // so the head never gets cropped); edits start from that, not from centred.
+  function authoredCrop(slotId: string): PhotoCrop {
+    const crop = photoSlots.find((s) => s.id === slotId)?.crop;
+    return crop ? { ...DEFAULT_CROP, ...crop } : DEFAULT_CROP;
+  }
+
   function cropFor(slotId: string): PhotoCrop {
-    return adjustments.photoCrops[slotId] ?? DEFAULT_CROP;
+    return adjustments.photoCrops[slotId] ?? authoredCrop(slotId);
   }
 
   function setCrop(slotId: string, next: Partial<PhotoCrop>) {
+    const base = authoredCrop(slotId);
     setAdjustments((a) => {
-      const current = a.photoCrops[slotId] ?? DEFAULT_CROP;
+      const current = a.photoCrops[slotId] ?? base;
       return { ...a, photoCrops: { ...a.photoCrops, [slotId]: { ...current, ...next } } };
     });
   }

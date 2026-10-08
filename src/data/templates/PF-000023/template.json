@@ -1,0 +1,547 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "PF-000023",
+    "occasion": [
+      "birthday",
+      "love",
+      "friendship",
+      "anniversary"
+    ]
+  },
+  "canvas": {
+    "widthMm": 210,
+    "heightMm": 297,
+    "dpi": 300,
+    "bleedMm": 3,
+    "widthPx": 2480,
+    "heightPx": 3508,
+    "background": "#FFFFFF"
+  },
+  "inputs": {
+    "photos": {
+      "min": 9,
+      "max": 9
+    },
+    "fields": [
+      {
+        "key": "name",
+        "label": "Name or message (optional)",
+        "type": "text",
+        "maxLen": 40,
+        "required": false,
+        "default": ""
+      },
+      {
+        "key": "date",
+        "label": "Date (optional)",
+        "type": "text",
+        "maxLen": 24,
+        "required": false,
+        "default": ""
+      }
+    ]
+  },
+  "layers": [
+    {
+      "id": "frame-line",
+      "type": "shape",
+      "label": "Outer border line",
+      "kind": "rect",
+      "x": 102,
+      "y": 111.5,
+      "w": 2279.5,
+      "h": 3290,
+      "fill": "none",
+      "stroke": {
+        "width": 8,
+        "color": "#000000"
+      }
+    },
+    {
+      "id": "p1",
+      "type": "photoSlot",
+      "label": "Photo 1",
+      "x": 130,
+      "y": 136,
+      "w": 731,
+      "h": 1029,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 12,
+        "color": "#000000"
+      }
+    },
+    {
+      "id": "p2",
+      "type": "photoSlot",
+      "label": "Photo 2",
+      "x": 881,
+      "y": 136,
+      "w": 726,
+      "h": 1029,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 12,
+        "color": "#000000"
+      }
+    },
+    {
+      "id": "p3",
+      "type": "photoSlot",
+      "label": "Photo 3",
+      "x": 1626,
+      "y": 136,
+      "w": 730,
+      "h": 1029,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 12,
+        "color": "#000000"
+      }
+    },
+    {
+      "id": "p4",
+      "type": "photoSlot",
+      "label": "Photo 4",
+      "x": 130,
+      "y": 1185,
+      "w": 731,
+      "h": 937,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 12,
+        "color": "#000000"
+      }
+    },
+    {
+      "id": "p5",
+      "type": "photoSlot",
+      "label": "Photo 5",
+      "x": 881,
+      "y": 1185,
+      "w": 726,
+      "h": 937,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 12,
+        "color": "#000000"
+      }
+    },
+    {
+      "id": "p6",
+      "type": "photoSlot",
+      "label": "Photo 6",
+      "x": 1626,
+      "y": 1185,
+      "w": 730,
+      "h": 937,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 12,
+        "color": "#000000"
+      }
+    },
+    {
+      "id": "p7",
+      "type": "photoSlot",
+      "label": "Photo 7",
+      "x": 130,
+      "y": 2143,
+      "w": 731,
+      "h": 976,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 12,
+        "color": "#000000"
+      }
+    },
+    {
+      "id": "p8",
+      "type": "photoSlot",
+      "label": "Photo 8",
+      "x": 1626,
+      "y": 2143,
+      "w": 730,
+      "h": 976,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 12,
+        "color": "#000000"
+      }
+    },
+    {
+      "id": "heart-p1a",
+      "type": "image",
+      "label": "Heart doodle (photo 1, right)",
+      "role": "sticker",
+      "src": "/templates/PF-000023/assets/doodle-heart-dots.png",
+      "x": 707.2,
+      "y": 481.2,
+      "w": 76.3,
+      "h": 111.0
+    },
+    {
+      "id": "heart-p1b",
+      "type": "image",
+      "label": "Heart doodle (photo 1, upper)",
+      "role": "sticker",
+      "src": "/templates/PF-000023/assets/doodle-heart.png",
+      "x": 120.1,
+      "y": 869.9,
+      "w": 88.3,
+      "h": 88.3
+    },
+    {
+      "id": "heart-p1c",
+      "type": "image",
+      "label": "Heart doodle (photo 1, lower)",
+      "role": "sticker",
+      "src": "/templates/PF-000023/assets/doodle-heart.png",
+      "x": 102.1,
+      "y": 967.8,
+      "w": 103.3,
+      "h": 103.3
+    },
+    {
+      "id": "heart-p2",
+      "type": "image",
+      "label": "Heart doodle (photo 2)",
+      "role": "sticker",
+      "src": "/templates/PF-000023/assets/doodle-heart.png",
+      "x": 1403.3,
+      "y": 599.1,
+      "w": 67.8,
+      "h": 67.8
+    },
+    {
+      "id": "sparkles-p3",
+      "type": "image",
+      "label": "Sparkles (photo 3)",
+      "role": "sticker",
+      "src": "/templates/PF-000023/assets/sparkles.png",
+      "x": 2240.6,
+      "y": 261.1,
+      "w": 79.9,
+      "h": 127.6,
+      "opacity": 0.85
+    },
+    {
+      "id": "heart-p3",
+      "type": "image",
+      "label": "Heart doodle (photo 3)",
+      "role": "sticker",
+      "src": "/templates/PF-000023/assets/doodle-heart.png",
+      "x": 2255.2,
+      "y": 807.5,
+      "w": 84.9,
+      "h": 84.9,
+      "opacity": 0.45
+    },
+    {
+      "id": "heart-p4",
+      "type": "image",
+      "label": "Heart doodle (photo 4)",
+      "role": "sticker",
+      "src": "/templates/PF-000023/assets/doodle-heart.png",
+      "x": 660.7,
+      "y": 1681.9,
+      "w": 98.1,
+      "h": 98.1
+    },
+    {
+      "id": "heart-p5",
+      "type": "image",
+      "label": "Heart doodle (photo 5)",
+      "role": "sticker",
+      "src": "/templates/PF-000023/assets/doodle-heart.png",
+      "x": 1085.8,
+      "y": 1431.6,
+      "w": 90.7,
+      "h": 90.7
+    },
+    {
+      "id": "crown-p5",
+      "type": "image",
+      "label": "Crown doodle",
+      "role": "sticker",
+      "src": "/templates/PF-000023/assets/crown.png",
+      "x": 888.3,
+      "y": 1751.8,
+      "w": 93.4,
+      "h": 102.8
+    },
+    {
+      "id": "heart-p5-pink",
+      "type": "image",
+      "label": "Small pink heart (photo 5)",
+      "role": "sticker",
+      "src": "/templates/PF-000023/assets/heart-pink-solid.png",
+      "x": 846.7,
+      "y": 1865.5,
+      "w": 79.1,
+      "h": 79.1
+    },
+    {
+      "id": "heart-p5-upper",
+      "type": "image",
+      "label": "Blush heart (upper)",
+      "role": "sticker",
+      "src": "/templates/PF-000023/assets/doodle-heart-blush.png",
+      "x": 1445.7,
+      "y": 1881.9,
+      "w": 119.1,
+      "h": 119.1
+    },
+    {
+      "id": "heart-p5-lower",
+      "type": "image",
+      "label": "Blush heart (lower)",
+      "role": "sticker",
+      "src": "/templates/PF-000023/assets/doodle-heart-blush.png",
+      "x": 1470.0,
+      "y": 2022.2,
+      "w": 130.6,
+      "h": 130.6
+    },
+    {
+      "id": "heart-p6",
+      "type": "image",
+      "label": "Heart doodle (photo 6)",
+      "role": "sticker",
+      "src": "/templates/PF-000023/assets/doodle-heart.png",
+      "x": 2257.2,
+      "y": 1505.0,
+      "w": 76.0,
+      "h": 76.0,
+      "opacity": 0.6
+    },
+    {
+      "id": "heart-p7",
+      "type": "image",
+      "label": "Magenta heart (photo 7)",
+      "role": "sticker",
+      "src": "/templates/PF-000023/assets/doodle-heart-magenta.png",
+      "x": 701.5,
+      "y": 2210.1,
+      "w": 145.5,
+      "h": 145.5
+    },
+    {
+      "id": "heart-p8",
+      "type": "image",
+      "label": "Heart doodle (photo 8)",
+      "role": "sticker",
+      "src": "/templates/PF-000023/assets/doodle-heart.png",
+      "x": 1710.0,
+      "y": 2319.8,
+      "w": 77.4,
+      "h": 77.4
+    },
+    {
+      "id": "tape-1",
+      "type": "shape",
+      "label": "Washi tape (photo 1)",
+      "kind": "rect",
+      "x": 145.7,
+      "y": 200.3,
+      "w": 175,
+      "h": 52,
+      "rotation": -18,
+      "fill": "#ECAFBC",
+      "opacity": 0.82,
+      "stroke": {
+        "width": 3,
+        "color": "#F9DDE4"
+      }
+    },
+    {
+      "id": "tape-3",
+      "type": "shape",
+      "label": "Washi tape (photo 3)",
+      "kind": "rect",
+      "x": 2127.6,
+      "y": 128.0,
+      "w": 186,
+      "h": 58,
+      "rotation": 11.5,
+      "fill": "#ECAFBC",
+      "opacity": 0.82,
+      "stroke": {
+        "width": 3,
+        "color": "#F9DDE4"
+      }
+    },
+    {
+      "id": "tape-7",
+      "type": "shape",
+      "label": "Washi tape (photo 7)",
+      "kind": "rect",
+      "x": 127.5,
+      "y": 2191.0,
+      "w": 168,
+      "h": 56,
+      "rotation": -21,
+      "fill": "#ECAFBC",
+      "opacity": 0.82,
+      "stroke": {
+        "width": 3,
+        "color": "#F9DDE4"
+      }
+    },
+    {
+      "id": "tape-8",
+      "type": "shape",
+      "label": "Washi tape (photo 8)",
+      "kind": "rect",
+      "x": 2180.2,
+      "y": 2131.6,
+      "w": 184,
+      "h": 56,
+      "rotation": 22,
+      "fill": "#ECAFBC",
+      "opacity": 0.82,
+      "stroke": {
+        "width": 3,
+        "color": "#F9DDE4"
+      }
+    },
+    {
+      "id": "pink-wash",
+      "type": "image",
+      "label": "Pink wash (under cut-out)",
+      "role": "overlay",
+      "src": "/templates/PF-000023/assets/pink-wash.png",
+      "x": 830,
+      "y": 3195,
+      "w": 900,
+      "h": 180
+    },
+    {
+      "id": "hero",
+      "type": "photoSlot",
+      "label": "Cut-out photo",
+      "x": 640,
+      "y": 1690,
+      "w": 1440,
+      "h": 1650,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "crop": {
+        "scale": 1,
+        "offsetX": 0,
+        "offsetY": -1
+      },
+      "cutout": {
+        "outlineWidth": 20,
+        "outlineColor": "#FFFFFF",
+        "fadeBottom": 0.1,
+        "placeholder": "/templates/PF-000023/assets/cutout-placeholder.png"
+      }
+    },
+    {
+      "id": "heart-bl-small",
+      "type": "image",
+      "label": "Tiny pink heart (bottom left)",
+      "role": "sticker",
+      "src": "/templates/PF-000023/assets/pink-heart-small.png",
+      "x": 384.4,
+      "y": 3203.9,
+      "w": 26.5,
+      "h": 29.4
+    },
+    {
+      "id": "heart-bl-large",
+      "type": "image",
+      "label": "Pink heart (bottom left)",
+      "role": "sticker",
+      "src": "/templates/PF-000023/assets/pink-heart-large.png",
+      "x": 488.6,
+      "y": 3154.4,
+      "w": 99.9,
+      "h": 113.5
+    },
+    {
+      "id": "heart-br",
+      "type": "image",
+      "label": "Pink heart (bottom right)",
+      "role": "sticker",
+      "src": "/templates/PF-000023/assets/pink-heart.png",
+      "x": 2116.3,
+      "y": 3157.5,
+      "w": 78.1,
+      "h": 84.1
+    },
+    {
+      "id": "vine-left",
+      "type": "image",
+      "label": "Heart vine (bottom left)",
+      "role": "sticker",
+      "src": "/templates/PF-000023/assets/heart-vine.png",
+      "x": 34.9,
+      "y": 2947.6,
+      "w": 259.3,
+      "h": 438.9,
+      "flipX": true
+    },
+    {
+      "id": "vine-right",
+      "type": "image",
+      "label": "Heart vine (bottom right)",
+      "role": "sticker",
+      "src": "/templates/PF-000023/assets/heart-vine.png",
+      "x": 2196.3,
+      "y": 2947.6,
+      "w": 259.3,
+      "h": 438.9
+    },
+    {
+      "id": "name",
+      "type": "text",
+      "binds": "name",
+      "x": 640,
+      "y": 3240,
+      "w": 1200,
+      "align": "center",
+      "font": "Great Vibes",
+      "weight": 400,
+      "sizePx": 84,
+      "color": "#C2185B",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "date",
+      "type": "text",
+      "binds": "date",
+      "x": 840,
+      "y": 3338,
+      "w": 800,
+      "align": "center",
+      "font": "Playfair Display",
+      "weight": 500,
+      "sizePx": 38,
+      "color": "#333333",
+      "maxLines": 1,
+      "autoFit": true,
+      "letterSpacing": 4
+    }
+  ]
+}

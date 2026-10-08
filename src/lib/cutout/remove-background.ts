@@ -100,7 +100,36 @@ function hasTransparency(canvas: HTMLCanvasElement) {
   return clear / (64 * 64) > 0.02;
 }
 
-// Cuts the subject out of the photo at `url`, returning a transparent PNG.
+// Crops a cut-out to the subject (the opaque pixels), keeping a little clear
+// room above and beside it for the sticker outline. Cover-fitting the result
+// then sizes the person to the slot, whatever their framing in the original.
+function trimToSubject(canvas: HTMLCanvasElement) {
+  const ctx = canvas.getContext("2d", { willReadFrequently: true })!;
+  const { width: W, height: H } = canvas;
+  const { data } = ctx.getImageData(0, 0, W, H);
+  let x0 = W, y0 = H, x1 = -1, y1 = -1;
+  for (let y = 0; y < H; y++) {
+    for (let x = 0; x < W; x++) {
+      if (data[(y * W + x) * 4 + 3] > 64) {
+        if (x < x0) x0 = x;
+        if (x > x1) x1 = x;
+        if (y < y0) y0 = y;
+        y1 = y;
+      }
+    }
+  }
+  if (x1 < 0) return canvas;
+  const padX = Math.round((x1 - x0) * 0.025);
+  const padTop = Math.round((y1 - y0) * 0.03);
+  const out = document.createElement("canvas");
+  out.width = x1 - x0 + 1 + padX * 2;
+  out.height = y1 - y0 + 1 + padTop;
+  out.getContext("2d")!.drawImage(canvas, x0, y0, x1 - x0 + 1, y1 - y0 + 1, padX, padTop, x1 - x0 + 1, y1 - y0 + 1);
+  return out;
+}
+
+// Cuts the subject out of the photo at `url`, returning a transparent PNG
+// trimmed to the subject.
 export async function removeBackground(url: string): Promise<Blob> {
   const img = await loadImage(url);
   const scale = Math.min(1, MAX_SIDE / Math.max(img.naturalWidth, img.naturalHeight));
@@ -110,7 +139,7 @@ export async function removeBackground(url: string): Promise<Blob> {
   const ctx = canvas.getContext("2d", { willReadFrequently: true })!;
   ctx.imageSmoothingQuality = "high";
   ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-  if (hasTransparency(canvas)) return canvasToPng(canvas);
+  if (hasTransparency(canvas)) return canvasToPng(trimToSubject(canvas));
 
   const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const id = ++nextId;
@@ -126,5 +155,5 @@ export async function removeBackground(url: string): Promise<Blob> {
   out.width = reply.width!;
   out.height = reply.height!;
   out.getContext("2d")!.putImageData(new ImageData(new Uint8ClampedArray(reply.buffer!), out.width, out.height), 0, 0);
-  return canvasToPng(out);
+  return canvasToPng(trimToSubject(out));
 }
