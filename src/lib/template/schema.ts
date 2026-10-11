@@ -78,6 +78,20 @@ export const photoSlotLayerSchema = layerCommon.extend({
       color: hexColor,
     })
     .optional(),
+  // A frosted strip of the photo: within the horizontal band [y, y + h]
+  // (slot-local px) the photo is redrawn blurred, so text set over it stands
+  // out from a busy background. `feather` fades the band's edges into the
+  // sharp photo (an edge flush with the slot doesn't fade); `dim` darkens the
+  // blurred part for extra contrast.
+  blurBand: z
+    .object({
+      y: z.number().min(0),
+      h: z.number().positive(),
+      radius: z.number().min(0).max(300),
+      feather: z.number().min(0).default(0),
+      dim: z.number().min(0).max(1).default(0),
+    })
+    .optional(),
   // Sticker-style hero photo: the subject is cut out of its background (the
   // workspace removes it in the browser) and drawn with a solid outline that
   // hugs the silhouette instead of a rectangular frame. The slot box only

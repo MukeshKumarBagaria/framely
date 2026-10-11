@@ -32,6 +32,7 @@
       "shape": "rect",
       "fit": "cover",
       "focal": "faces",
+      "blurBand": { "y": 3686, "h": 1786, "radius": 40, "feather": 450, "dim": 0.1 },
       "bleed": true
     },
     {

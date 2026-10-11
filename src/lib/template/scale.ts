@@ -38,6 +38,15 @@ function scaleLayer(layer: Layer, scaleX: number, scaleY: number): Layer {
         h: Math.max(1, layer.h * scaleY),
         cornerRadius: layer.cornerRadius !== undefined ? layer.cornerRadius * avg : undefined,
         border: layer.border ? { ...layer.border, width: Math.max(0, layer.border.width * avg) } : undefined,
+        blurBand: layer.blurBand
+          ? {
+              ...layer.blurBand,
+              y: layer.blurBand.y * scaleY,
+              h: layer.blurBand.h * scaleY,
+              radius: layer.blurBand.radius * avg,
+              feather: layer.blurBand.feather * scaleY,
+            }
+          : undefined,
         cutout: layer.cutout ? { ...layer.cutout, outlineWidth: layer.cutout.outlineWidth * avg } : undefined,
       };
     case "text":

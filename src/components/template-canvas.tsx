@@ -7,6 +7,7 @@
 // portable.
 import { useEffect, useMemo, useRef, useState } from "react";
 import type Konva from "konva";
+import { Blur } from "konva/lib/filters/Blur";
 import {
   Stage,
   Layer,
@@ -237,6 +238,17 @@ function hexagonPath(ctx: Konva.Context, w: number, h: number, radius = 0) {
 
 // A heart inscribed in [w × h]: two round lobes meeting in a dip at the top
 // centre, tapering to a point at the bottom centre.
+function roundedRectPath(ctx: Konva.Context, w: number, h: number, radius: number) {
+  const r = Math.min(radius, w / 2, h / 2);
+  ctx.beginPath();
+  ctx.moveTo(r, 0);
+  ctx.arcTo(w, 0, w, h, r);
+  ctx.arcTo(w, h, 0, h, r);
+  ctx.arcTo(0, h, 0, 0, r);
+  ctx.arcTo(0, 0, w, 0, r);
+  ctx.closePath();
+}
+
 function heartPath(ctx: Konva.Context, w: number, h: number) {
   ctx.beginPath();
   ctx.moveTo(w / 2, h);
@@ -286,6 +298,73 @@ function makeCanvas(w: number, h: number) {
   c.width = Math.max(1, Math.round(w));
   c.height = Math.max(1, Math.round(h));
   return c;
+}
+
+// Width of the working copy a blur band is built at. A blurred strip carries
+// no fine detail, so a small bitmap scaled up to print size looks the same —
+// and keeps the blur fast enough to redo on every pan step.
+const BLUR_BAND_SIDE = 900;
+
+// The photo's [band.y, band.y + band.h] strip (slot-local px) blurred, dimmed
+// and feathered into an alpha fade at any edge that sits inside the slot.
+// Drawn over the sharp photo at the same place, it reads as frosted glass.
+function buildBlurBand(
+  img: HTMLImageElement,
+  cropRect: { x: number; y: number; width: number; height: number },
+  slotW: number,
+  slotH: number,
+  band: NonNullable<PhotoSlotLayer["blurBand"]>
+) {
+  const y0 = Math.max(0, band.y);
+  const y1 = Math.min(slotH, band.y + band.h);
+  if (y1 <= y0) return null;
+
+  const k = Math.min(1, BLUR_BAND_SIDE / slotW); // slot px → working px
+  const canvas = makeCanvas(slotW * k, (y1 - y0) * k);
+  const ctx = canvas.getContext("2d")!;
+  const srcPerSlotY = cropRect.height / slotH;
+  ctx.drawImage(
+    img,
+    cropRect.x,
+    cropRect.y + y0 * srcPerSlotY,
+    cropRect.width,
+    (y1 - y0) * srcPerSlotY,
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
+
+  // Konva's stack blur clamps at the bitmap edges, so the strip doesn't darken
+  // or go transparent along the sides.
+  const radius = Math.min(254, Math.round(band.radius * k));
+  if (radius > 0) {
+    const data = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    (Blur as (this: { blurRadius(): number }, d: ImageData) => void).call({ blurRadius: () => radius }, data);
+    ctx.putImageData(data, 0, 0);
+  }
+
+  if (band.dim > 0) {
+    ctx.fillStyle = `rgba(0,0,0,${band.dim})`;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
+
+  const featherTop = y0 > 0 ? Math.min(band.feather, (y1 - y0) / 2) : 0;
+  const featherBottom = y1 < slotH ? Math.min(band.feather, (y1 - y0) / 2) : 0;
+  if (featherTop > 0 || featherBottom > 0) {
+    const g = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    const span = y1 - y0;
+    g.addColorStop(0, featherTop > 0 ? "rgba(0,0,0,0)" : "#000");
+    g.addColorStop(featherTop / span, "#000");
+    g.addColorStop(1 - featherBottom / span, "#000");
+    g.addColorStop(1, featherBottom > 0 ? "rgba(0,0,0,0)" : "#000");
+    ctx.globalCompositeOperation = "destination-in";
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.globalCompositeOperation = "source-over";
+  }
+
+  return { canvas, y: y0, h: y1 - y0 };
 }
 
 // Longest side of the working copy the outline is grown on. Small enough that
@@ -515,6 +594,16 @@ function PhotoSlotNode({
   const radius = slotRadius(layer);
   const hexRadius = layer.shape === "hexagon" ? (layer.cornerRadius ?? 0) : 0;
 
+  // Keyed on values, not object identity: adjusted layers are rebuilt on every
+  // edit, and re-blurring for each keystroke in a text field would be wasted.
+  const bandKey = !layer.cutout && layer.blurBand ? JSON.stringify(layer.blurBand) : "";
+  const cropKey = JSON.stringify(layer.crop ?? null);
+  const blurBand = useMemo(() => {
+    if (!img || !bandKey) return null;
+    const rect = coverCrop(img.naturalWidth, img.naturalHeight, layer.w, layer.h, JSON.parse(cropKey) ?? undefined);
+    return buildBlurBand(img, rect, layer.w, layer.h, JSON.parse(bandKey));
+  }, [img, bandKey, cropKey, layer.w, layer.h]);
+
   if (img) {
     const cropRect = coverCrop(img.naturalWidth, img.naturalHeight, layer.w, layer.h, layer.crop);
     const canPan = adjustable && !!onCropChange;
@@ -621,11 +710,36 @@ function PhotoSlotNode({
       />
     );
 
-    if (!hex) return image;
+    // Not hit-tested, so dragging over the band still pans the photo below.
+    const bandImage = blurBand && (
+      <KonvaImage image={blurBand.canvas} y={blurBand.y} width={layer.w} height={blurBand.h} listening={false} />
+    );
+
+    if (!hex) {
+      if (!bandImage) return image;
+      return (
+        <>
+          {image}
+          <Group
+            x={layer.x}
+            y={layer.y}
+            rotation={layer.rotation}
+            opacity={layer.opacity}
+            listening={false}
+            clipFunc={radius > 0 ? (ctx) => roundedRectPath(ctx, layer.w, layer.h, radius) : undefined}
+          >
+            {bandImage}
+          </Group>
+        </>
+      );
+    }
 
     return (
       <Group x={layer.x} y={layer.y} rotation={layer.rotation} opacity={layer.opacity}>
-        <Group clipFunc={(ctx) => outlinePath!(ctx, layer.w, layer.h, hexRadius)}>{image}</Group>
+        <Group clipFunc={(ctx) => outlinePath!(ctx, layer.w, layer.h, hexRadius)}>
+          {image}
+          {bandImage}
+        </Group>
         {layer.border && (
           <SlotOutline
             w={layer.w}

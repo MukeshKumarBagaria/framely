@@ -263,6 +263,15 @@ function scaleLayerGeometry(layer: Layer, factor: number): Layer {
         border: layer.border
           ? { ...layer.border, width: Math.max(0, layer.border.width * factor) }
           : undefined,
+        blurBand: layer.blurBand
+          ? {
+              ...layer.blurBand,
+              y: layer.blurBand.y * factor,
+              h: layer.blurBand.h * factor,
+              radius: layer.blurBand.radius * factor,
+              feather: layer.blurBand.feather * factor,
+            }
+          : undefined,
         cutout: layer.cutout ? { ...layer.cutout, outlineWidth: layer.cutout.outlineWidth * factor } : undefined,
       };
     }
