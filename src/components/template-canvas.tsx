@@ -126,12 +126,16 @@ const FONT_FAMILIES = [
   "Kaushan Script",
   "Ms Madi",
   "Hurricane",
+  "Licorice",
   "Lobster Two",
   "Parisienne",
   "Montserrat",
   "Montserrat Tabular",
   "Gilda Display",
   "Poppins",
+  "Poppins Medium",
+  "EB Garamond",
+  "Luxurious Script",
 ];
 
 function useFontsReady() {

@@ -1,0 +1,477 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "PF-000028",
+    "occasion": [
+      "birthday",
+      "friendship",
+      "love"
+    ]
+  },
+  "canvas": {
+    "widthMm": 304.8,
+    "heightMm": 457.2,
+    "dpi": 300,
+    "bleedMm": 3,
+    "widthPx": 3600,
+    "heightPx": 5400,
+    "background": "#FFFFFF"
+  },
+  "inputs": {
+    "photos": {
+      "min": 10,
+      "max": 10
+    },
+    "fields": [
+      {
+        "key": "greeting",
+        "label": "Greeting & name",
+        "type": "text",
+        "maxLen": 28,
+        "required": true,
+        "default": "Happy Birthday Riya"
+      }
+    ]
+  },
+  "layers": [
+    {
+      "id": "wash",
+      "type": "image",
+      "label": "Pink watercolour wash",
+      "role": "background",
+      "src": "/templates/PF-000028/assets/pink-wash.png",
+      "x": 0,
+      "y": 0,
+      "w": 3600,
+      "h": 5400
+    },
+    {
+      "id": "floral-left",
+      "type": "image",
+      "label": "Sakura branch (left)",
+      "role": "sticker",
+      "src": "/templates/PF-000028/assets/sakura-branch.png",
+      "x": -110,
+      "y": 860,
+      "w": 900,
+      "h": 1005,
+      "opacity": 0.65,
+      "flipX": true
+    },
+    {
+      "id": "floral-bl",
+      "type": "image",
+      "label": "Blossom spray (bottom left)",
+      "role": "sticker",
+      "src": "/templates/PF-000028/assets/cherry-sprig.png",
+      "x": -480,
+      "y": 4330,
+      "w": 1150,
+      "h": 1082,
+      "opacity": 0.6
+    },
+    {
+      "id": "floral-br",
+      "type": "image",
+      "label": "Sakura branch (bottom right)",
+      "role": "sticker",
+      "src": "/templates/PF-000028/assets/sakura-branch.png",
+      "x": 2800,
+      "y": 4440,
+      "w": 900,
+      "h": 1005,
+      "opacity": 0.6
+    },
+    {
+      "id": "floral-tr",
+      "type": "image",
+      "label": "Sakura branch (top right)",
+      "role": "sticker",
+      "src": "/templates/PF-000028/assets/sakura-branch.png",
+      "x": 3080,
+      "y": 790,
+      "w": 560,
+      "h": 626,
+      "opacity": 0.6,
+      "flipY": true
+    },
+    {
+      "id": "heart-1",
+      "type": "image",
+      "label": "Pink heart",
+      "role": "sticker",
+      "src": "/templates/PF-000028/assets/heart.png",
+      "x": 450,
+      "y": 731,
+      "w": 130,
+      "h": 139,
+      "rotation": -8
+    },
+    {
+      "id": "heart-3",
+      "type": "image",
+      "label": "Pink heart",
+      "role": "sticker",
+      "src": "/templates/PF-000028/assets/heart.png",
+      "x": 170,
+      "y": 2485,
+      "w": 140,
+      "h": 150,
+      "rotation": -6
+    },
+    {
+      "id": "heart-4",
+      "type": "image",
+      "label": "Pink heart",
+      "role": "sticker",
+      "src": "/templates/PF-000028/assets/heart.png",
+      "x": 1140,
+      "y": 2392,
+      "w": 100,
+      "h": 107,
+      "rotation": 6
+    },
+    {
+      "id": "heart-6",
+      "type": "image",
+      "label": "Pink heart",
+      "role": "sticker",
+      "src": "/templates/PF-000028/assets/heart.png",
+      "x": 3416,
+      "y": 2590,
+      "w": 140,
+      "h": 150,
+      "rotation": 10
+    },
+    {
+      "id": "heart-9",
+      "type": "image",
+      "label": "Pink heart",
+      "role": "sticker",
+      "src": "/templates/PF-000028/assets/heart.png",
+      "x": 498,
+      "y": 4749,
+      "w": 95,
+      "h": 101,
+      "rotation": -5
+    },
+    {
+      "id": "heart-10",
+      "type": "image",
+      "label": "Pink heart",
+      "role": "sticker",
+      "src": "/templates/PF-000028/assets/heart.png",
+      "x": 460,
+      "y": 5137,
+      "w": 90,
+      "h": 96,
+      "opacity": 0.5
+    },
+    {
+      "id": "heart-11",
+      "type": "image",
+      "label": "Pink heart",
+      "role": "sticker",
+      "src": "/templates/PF-000028/assets/heart.png",
+      "x": 3164,
+      "y": 4834,
+      "w": 185,
+      "h": 198,
+      "rotation": 8
+    },
+    {
+      "id": "p1",
+      "type": "photoSlot",
+      "label": "Photo 1",
+      "x": 204,
+      "y": 1027,
+      "w": 1106,
+      "h": 1420,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 28,
+        "color": "#FFFFFF"
+      },
+      "rotation": -4.35
+    },
+    {
+      "id": "p2",
+      "type": "photoSlot",
+      "label": "Photo 2",
+      "x": 1376,
+      "y": 955,
+      "w": 845,
+      "h": 868,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 28,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p3",
+      "type": "photoSlot",
+      "label": "Photo 3",
+      "x": 2225,
+      "y": 899,
+      "w": 1046,
+      "h": 978,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 28,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p4",
+      "type": "photoSlot",
+      "label": "Photo 4",
+      "x": 2579,
+      "y": 1812,
+      "w": 829,
+      "h": 863,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 28,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "hero",
+      "type": "photoSlot",
+      "label": "Main photo (cut-out)",
+      "x": 1240,
+      "y": 1770,
+      "w": 1280,
+      "h": 1870,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "crop": {
+        "scale": 1,
+        "offsetX": 0,
+        "offsetY": -1
+      },
+      "cutout": {
+        "outlineWidth": 22,
+        "outlineColor": "#FFFFFF",
+        "fadeBottom": 0,
+        "placeholder": "/templates/PF-000028/assets/hero-placeholder.png"
+      }
+    },
+    {
+      "id": "p5",
+      "type": "photoSlot",
+      "label": "Photo 6",
+      "x": 2551,
+      "y": 2759,
+      "w": 845,
+      "h": 994,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 28,
+        "color": "#FFFFFF"
+      },
+      "rotation": 3.6
+    },
+    {
+      "id": "p6",
+      "type": "photoSlot",
+      "label": "Photo 7",
+      "x": 188,
+      "y": 3758,
+      "w": 834,
+      "h": 914,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 28,
+        "color": "#FFFFFF"
+      },
+      "rotation": -4.1
+    },
+    {
+      "id": "p7",
+      "type": "photoSlot",
+      "label": "Photo 8",
+      "x": 1054,
+      "y": 3729,
+      "w": 830,
+      "h": 855,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 28,
+        "color": "#FFFFFF"
+      },
+      "rotation": -0.85
+    },
+    {
+      "id": "p8",
+      "type": "photoSlot",
+      "label": "Photo 9",
+      "x": 1893,
+      "y": 3636,
+      "w": 812,
+      "h": 930,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 28,
+        "color": "#FFFFFF"
+      },
+      "rotation": 0.5
+    },
+    {
+      "id": "p9",
+      "type": "photoSlot",
+      "label": "Photo 10",
+      "x": 2728,
+      "y": 3777,
+      "w": 818,
+      "h": 861,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 28,
+        "color": "#FFFFFF"
+      },
+      "rotation": 2.55
+    },
+    {
+      "id": "panda",
+      "type": "image",
+      "label": "Waving panda",
+      "role": "sticker",
+      "src": "/templates/PF-000028/assets/panda.png",
+      "x": 280,
+      "y": 2596,
+      "w": 1229,
+      "h": 1107,
+      "rotation": -7
+    },
+    {
+      "id": "butterfly",
+      "type": "image",
+      "label": "Pink butterfly",
+      "role": "sticker",
+      "src": "/templates/PF-000028/assets/butterfly.png",
+      "x": 2230,
+      "y": 110,
+      "w": 1259,
+      "h": 840,
+      "rotation": -3
+    },
+    {
+      "id": "heart-2",
+      "type": "image",
+      "label": "Pink heart",
+      "role": "sticker",
+      "src": "/templates/PF-000028/assets/heart.png",
+      "x": 1310,
+      "y": 855,
+      "w": 140,
+      "h": 150,
+      "rotation": 6
+    },
+    {
+      "id": "heart-5",
+      "type": "image",
+      "label": "Pink heart",
+      "role": "sticker",
+      "src": "/templates/PF-000028/assets/heart.png",
+      "x": 2285,
+      "y": 1751,
+      "w": 110,
+      "h": 117,
+      "rotation": -6
+    },
+    {
+      "id": "heart-7",
+      "type": "image",
+      "label": "Pink heart",
+      "role": "sticker",
+      "src": "/templates/PF-000028/assets/heart.png",
+      "x": 2600,
+      "y": 2726,
+      "w": 120,
+      "h": 128,
+      "rotation": -8
+    },
+    {
+      "id": "swash",
+      "type": "image",
+      "label": "Swash under greeting",
+      "role": "sticker",
+      "src": "/templates/PF-000028/assets/swash.png",
+      "x": 1150,
+      "y": 5170,
+      "w": 1580,
+      "h": 220
+    },
+    {
+      "id": "month",
+      "type": "calendar",
+      "label": "Month",
+      "variant": "month",
+      "x": 232,
+      "y": 261,
+      "w": 2600,
+      "h": 700,
+      "titleAlign": "center",
+      "year": 2026,
+      "month": 12,
+      "highlightDay": 1,
+      "font": "Licorice",
+      "titleFont": "Licorice",
+      "titleSizePx": 655,
+      "titleWeight": 400,
+      "headerSizePx": 60,
+      "cellSizePx": 60,
+      "color": "#333333",
+      "titleColor": "#333333",
+      "headerColor": "#333333"
+    },
+    {
+      "id": "greeting",
+      "type": "text",
+      "label": "Greeting",
+      "binds": "greeting",
+      "x": 380,
+      "y": 4716,
+      "w": 3000,
+      "align": "center",
+      "font": "Licorice",
+      "weight": 400,
+      "sizePx": 382,
+      "color": "#333333",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "heart-12",
+      "type": "image",
+      "label": "Pink heart",
+      "role": "sticker",
+      "src": "/templates/PF-000028/assets/heart.png",
+      "x": 1955,
+      "y": 5141,
+      "w": 110,
+      "h": 117
+    }
+  ]
+}

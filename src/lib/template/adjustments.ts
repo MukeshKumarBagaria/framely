@@ -139,11 +139,15 @@ export const FONT_CHOICES: { value: string; label: string }[] = [
   { value: "Kaushan Script", label: "Kaushan Script (brush)" },
   { value: "Ms Madi", label: "Ms Madi (signature)" },
   { value: "Hurricane", label: "Hurricane (brush script)" },
+  { value: "Licorice", label: "Licorice (tall signature)" },
   { value: "Lobster Two", label: "Lobster Two (bold script)" },
   { value: "Parisienne", label: "Parisienne (calligraphy)" },
   { value: "Montserrat", label: "Montserrat (geometric sans)" },
   { value: "Gilda Display", label: "Gilda Display (elegant serif)" },
   { value: "Poppins", label: "Poppins (rounded sans)" },
+  { value: "Poppins Medium", label: "Poppins Medium (rounded sans)" },
+  { value: "EB Garamond", label: "EB Garamond (book serif)" },
+  { value: "Luxurious Script", label: "Luxurious Script (fine script)" },
 ];
 
 // The template's own font for each bound field, so the picker opens on the real

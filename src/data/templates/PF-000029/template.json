@@ -1,0 +1,352 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "PF-000029",
+    "occasion": [
+      "birthday",
+      "friendship",
+      "love"
+    ]
+  },
+  "canvas": {
+    "widthMm": 304.8,
+    "heightMm": 457.2,
+    "dpi": 300,
+    "bleedMm": 3,
+    "widthPx": 3600,
+    "heightPx": 5400,
+    "background": "#000000"
+  },
+  "inputs": {
+    "photos": {
+      "min": 8,
+      "max": 8
+    },
+    "fields": [
+      {
+        "key": "greeting",
+        "label": "Greeting",
+        "type": "text",
+        "maxLen": 24,
+        "required": true,
+        "default": "Happy birthday"
+      },
+      {
+        "key": "name",
+        "label": "Name",
+        "type": "text",
+        "maxLen": 14,
+        "required": true,
+        "default": "Rina"
+      },
+      {
+        "key": "message",
+        "label": "Message",
+        "type": "text",
+        "maxLen": 320,
+        "required": false,
+        "default": "On your special day, 💕💕💕\nI just want to say:\nhow grateful I am to\nhave you in my life. Your\nsmile, your kindness,\nand your support mean\nthe world to me. May\nyour year ahead be filled\nwith love, 💖 laughter,\nand success. Stay happy\nand keep shining\n⭐⭐ always!"
+      }
+    ]
+  },
+  "layers": [
+    {
+      "id": "p1",
+      "type": "photoSlot",
+      "x": 2441,
+      "y": 158,
+      "w": 979,
+      "h": 1280,
+      "shape": "rounded",
+      "cornerRadius": 46,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 10,
+        "color": "#FFF8F0"
+      }
+    },
+    {
+      "id": "p2",
+      "type": "photoSlot",
+      "x": 2445,
+      "y": 1495,
+      "w": 980,
+      "h": 1079,
+      "shape": "rounded",
+      "cornerRadius": 46,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 10,
+        "color": "#FFF8F0"
+      }
+    },
+    {
+      "id": "p3",
+      "type": "photoSlot",
+      "x": 2448,
+      "y": 2631,
+      "w": 981,
+      "h": 1252,
+      "shape": "rounded",
+      "cornerRadius": 46,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 10,
+        "color": "#FFF8F0"
+      }
+    },
+    {
+      "id": "p4",
+      "type": "photoSlot",
+      "x": 1395,
+      "y": 3156,
+      "w": 800,
+      "h": 938,
+      "shape": "rounded",
+      "cornerRadius": 50,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 10,
+        "color": "#FFF8F0"
+      }
+    },
+    {
+      "id": "p5",
+      "type": "photoSlot",
+      "x": 74,
+      "y": 4181,
+      "w": 823,
+      "h": 1113,
+      "shape": "rounded",
+      "cornerRadius": 46,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 10,
+        "color": "#FFF8F0"
+      }
+    },
+    {
+      "id": "p6",
+      "type": "photoSlot",
+      "x": 949,
+      "y": 4181,
+      "w": 809,
+      "h": 1113,
+      "shape": "rounded",
+      "cornerRadius": 46,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 10,
+        "color": "#FFF8F0"
+      }
+    },
+    {
+      "id": "p7",
+      "type": "photoSlot",
+      "x": 1807,
+      "y": 4181,
+      "w": 807,
+      "h": 1113,
+      "shape": "rounded",
+      "cornerRadius": 46,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 10,
+        "color": "#FFF8F0"
+      }
+    },
+    {
+      "id": "p8",
+      "type": "photoSlot",
+      "x": 2660,
+      "y": 4181,
+      "w": 809,
+      "h": 1113,
+      "shape": "rounded",
+      "cornerRadius": 46,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 10,
+        "color": "#FFF8F0"
+      }
+    },
+    {
+      "id": "cherry-tree",
+      "type": "image",
+      "label": "Cherry blossom tree",
+      "role": "sticker",
+      "src": "/templates/PF-000029/assets/cherry-tree.png",
+      "x": 1192,
+      "y": 2282.3,
+      "w": 1211,
+      "h": 894.1,
+      "locked": true
+    },
+    {
+      "id": "cherry-petals",
+      "type": "image",
+      "label": "Falling petals",
+      "role": "sticker",
+      "src": "/templates/PF-000029/assets/cherry-petals.png",
+      "x": 1192,
+      "y": 3177.3,
+      "w": 1211,
+      "h": 994.6,
+      "locked": true
+    },
+    {
+      "id": "dreamcatcher",
+      "type": "image",
+      "label": "Dreamcatcher",
+      "role": "sticker",
+      "src": "/templates/PF-000029/assets/dreamcatcher.png",
+      "x": -94,
+      "y": 72,
+      "w": 1065,
+      "h": 1705,
+      "locked": true
+    },
+    {
+      "id": "month",
+      "type": "calendar",
+      "label": "Month",
+      "variant": "month",
+      "x": 995,
+      "y": 160,
+      "w": 1000,
+      "h": 420,
+      "titleAlign": "center",
+      "year": 2023,
+      "month": 1,
+      "highlightDay": 5,
+      "font": "Poppins Medium",
+      "titleFont": "Luxurious Script",
+      "titleSizePx": 340,
+      "headerSizePx": 66,
+      "cellSizePx": 77,
+      "color": "#FFFFFF",
+      "titleColor": "#FFFFFF",
+      "headerColor": "#FFFFFF",
+      "heartColor": "#F08DB8",
+      "highlightTextColor": "#FFFFFF"
+    },
+    {
+      "id": "calendar",
+      "type": "calendar",
+      "label": "Calendar",
+      "variant": "grid",
+      "x": 928.5,
+      "y": 572,
+      "w": 1294,
+      "h": 848.5,
+      "showTitle": false,
+      "headerBandPx": 108,
+      "highlightStyle": "heartShape",
+      "highlightSizePx": 202,
+      "weekdayLabels": [
+        "SUN",
+        "MON",
+        "TUE",
+        "WED",
+        "THU",
+        "FRI",
+        "SAT"
+      ],
+      "headerWeight": 400,
+      "weight": 400,
+      "year": 2023,
+      "month": 1,
+      "highlightDay": 5,
+      "font": "Poppins Medium",
+      "titleFont": "Luxurious Script",
+      "titleSizePx": 340,
+      "headerSizePx": 66,
+      "cellSizePx": 77,
+      "color": "#FFFFFF",
+      "titleColor": "#FFFFFF",
+      "headerColor": "#FFFFFF",
+      "heartColor": "#F08DB8",
+      "highlightTextColor": "#FFFFFF"
+    },
+    {
+      "id": "greeting",
+      "type": "text",
+      "binds": "greeting",
+      "x": 457.5,
+      "y": 1368,
+      "w": 2000,
+      "sizePx": 354,
+      "align": "center",
+      "font": "Luxurious Script",
+      "weight": 400,
+      "color": "#F0B3CC",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "heart-left",
+      "type": "image",
+      "label": "Heart (left of name)",
+      "role": "sticker",
+      "src": "/templates/PF-000029/assets/heart-outline.png",
+      "x": 1005,
+      "y": 1875,
+      "w": 166,
+      "h": 158,
+      "rotation": 3,
+      "flipX": true,
+      "locked": true
+    },
+    {
+      "id": "heart-right",
+      "type": "image",
+      "label": "Heart (right of name)",
+      "role": "sticker",
+      "src": "/templates/PF-000029/assets/heart-outline.png",
+      "x": 2038,
+      "y": 1879,
+      "w": 161,
+      "h": 154,
+      "rotation": 3,
+      "locked": true
+    },
+    {
+      "id": "name",
+      "type": "text",
+      "binds": "name",
+      "x": 1095,
+      "y": 1711,
+      "w": 1000,
+      "sizePx": 344,
+      "align": "center",
+      "font": "EB Garamond",
+      "weight": 400,
+      "color": "#FFFFFF",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "message",
+      "type": "text",
+      "binds": "message",
+      "x": 0,
+      "y": 2119,
+      "w": 1344,
+      "sizePx": 117,
+      "align": "center",
+      "font": "EB Garamond",
+      "weight": 400,
+      "color": "#FFFFFF",
+      "maxLines": 12,
+      "lineHeight": 1.4
+    }
+  ]
+}
