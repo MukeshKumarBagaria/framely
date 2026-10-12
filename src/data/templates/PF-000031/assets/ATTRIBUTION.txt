@@ -1,0 +1,4 @@
+Twemoji Smiling Face with Hearts.png (served as public/templates/PF-000031/assets/emoji-smiling-hearts.png)
+— Twemoji 15.1 (U+1F970), copyright Twitter, Inc. and other contributors,
+licensed CC-BY 4.0: https://creativecommons.org/licenses/by/4.0/
+Source: https://github.com/jdecked/twemoji (assets/svg/1f970.svg), rasterized to 512×512.

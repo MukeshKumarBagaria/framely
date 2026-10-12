@@ -95,6 +95,14 @@
         "maxLen": 30,
         "required": false,
         "default": ""
+      },
+      {
+        "key": "caption",
+        "label": "Photo caption (optional)",
+        "type": "text",
+        "maxLen": 50,
+        "required": false,
+        "default": ""
       }
     ]
   },
@@ -401,6 +409,27 @@
       "maxLines": 12,
       "lineHeight": 1.35,
       "letterSpacing": 1,
+      "glow": {
+        "color": "#000000",
+        "blur": 24,
+        "opacity": 0.9
+      }
+    },
+    {
+      "id": "caption",
+      "type": "text",
+      "label": "Photo caption",
+      "binds": "caption",
+      "x": 120,
+      "y": 3990,
+      "w": 2060,
+      "align": "center",
+      "font": "Poppins",
+      "weight": 600,
+      "sizePx": 104,
+      "color": "#FFFFFF",
+      "maxLines": 2,
+      "lineHeight": 1.25,
       "glow": {
         "color": "#000000",
         "blur": 24,

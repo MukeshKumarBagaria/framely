@@ -148,6 +148,11 @@ export const FONT_CHOICES: { value: string; label: string }[] = [
   { value: "Poppins Medium", label: "Poppins Medium (rounded sans)" },
   { value: "EB Garamond", label: "EB Garamond (book serif)" },
   { value: "Luxurious Script", label: "Luxurious Script (fine script)" },
+  { value: "Oleo Script", label: "Oleo Script (rounded script)" },
+  { value: "Comic Relief", label: "Comic Relief (comic hand)" },
+  { value: "Moon Dance", label: "Moon Dance (signature)" },
+  { value: "Alegreya", label: "Alegreya (classic serif)" },
+  { value: "Libre Baskerville", label: "Libre Baskerville (bookish serif)" },
 ];
 
 // The template's own font for each bound field, so the picker opens on the real

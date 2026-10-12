@@ -136,6 +136,11 @@ const FONT_FAMILIES = [
   "Poppins Medium",
   "EB Garamond",
   "Luxurious Script",
+  "Oleo Script",
+  "Comic Relief",
+  "Moon Dance",
+  "Alegreya",
+  "Libre Baskerville",
 ];
 
 function useFontsReady() {
@@ -149,6 +154,7 @@ function useFontsReady() {
         document.fonts.load(`800 32px "${f}"`),
         document.fonts.load(`900 32px "${f}"`),
         document.fonts.load(`italic 400 32px "${f}"`),
+        document.fonts.load(`italic 700 32px "${f}"`),
       ])
     )
       .catch(() => {

@@ -1,0 +1,353 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "PF-000031",
+    "occasion": [
+      "birthday",
+      "love",
+      "friendship"
+    ]
+  },
+  "canvas": {
+    "widthMm": 304.8,
+    "heightMm": 457.2,
+    "dpi": 300,
+    "bleedMm": 3,
+    "widthPx": 3600,
+    "heightPx": 5400,
+    "background": "#000000"
+  },
+  "inputs": {
+    "photos": {
+      "min": 8,
+      "max": 8
+    },
+    "fields": [
+      {
+        "key": "message",
+        "label": "Message",
+        "type": "text",
+        "maxLen": 260,
+        "required": false,
+        "default": "Happy Birthday 😊 Wishing you\na day filled with joy, laughter,\nand everything you love💖🤞\nMay the year ahead bring you\nsuccess, happiness,💕and\ncountless wonderful moments.\nEnjoy your special day🥰"
+      },
+      {
+        "key": "heading",
+        "label": "Heading",
+        "type": "text",
+        "maxLen": 24,
+        "required": true,
+        "default": "Happy birthday"
+      },
+      {
+        "key": "name",
+        "label": "Name",
+        "type": "text",
+        "maxLen": 14,
+        "required": true,
+        "default": "Riya"
+      }
+    ]
+  },
+  "layers": [
+    {
+      "id": "dreamcatcher",
+      "type": "image",
+      "label": "Dreamcatcher",
+      "role": "sticker",
+      "src": "/templates/PF-000031/assets/dreamcatcher.png",
+      "x": 2550,
+      "y": -8,
+      "w": 910,
+      "h": 1082
+    },
+    {
+      "id": "floral-tl",
+      "type": "image",
+      "label": "Top-left flowers",
+      "role": "sticker",
+      "src": "/templates/PF-000031/assets/floral-top-left.png",
+      "x": -39,
+      "y": -45,
+      "w": 1047,
+      "h": 969
+    },
+    {
+      "id": "cal-month",
+      "type": "calendar",
+      "label": "Month",
+      "variant": "month",
+      "x": 230,
+      "y": 825,
+      "w": 1300,
+      "h": 300,
+      "titleAlign": "center",
+      "year": 2024,
+      "month": 12,
+      "highlightDay": 31,
+      "font": "Poppins",
+      "titleFont": "Oleo Script",
+      "titleSizePx": 238,
+      "titleWeight": 400,
+      "headerSizePx": 70,
+      "cellSizePx": 92,
+      "headerWeight": 700,
+      "weight": 700,
+      "color": "#FFFFFF",
+      "titleColor": "#FFFFFF",
+      "headerColor": "#FFFFFF",
+      "heartColor": "#C8304F",
+      "highlightTextColor": "#FFFFFF"
+    },
+    {
+      "id": "cal-rule",
+      "type": "shape",
+      "label": "Calendar rule",
+      "kind": "line",
+      "x": 126,
+      "y": 1098,
+      "w": 1488,
+      "h": 40,
+      "stroke": {
+        "width": 12,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "calendar",
+      "type": "calendar",
+      "label": "Calendar",
+      "variant": "grid",
+      "x": 97,
+      "y": 1138,
+      "w": 1562,
+      "h": 822,
+      "showTitle": false,
+      "headerBandPx": 77,
+      "headerFont": "Poppins",
+      "highlightStyle": "heartShape",
+      "highlightSizePx": 195,
+      "weekdayLabels": [
+        "SUN",
+        "MON",
+        "TUE",
+        "WED",
+        "THU",
+        "FRI",
+        "SAT"
+      ],
+      "year": 2024,
+      "month": 12,
+      "highlightDay": 31,
+      "font": "Poppins",
+      "titleFont": "Oleo Script",
+      "titleSizePx": 238,
+      "titleWeight": 400,
+      "headerSizePx": 70,
+      "cellSizePx": 92,
+      "headerWeight": 700,
+      "weight": 700,
+      "color": "#FFFFFF",
+      "titleColor": "#FFFFFF",
+      "headerColor": "#FFFFFF",
+      "heartColor": "#C8304F",
+      "highlightTextColor": "#FFFFFF"
+    },
+    {
+      "id": "p1",
+      "type": "photoSlot",
+      "label": "Photo 1",
+      "x": 1738.5,
+      "y": 1006.5,
+      "w": 1049,
+      "h": 846,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 17,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p2",
+      "type": "photoSlot",
+      "label": "Photo 2",
+      "x": 2857.5,
+      "y": 1398.5,
+      "w": 641,
+      "h": 1258,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 17,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p3",
+      "type": "photoSlot",
+      "label": "Photo 3",
+      "x": 137.5,
+      "y": 2032.5,
+      "w": 767,
+      "h": 836,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 17,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p4",
+      "type": "photoSlot",
+      "label": "Photo 4",
+      "x": 972.5,
+      "y": 2108.5,
+      "w": 821,
+      "h": 708,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 17,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p5",
+      "type": "photoSlot",
+      "label": "Photo 5",
+      "x": 1860.5,
+      "y": 1914.5,
+      "w": 927,
+      "h": 969,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 17,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p6",
+      "type": "photoSlot",
+      "label": "Photo 6",
+      "x": 2866.5,
+      "y": 2717.5,
+      "w": 641,
+      "h": 1201,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 17,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p7",
+      "type": "photoSlot",
+      "label": "Photo 7",
+      "x": 1713.5,
+      "y": 2943.5,
+      "w": 1076,
+      "h": 975,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 17,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p8",
+      "type": "photoSlot",
+      "label": "Photo 8",
+      "x": 2047.5,
+      "y": 3979.5,
+      "w": 1072,
+      "h": 821,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 17,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "message",
+      "type": "text",
+      "binds": "message",
+      "x": 97,
+      "y": 2976,
+      "w": 1500,
+      "align": "center",
+      "font": "Comic Relief",
+      "weight": 700,
+      "italic": true,
+      "sizePx": 91,
+      "color": "#FFFFFF",
+      "maxLines": 9,
+      "lineHeight": 2.09
+    },
+    {
+      "id": "heading",
+      "type": "text",
+      "binds": "heading",
+      "x": 300,
+      "y": 4264,
+      "w": 1700,
+      "align": "left",
+      "font": "Moon Dance",
+      "weight": 400,
+      "sizePx": 337,
+      "color": "#FFFFFF",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "name",
+      "type": "text",
+      "binds": "name",
+      "x": 559,
+      "y": 4700,
+      "w": 700,
+      "align": "left",
+      "font": "Moon Dance",
+      "weight": 400,
+      "sizePx": 370,
+      "color": "#FFFFFF",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "emoji",
+      "type": "image",
+      "label": "Smiling face emoji",
+      "role": "sticker",
+      "src": "/templates/PF-000031/assets/emoji-smiling-hearts.png",
+      "x": 1211,
+      "y": 4706,
+      "w": 354,
+      "h": 354
+    },
+    {
+      "id": "floral-br",
+      "type": "image",
+      "label": "Bottom-right flowers",
+      "role": "sticker",
+      "src": "/templates/PF-000031/assets/floral-bottom-right.png",
+      "x": 2443,
+      "y": 4514,
+      "w": 1122,
+      "h": 906
+    }
+  ]
+}

@@ -138,7 +138,9 @@ export const textLayerSchema = layerCommon
     // Raised from the PRD §6.5 cap of 6 — a long message/letter block (e.g. a
     // birthday note) is a legitimate text layer and needs more wrap lines.
     maxLines: z.number().min(1).max(24).default(1),
-    lineHeight: z.number().min(0.8).max(2).default(1.2),
+    // Up to 3 for airy, widely spaced message blocks (e.g. a short note set
+    // in a small comic hand with a line every ~2× its size).
+    lineHeight: z.number().min(0.8).max(3).default(1.2),
     letterSpacing: z.number().min(-5).max(50).default(0),
     autoFit: z.boolean().default(false),
     italic: z.boolean().default(false),
