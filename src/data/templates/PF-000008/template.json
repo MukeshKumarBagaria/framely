@@ -18,7 +18,7 @@
     "fields": [
       { "key": "title", "label": "Title", "type": "text", "maxLen": 30, "required": true, "default": "happy birthday 🎂" },
       { "key": "name", "label": "Name", "type": "text", "maxLen": 30, "required": true, "default": "shubham" },
-      { "key": "message", "label": "Message", "type": "text", "maxLen": 300, "required": true, "default": "All the words 🌍 in this world\nwould not suffice 🦋 to\ndescribe what you mean 💖 to\nme.\nThank you 💕 for being there\n🤗 and supporting me 🫂\nthrough my life 🌈.\nI will forever be grateful 💖 for\nyou.\nI hope to have your continuing\nlove 💓 and support 💫.\n💖 Happy birthday dearest\nsister! 🎈🎁\n🌻🌺💃👸🛍️👯‍♀️" }
+      { "key": "message", "label": "Message", "type": "text", "maxLen": 400, "required": true, "default": "All the words 🌍 in this world\nwould not suffice 🦋 to\ndescribe what you mean 💖 to\nme.\nThank you 💕 for being there\n🤗 and supporting me 🫂\nthrough my life 🌈.\nI will forever be grateful 💖 for\nyou.\nI hope to have your continuing\nlove 💓 and support 💫.\n💖 Happy birthday dearest\nsister! 🎈🎁\n🌻🌺💃👸🛍️👯‍♀️" }
     ]
   },
   "layers": [
@@ -113,12 +113,12 @@
       "type": "text",
       "binds": "message",
       "x": 87,
-      "y": 1866,
+      "y": 1560,
       "w": 1400,
       "align": "center",
       "font": "Inter",
       "weight": 400,
-      "sizePx": 92,
+      "sizePx": 84,
       "color": "#E8E8E8",
       "lineHeight": 1.3,
       "maxLines": 24,

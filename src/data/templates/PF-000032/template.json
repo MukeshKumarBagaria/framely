@@ -1,0 +1,243 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "PF-000032",
+    "occasion": [
+      "birthday",
+      "anniversary",
+      "love",
+      "friendship"
+    ]
+  },
+  "canvas": {
+    "widthMm": 304.8,
+    "heightMm": 457.2,
+    "dpi": 300,
+    "bleedMm": 3,
+    "widthPx": 3600,
+    "heightPx": 5400,
+    "background": "#0D0D0D"
+  },
+  "inputs": {
+    "photos": {
+      "min": 1,
+      "max": 1
+    },
+    "fields": [
+      {
+        "key": "heading",
+        "label": "Greeting",
+        "type": "text",
+        "maxLen": 30,
+        "required": true,
+        "default": "Happy Birthday"
+      },
+      {
+        "key": "name",
+        "label": "Name",
+        "type": "text",
+        "maxLen": 24,
+        "required": true,
+        "default": "AARADHYA"
+      },
+      {
+        "key": "message",
+        "label": "Message (80-100 words)",
+        "type": "text",
+        "maxLen": 600,
+        "required": false,
+        "default": "On this special day, I want to thank you for bringing so much happiness, warmth, and laughter into my life. Every single moment shared with you is a cherished memory, and your kindness inspires everyone around you. You are more than just a friend; you are a blessing and my greatest supporter. May the year ahead be filled with endless opportunities, peaceful moments, good health, and dreams coming true. Happy Birthday to someone truly extraordinary!"
+      },
+      {
+        "key": "date",
+        "label": "Date / Subtitle",
+        "type": "text",
+        "maxLen": 30,
+        "required": false,
+        "default": "October 24, 2026"
+      }
+    ]
+  },
+  "layers": [
+    {
+      "id": "photo",
+      "type": "photoSlot",
+      "label": "Main photo",
+      "x": -36,
+      "y": -36,
+      "w": 3672,
+      "h": 5472,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "bleed": true,
+      "blurBand": {
+        "y": 3456,
+        "h": 2016,
+        "radius": 55,
+        "feather": 380,
+        "dim": 0.25
+      }
+    },
+    {
+      "id": "fade",
+      "type": "shape",
+      "label": "Bottom shade",
+      "kind": "rect",
+      "x": -36,
+      "y": 2900,
+      "w": 3672,
+      "h": 2536,
+      "fill": "none",
+      "fillGradient": {
+        "from": "#00000000",
+        "to": "#000000D0",
+        "direction": "vertical"
+      },
+      "bleed": true,
+      "locked": true
+    },
+    {
+      "id": "frame",
+      "type": "shape",
+      "label": "Inner frame",
+      "kind": "rect",
+      "x": 120,
+      "y": 120,
+      "w": 3360,
+      "h": 5160,
+      "fill": "none",
+      "stroke": {
+        "width": 7,
+        "color": "#F3E6C8"
+      },
+      "opacity": 0.75,
+      "locked": true
+    },
+    {
+      "id": "heading",
+      "type": "text",
+      "label": "Greeting",
+      "binds": "heading",
+      "x": 200,
+      "y": 3540,
+      "w": 3200,
+      "align": "center",
+      "font": "Great Vibes",
+      "weight": 400,
+      "sizePx": 300,
+      "color": "#FFFFFF",
+      "maxLines": 1,
+      "autoFit": true,
+      "glow": {
+        "color": "#000000",
+        "blur": 30,
+        "opacity": 0.55
+      }
+    },
+    {
+      "id": "name",
+      "type": "text",
+      "label": "Name",
+      "binds": "name",
+      "x": 300,
+      "y": 3880,
+      "w": 3000,
+      "align": "center",
+      "font": "Playfair Display",
+      "weight": 600,
+      "sizePx": 150,
+      "letterSpacing": 26,
+      "color": "#FFFFFF",
+      "maxLines": 1,
+      "autoFit": true,
+      "glow": {
+        "color": "#000000",
+        "blur": 30,
+        "opacity": 0.55
+      }
+    },
+    {
+      "id": "divider-left",
+      "type": "shape",
+      "kind": "line",
+      "x": 930,
+      "y": 4105,
+      "w": 740,
+      "h": 2,
+      "stroke": {
+        "width": 4,
+        "color": "#F3E6C8"
+      },
+      "locked": true
+    },
+    {
+      "id": "divider-heart",
+      "type": "text",
+      "label": "Divider heart",
+      "text": "\u2665",
+      "x": 1650,
+      "y": 4070,
+      "w": 300,
+      "align": "center",
+      "font": "Inter",
+      "weight": 400,
+      "sizePx": 56,
+      "color": "#F06B7A",
+      "maxLines": 1,
+      "locked": true
+    },
+    {
+      "id": "divider-right",
+      "type": "shape",
+      "kind": "line",
+      "x": 1930,
+      "y": 4105,
+      "w": 740,
+      "h": 2,
+      "stroke": {
+        "width": 4,
+        "color": "#F3E6C8"
+      },
+      "locked": true
+    },
+    {
+      "id": "message",
+      "type": "text",
+      "label": "Message (80-100 words)",
+      "binds": "message",
+      "x": 400,
+      "y": 4190,
+      "w": 2800,
+      "align": "center",
+      "font": "Playfair Display",
+      "weight": 400,
+      "sizePx": 68,
+      "color": "#F6F1E9",
+      "maxLines": 8,
+      "lineHeight": 1.45,
+      "italic": true,
+      "glow": {
+        "color": "#000000",
+        "blur": 18,
+        "opacity": 0.5
+      }
+    },
+    {
+      "id": "date",
+      "type": "text",
+      "label": "Date",
+      "binds": "date",
+      "x": 400,
+      "y": 5040,
+      "w": 2800,
+      "align": "center",
+      "font": "Montserrat",
+      "weight": 500,
+      "sizePx": 56,
+      "letterSpacing": 12,
+      "color": "#F3E6C8",
+      "maxLines": 1
+    }
+  ]
+}

@@ -293,7 +293,7 @@ export const fieldSchema = z.object({
   type: z.literal("text"),
   // Raised from the PRD §6.3 cap of 80 — short fields (names, dates) still stay
   // small via their own maxLen, but a message/letter field needs real room.
-  maxLen: z.number().min(1).max(500),
+  maxLen: z.number().min(1).max(800),
   required: z.boolean().default(false),
   default: z.string().default(""),
 });

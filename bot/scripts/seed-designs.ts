@@ -35,6 +35,7 @@ const NAMES: Record<string, Record<string, string>> = {
   "PF-000002": { en: "8-Photo Collage", hi: "8 फोटो कोलाज" },
   "PF-000003": { en: "11-Photo Collage", hi: "11 फोटो कोलाज" },
   "PF-000006": { en: "Kids Birthday", hi: "बच्चों का जन्मदिन" },
+  "PF-000032": { en: "Photo & Message Frame", hi: "फोटो और संदेश फ्रेम" },
 };
 
 /** Field prompts the customer sees, keyed by the template's field key. */
@@ -48,6 +49,7 @@ const FIELD_LABELS: Record<string, Record<string, string>> = {
   caption: { en: "the caption", hi: "कैप्शन" },
   occasion: { en: "the occasion", hi: "अवसर" },
   emojis: { en: "emojis (optional)", hi: "इमोजी (वैकल्पिक)" },
+  date: { en: "the date", hi: "तारीख" },
 };
 
 function labelFor(key: string, fallback: string): Record<string, string> {

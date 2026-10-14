@@ -1,0 +1,436 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "PF-000033",
+    "occasion": [
+      "birthday",
+      "friendship",
+      "bestie"
+    ]
+  },
+  "canvas": {
+    "widthMm": 304.8,
+    "heightMm": 457.2,
+    "dpi": 300,
+    "bleedMm": 3,
+    "widthPx": 3600,
+    "heightPx": 5400,
+    "background": "#111111"
+  },
+  "inputs": {
+    "photos": {
+      "min": 21,
+      "max": 21
+    },
+    "fields": []
+  },
+  "layers": [
+    {
+      "id": "p1",
+      "type": "photoSlot",
+      "label": "Top left",
+      "x": 0,
+      "y": 0,
+      "w": 960,
+      "h": 1016,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "p2",
+      "type": "photoSlot",
+      "label": "Top middle",
+      "x": 960,
+      "y": 0,
+      "w": 1101,
+      "h": 1016,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "p3",
+      "type": "photoSlot",
+      "label": "Top right",
+      "x": 2077,
+      "y": 0,
+      "w": 1523,
+      "h": 1368,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "p4",
+      "type": "photoSlot",
+      "label": "Left 2",
+      "x": 0,
+      "y": 1016,
+      "w": 960,
+      "h": 804,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "p5",
+      "type": "photoSlot",
+      "label": "Centre 2",
+      "x": 960,
+      "y": 1036,
+      "w": 1101,
+      "h": 1036,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "p6",
+      "type": "photoSlot",
+      "label": "Right arch",
+      "x": 2077,
+      "y": 1378,
+      "w": 902,
+      "h": 1216,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "p7",
+      "type": "photoSlot",
+      "label": "Right mirror",
+      "x": 2995,
+      "y": 1378,
+      "w": 605,
+      "h": 905,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "p8",
+      "type": "photoSlot",
+      "label": "Left 3",
+      "x": 0,
+      "y": 1840,
+      "w": 950,
+      "h": 1036,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "p9",
+      "type": "photoSlot",
+      "label": "Centre 3",
+      "x": 960,
+      "y": 2082,
+      "w": 1101,
+      "h": 905,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "p10",
+      "type": "photoSlot",
+      "label": "Right sky",
+      "x": 2995,
+      "y": 2293,
+      "w": 605,
+      "h": 1216,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "p11",
+      "type": "photoSlot",
+      "label": "Right 4",
+      "x": 2087,
+      "y": 2604,
+      "w": 897,
+      "h": 916,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "p12",
+      "type": "photoSlot",
+      "label": "Left 4",
+      "x": 0,
+      "y": 2886,
+      "w": 944,
+      "h": 1161,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "p13",
+      "type": "photoSlot",
+      "label": "Centre 4",
+      "x": 960,
+      "y": 3077,
+      "w": 1101,
+      "h": 1036,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "p14",
+      "type": "photoSlot",
+      "label": "Right 5",
+      "x": 2087,
+      "y": 3535,
+      "w": 1513,
+      "h": 1040,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "p15",
+      "type": "photoSlot",
+      "label": "Left 5",
+      "x": 0,
+      "y": 4063,
+      "w": 1117,
+      "h": 693,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "p16",
+      "type": "photoSlot",
+      "label": "Left 6",
+      "x": 0,
+      "y": 4777,
+      "w": 1117,
+      "h": 623,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "p17",
+      "type": "photoSlot",
+      "label": "Centre 5",
+      "x": 1117,
+      "y": 4123,
+      "w": 944,
+      "h": 1277,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "p18",
+      "type": "photoSlot",
+      "label": "Right 6",
+      "x": 2087,
+      "y": 4596,
+      "w": 1513,
+      "h": 804,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "c1",
+      "type": "photoSlot",
+      "label": "Cut-out (blue top)",
+      "x": 699,
+      "y": 694,
+      "w": 548,
+      "h": 754,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "cutout": {
+        "outlineWidth": 22,
+        "outlineColor": "#FFFFFF"
+      }
+    },
+    {
+      "id": "c2",
+      "type": "photoSlot",
+      "label": "Cut-out (smiling)",
+      "x": 2400,
+      "y": 2655,
+      "w": 882,
+      "h": 834,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "cutout": {
+        "outlineWidth": 22,
+        "outlineColor": "#FFFFFF"
+      }
+    },
+    {
+      "id": "c3",
+      "type": "photoSlot",
+      "label": "Cut-out (standing)",
+      "x": 626,
+      "y": 3982,
+      "w": 694,
+      "h": 1418,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "cutout": {
+        "outlineWidth": 22,
+        "outlineColor": "#FFFFFF"
+      }
+    },
+    {
+      "id": "hibiscus",
+      "type": "image",
+      "label": "Hibiscus",
+      "role": "sticker",
+      "src": "/templates/PF-000033/assets/hibiscus.png",
+      "x": -351,
+      "y": 613,
+      "w": 754,
+      "h": 724
+    },
+    {
+      "id": "hearts-1",
+      "type": "image",
+      "label": "Hearts (left)",
+      "role": "sticker",
+      "src": "/templates/PF-000033/assets/hearts.png",
+      "x": 772,
+      "y": 1318,
+      "w": 355,
+      "h": 290
+    },
+    {
+      "id": "darling",
+      "type": "image",
+      "label": "Darling sticker",
+      "role": "sticker",
+      "src": "/templates/PF-000033/assets/darling.png",
+      "x": 678,
+      "y": 1738,
+      "w": 1085,
+      "h": 445
+    },
+    {
+      "id": "lucky",
+      "type": "image",
+      "label": "Lucky label",
+      "role": "sticker",
+      "src": "/templates/PF-000033/assets/lucky.png",
+      "x": 490,
+      "y": 51,
+      "w": 1159,
+      "h": 189
+    },
+    {
+      "id": "yapper",
+      "type": "image",
+      "label": "Certified yapper",
+      "role": "sticker",
+      "src": "/templates/PF-000033/assets/yapper.png",
+      "x": 2536,
+      "y": 78,
+      "w": 1012,
+      "h": 301
+    },
+    {
+      "id": "butterfly",
+      "type": "image",
+      "label": "Butterfly",
+      "role": "sticker",
+      "src": "/templates/PF-000033/assets/butterfly.png",
+      "x": 1951,
+      "y": 1354,
+      "w": 929,
+      "h": 620
+    },
+    {
+      "id": "hearts-2",
+      "type": "image",
+      "label": "Hearts (right)",
+      "role": "sticker",
+      "src": "/templates/PF-000033/assets/hearts.png",
+      "x": 2807,
+      "y": 2066,
+      "w": 407,
+      "h": 332
+    },
+    {
+      "id": "enjoy",
+      "type": "image",
+      "label": "Enjoy the little things",
+      "role": "sticker",
+      "src": "/templates/PF-000033/assets/enjoy.png",
+      "x": -26,
+      "y": 2654,
+      "w": 1049,
+      "h": 236
+    },
+    {
+      "id": "calm",
+      "type": "image",
+      "label": "You're my calm",
+      "role": "sticker",
+      "src": "/templates/PF-000033/assets/calm.png",
+      "x": 1325,
+      "y": 2812,
+      "w": 825,
+      "h": 460
+    },
+    {
+      "id": "forever",
+      "type": "image",
+      "label": "Forever & always",
+      "role": "sticker",
+      "src": "/templates/PF-000033/assets/forever.png",
+      "x": 2463,
+      "y": 3429,
+      "w": 939,
+      "h": 210
+    },
+    {
+      "id": "world",
+      "type": "image",
+      "label": "World is better",
+      "role": "sticker",
+      "src": "/templates/PF-000033/assets/world.png",
+      "x": 459,
+      "y": 3700,
+      "w": 877,
+      "h": 322
+    },
+    {
+      "id": "neon-heart",
+      "type": "image",
+      "label": "Neon heart",
+      "role": "sticker",
+      "src": "/templates/PF-000033/assets/neon-heart.png",
+      "x": 2433,
+      "y": 4596,
+      "w": 894,
+      "h": 824
+    },
+    {
+      "id": "evil-eye",
+      "type": "image",
+      "label": "Evil eye",
+      "role": "sticker",
+      "src": "/templates/PF-000033/assets/evil-eye.png",
+      "x": 1912,
+      "y": 4354,
+      "w": 725,
+      "h": 744
+    }
+  ]
+}

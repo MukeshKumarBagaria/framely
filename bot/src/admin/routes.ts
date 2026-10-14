@@ -314,7 +314,7 @@ export const adminRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
         z.object({
           key: z.string().min(1).max(32),
           label_i18n: z.record(z.string(), z.string()),
-          maxLen: z.number().int().min(1).max(500),
+          maxLen: z.number().int().min(1).max(800),
           required: z.boolean().optional(),
         })
       )
