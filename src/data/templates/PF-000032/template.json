@@ -70,14 +70,7 @@
       "shape": "rect",
       "fit": "cover",
       "focal": "faces",
-      "bleed": true,
-      "blurBand": {
-        "y": 3456,
-        "h": 2016,
-        "radius": 55,
-        "feather": 380,
-        "dim": 0.25
-      }
+      "bleed": true
     },
     {
       "id": "fade",
@@ -128,12 +121,7 @@
       "sizePx": 300,
       "color": "#FFFFFF",
       "maxLines": 1,
-      "autoFit": true,
-      "glow": {
-        "color": "#000000",
-        "blur": 30,
-        "opacity": 0.55
-      }
+      "autoFit": true
     },
     {
       "id": "name",
@@ -150,12 +138,7 @@
       "letterSpacing": 26,
       "color": "#FFFFFF",
       "maxLines": 1,
-      "autoFit": true,
-      "glow": {
-        "color": "#000000",
-        "blur": 30,
-        "opacity": 0.55
-      }
+      "autoFit": true
     },
     {
       "id": "divider-left",
@@ -216,12 +199,7 @@
       "color": "#F6F1E9",
       "maxLines": 8,
       "lineHeight": 1.45,
-      "italic": true,
-      "glow": {
-        "color": "#000000",
-        "blur": 18,
-        "opacity": 0.5
-      }
+      "italic": true
     },
     {
       "id": "date",
