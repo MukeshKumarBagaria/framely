@@ -7,7 +7,7 @@ export default defineConfig({
     alias: { "@": path.resolve(path.dirname(fileURLToPath(import.meta.url)), "src") },
   },
   test: {
-    include: ["src/**/*.test.ts"],
+    include: ["src/**/*.test.{ts,tsx}"],
     environment: "node",
     // The PGlite-backed database suites boot a full Postgres in WASM.
     testTimeout: 60_000,
