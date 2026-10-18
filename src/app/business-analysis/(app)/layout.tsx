@@ -27,7 +27,6 @@ export default async function BusinessAnalysisLayout({ children }: { children: R
       return (
         <CenteredCard title="Not authorised">
           <p className="text-sm text-zinc-400">This account is not on the business-analysis allowlist. Ask the owner to add your email to BUSINESS_ANALYSIS_ALLOWED_EMAILS.</p>
-          <form action="/api/business-analysis/auth/logout" method="post" className="hidden" />
           <a href="/business-analysis/login" className="text-sm text-sky-400 underline">Sign in with a different account</a>
         </CenteredCard>
       );

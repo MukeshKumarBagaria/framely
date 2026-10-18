@@ -94,7 +94,7 @@ function FormBody({ onClose, fields, initial, submitLabel = "Save", onSubmit, fo
             return (
               <div key={f.name} className={wideCls}>
                 <Checkbox id={id} label={f.label} hint={f.hint} checked={Boolean(values[f.name])} onChange={(v) => set(f.name, v)} />
-                {err && <p className="text-[11px] text-rose-400" role="alert">{err}</p>}
+                {err && <p className="text-xs text-rose-400" role="alert">{err}</p>}
               </div>
             );
           }

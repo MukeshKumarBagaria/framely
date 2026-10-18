@@ -4,7 +4,8 @@ import { useState } from "react";
 import { Calendar, X } from "lucide-react";
 import { DATE_PRESETS, PRESET_LABELS, type DatePreset } from "../domain/periods";
 import { CHANNEL_LABELS, ORDER_STATUSES, ORDER_STATUS_LABELS, SALES_CHANNELS } from "../domain/statuses";
-import { Button, cx, Input, Select } from "./kit";
+import { Button, Input, Select } from "./kit";
+import { cx } from "./cx";
 import { useUrlState } from "./use-url-state";
 
 type Show = { channel?: boolean; sku?: boolean; status?: boolean; settlement?: boolean };
@@ -36,9 +37,9 @@ export function GlobalFilters({
   };
 
   return (
-    <div className="flex flex-col gap-2 rounded-xl border border-zinc-800 bg-zinc-900/40 p-3" role="search" aria-label="Report filters">
+    <div className="ba-surface flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-900 p-4" role="search" aria-label="Report filters">
       <div className="flex flex-wrap items-end gap-2">
-        <label className="flex flex-col gap-1 text-[11px] text-zinc-500">
+        <label className="flex flex-col gap-1 text-xs text-zinc-500">
           Period
           <Select
             aria-label="Date range"
@@ -66,11 +67,11 @@ export function GlobalFilters({
               if (from && to) set({ preset: "custom", from, to });
             }}
           >
-            <label className="flex flex-col gap-1 text-[11px] text-zinc-500">
+            <label className="flex flex-col gap-1 text-xs text-zinc-500">
               From
               <Input type="date" value={from} max={to || undefined} onChange={(e) => setFrom(e.target.value)} className="w-40" required />
             </label>
-            <label className="flex flex-col gap-1 text-[11px] text-zinc-500">
+            <label className="flex flex-col gap-1 text-xs text-zinc-500">
               To
               <Input type="date" value={to} min={from || undefined} onChange={(e) => setTo(e.target.value)} className="w-40" required />
             </label>
@@ -81,7 +82,7 @@ export function GlobalFilters({
         )}
 
         {show.channel && (
-          <label className="flex flex-col gap-1 text-[11px] text-zinc-500">
+          <label className="flex flex-col gap-1 text-xs text-zinc-500">
             Channel
             <Select aria-label="Sales channel" value={params.get("channel") ?? ""} onChange={(e) => set({ channel: e.target.value || null })} className="w-36">
               <option value="">All channels</option>
@@ -96,7 +97,7 @@ export function GlobalFilters({
 
         {show.sku && (
           <form
-            className="flex flex-col gap-1 text-[11px] text-zinc-500"
+            className="flex flex-col gap-1 text-xs text-zinc-500"
             onSubmit={(e) => {
               e.preventDefault();
               set({ sku: sku.trim() || null });
@@ -121,26 +122,26 @@ export function GlobalFilters({
         )}
 
         {show.status && (
-          <details className="relative">
-            <summary className="flex h-9 cursor-pointer list-none flex-col justify-end text-[11px] text-zinc-500 [&::-webkit-details-marker]:hidden">
-              <span>Order status</span>
-              <span className="mt-1 flex h-9 w-44 items-center rounded-lg border border-zinc-700 bg-zinc-950 px-3 text-sm text-zinc-200">
+          <div className="flex flex-col gap-1 text-xs text-zinc-500">
+            <span id="ba-status-label">Order status</span>
+            <details className="relative">
+              <summary aria-labelledby="ba-status-label" className="flex h-9 w-44 cursor-pointer list-none items-center rounded-lg border border-zinc-700 bg-zinc-900 px-3 text-sm text-zinc-100 [&::-webkit-details-marker]:hidden">
                 {statuses.length === 0 ? "All statuses" : statuses.length === 1 ? ORDER_STATUS_LABELS[statuses[0] as keyof typeof ORDER_STATUS_LABELS] : `${statuses.length} statuses`}
-              </span>
-            </summary>
-            <div className="absolute z-20 mt-1 w-56 rounded-lg border border-zinc-700 bg-zinc-900 p-2 shadow-xl">
-              {ORDER_STATUSES.map((s) => (
-                <label key={s} className="flex cursor-pointer items-center gap-2 rounded px-2 py-1 text-sm text-zinc-200 hover:bg-zinc-800">
-                  <input type="checkbox" className="accent-zinc-200" checked={statuses.includes(s)} onChange={() => toggleStatus(s)} />
-                  {ORDER_STATUS_LABELS[s]}
-                </label>
-              ))}
-            </div>
-          </details>
+              </summary>
+              <div className="absolute z-20 mt-1 w-56 rounded-xl border border-zinc-800 bg-zinc-900 p-1.5 shadow-xl">
+                {ORDER_STATUSES.map((s) => (
+                  <label key={s} className="flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-sm text-zinc-200 hover:bg-zinc-800">
+                    <input type="checkbox" className="accent-sky-500" checked={statuses.includes(s)} onChange={() => toggleStatus(s)} />
+                    {ORDER_STATUS_LABELS[s]}
+                  </label>
+                ))}
+              </div>
+            </details>
+          </div>
         )}
 
         {show.settlement && (
-          <label className="flex flex-col gap-1 text-[11px] text-zinc-500">
+          <label className="flex flex-col gap-1 text-xs text-zinc-500">
             Settlement
             <Select aria-label="Settlement status" value={params.get("settlement") ?? ""} onChange={(e) => set({ settlement: e.target.value || null })} className="w-36">
               <option value="">Any</option>

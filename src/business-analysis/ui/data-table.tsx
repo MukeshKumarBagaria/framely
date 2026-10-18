@@ -11,7 +11,8 @@ import {
   type SortingState,
 } from "@tanstack/react-table";
 import { ArrowDown, ArrowUp, ArrowUpDown, ChevronLeft, ChevronRight } from "lucide-react";
-import { cx, EmptyState } from "./kit";
+import { EmptyState } from "./kit";
+import { cx } from "./cx";
 import { useUrlState } from "./use-url-state";
 
 // Server-driven data table on TanStack Table v9. Sorting and pagination are
@@ -89,10 +90,10 @@ export function DataTable<T extends RowData>({
 
   return (
     <div className={cx("relative", pending && "opacity-70 transition-opacity")} aria-busy={pending || undefined}>
-      <div className="overflow-x-auto rounded-lg border border-zinc-800">
+      <div className="ba-surface overflow-x-auto rounded-2xl border border-zinc-800 bg-zinc-900">
         <table className="w-full min-w-max border-collapse text-left text-[13px]">
           <caption className="sr-only">{caption}</caption>
-          <thead className="bg-zinc-900/80 text-[11px] uppercase tracking-wide text-zinc-400">
+          <thead className="bg-zinc-950 text-xs font-medium text-zinc-500">
             {table.getHeaderGroups().map((group) => (
               <tr key={group.id}>
                 {group.headers.map((header) => {
@@ -104,7 +105,7 @@ export function DataTable<T extends RowData>({
                       key={header.id}
                       scope="col"
                       aria-sort={sorted === "asc" ? "ascending" : sorted === "desc" ? "descending" : undefined}
-                      className={cx("whitespace-nowrap border-b border-zinc-800 px-3 py-2 font-medium", meta?.align === "right" && "text-right")}
+                      className={cx("whitespace-nowrap border-b border-zinc-800 px-3 py-2.5 font-medium", meta?.align === "right" && "text-right")}
                     >
                       {header.isPlaceholder ? null : canSort ? (
                         <button
@@ -133,14 +134,14 @@ export function DataTable<T extends RowData>({
                 tabIndex={onRowClick ? 0 : undefined}
                 className={cx(
                   "border-b border-zinc-800/70 last:border-0",
-                  onRowClick && "cursor-pointer hover:bg-zinc-800/40 focus:bg-zinc-800/50 focus:outline-none",
+                  onRowClick && "cursor-pointer hover:bg-zinc-800/50 focus:bg-zinc-800/60 focus:outline-none",
                   rowClassName?.(row.original),
                 )}
               >
                 {row.getAllCells().map((cell) => {
                   const meta = (cell.column.columnDef as Column<T>).meta;
                   return (
-                    <td key={cell.id} className={cx("whitespace-nowrap px-3 py-2 text-zinc-200", meta?.align === "right" && "text-right tabular-nums", meta?.className)}>
+                    <td key={cell.id} className={cx("whitespace-nowrap px-3 py-2.5 text-zinc-200", meta?.align === "right" && "text-right tabular-nums", meta?.className)}>
                       <table.FlexRender cell={cell} />
                     </td>
                   );

@@ -44,7 +44,7 @@ export default async function ImportsPage({ searchParams }: { searchParams: Prom
         <GlobalFilters periodLabel={`${period.current.label} · ${formatDateIN(period.current.from)} – ${formatDateIN(period.current.to)}`} show={{ channel: true, sku: true, status: true, settlement: true }} defaultPreset="this_month" />
         <ul className="grid grid-cols-1 gap-3 md:grid-cols-2">
           {REPORTS.map(([key, title, desc]) => (
-            <li key={key} className="flex items-center justify-between gap-3 rounded-lg border border-zinc-800 bg-zinc-900/40 p-3">
+            <li key={key} className="flex items-center justify-between gap-3 rounded-lg border border-zinc-800 bg-zinc-900 p-3">
               <div className="min-w-0"><p className="text-sm font-medium text-zinc-100">{title}</p><p className="truncate text-xs text-zinc-500">{desc}</p></div>
               <ExportMenu report={key} />
             </li>

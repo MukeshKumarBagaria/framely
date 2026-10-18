@@ -42,7 +42,7 @@ export function CashFlowView({ summary, series, rows, total, page, pageSize, can
 
   return (
     <div className="flex flex-col gap-4">
-      <section aria-label="Cash summary" className="grid grid-cols-2 gap-4 rounded-xl border border-zinc-800 bg-zinc-900/50 p-4 sm:grid-cols-4">
+      <section aria-label="Cash summary" className="grid grid-cols-2 gap-4 ba-surface rounded-2xl border border-zinc-800 bg-zinc-900 p-4 sm:grid-cols-4">
         <Stat label="Cash in" value={<Amt v={summary.totalIn} decimals={0} />} />
         <Stat label="Cash out" value={<Amt v={summary.totalOut} decimals={0} />} />
         <Stat label="Net cash flow" value={<Amt v={summary.net} signed decimals={0} />} tone={dec(summary.net).lessThan(0) ? "negative" : "positive"} />
@@ -72,7 +72,7 @@ export function CashFlowView({ summary, series, rows, total, page, pageSize, can
       </div>
 
       <div className="flex flex-wrap items-end justify-between gap-2">
-        <label className="flex flex-col gap-1 text-[11px] text-zinc-500">Direction
+        <label className="flex flex-col gap-1 text-xs text-zinc-500">Direction
           <Select aria-label="Direction" value={params.get("direction") ?? ""} onChange={(e) => set({ direction: e.target.value || null })} className="w-36"><option value="">In and out</option><option value="in">Cash in</option><option value="out">Cash out</option></Select></label>
         {canWrite && <Button variant="primary" onClick={() => setAdding(true)}><Plus className="h-4 w-4" aria-hidden /> Manual entry</Button>}
       </div>

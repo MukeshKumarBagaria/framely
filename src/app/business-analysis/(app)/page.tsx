@@ -8,7 +8,7 @@ import { getDashboard } from "@/business-analysis/server/services/dashboard-serv
 import { distinctSkus } from "@/business-analysis/server/services/order-service";
 import { ExportMenu } from "@/business-analysis/ui/export-menu";
 import { GlobalFilters } from "@/business-analysis/ui/global-filters";
-import { Badge, Card, EmptyState, Notice, PageHeader } from "@/business-analysis/ui/kit";
+import { Card, EmptyState, LinkButton, Notice, PageHeader } from "@/business-analysis/ui/kit";
 import { KpiCard } from "@/business-analysis/ui/kpi-card";
 import { baHref } from "@/business-analysis/ui/links";
 import { OverviewCharts } from "@/business-analysis/ui/overview-charts";
@@ -22,13 +22,15 @@ export default async function OverviewPage({ searchParams }: { searchParams: Pro
   const [data, skus] = await Promise.all([getDashboard(ctx, filters), distinctSkus(ctx)]);
   const { pnl, period } = data;
   const noData = pnl.counts.lines === 0 && data.cash.totalIn === "0.00" && data.cash.totalOut === "0.00";
-  const sev = { critical: "negative", warning: "warning", info: "info" } as const;
+  const HERO = ["recognized_revenue", "net_profit", "settled_amount", "profit_margin"];
+  const hero = HERO.map((key) => data.kpis.find((k) => k.key === key)).filter((k): k is NonNullable<typeof k> => Boolean(k));
+  const rest = data.kpis.filter((k) => !HERO.includes(k.key));
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-6">
       <PageHeader
         title="Overview"
-        description={`${data.businessName} — sales, accounting profit and cash are shown separately; they are not the same thing.`}
+        description="Sales, profit and cash for the selected period. They are tracked separately because they are not the same thing."
         actions={<ExportMenu report="profit_loss" label="Export P&L" />}
       />
       <GlobalFilters periodLabel={`${period.current.label} · ${formatDateIN(period.current.from)} – ${formatDateIN(period.current.to)}`} comparisonLabel={`${period.previous.label} (${formatDateIN(period.previous.from)} – ${formatDateIN(period.previous.to)})`} skus={skus} defaultPreset="this_month" />
@@ -38,51 +40,61 @@ export default async function OverviewPage({ searchParams }: { searchParams: Pro
           Shop-wide costs (rent, salaries, software, ads not tied to an order) cannot be split by SKU, channel or status, so profit here is <strong>contribution</strong>: net sales minus product cost and selling deductions. Clear the filters to see operating and net profit.
         </Notice>
       )}
-      {noData && (
-        <Card>
-          <EmptyState title="No financial data in this period" action={<Link href="/business-analysis/imports" className="text-sm text-sky-400 underline">Import a Meesho report</Link>}>
-            Import order, settlement or return reports, or add expenses and ad spend, then the figures below fill in. Nothing here is estimated from thin air.
-          </EmptyState>
-        </Card>
-      )}
-
-      <section aria-label="Key figures" className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-        {data.kpis.map((k) => (
-          <KpiCard key={k.key} kpi={k} />
+      <section aria-label="Headline figures" className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        {hero.map((k) => (
+          <KpiCard key={k.key} kpi={k} size="hero" />
         ))}
       </section>
 
-      {pnl.netProfitIsEstimate && !data.segment && (
-        <p className="text-xs text-zinc-500">Net profit is an estimate before unrecorded adjustments: no income tax is recorded for this period. Estimates are not audited accounting figures.</p>
-      )}
+      {noData ? (
+        <Card>
+          <EmptyState
+            title="No sales, costs or cash recorded in this period"
+            action={
+              <div className="flex flex-wrap justify-center gap-2">
+                <LinkButton href="/business-analysis/imports" variant="primary">Import a Meesho report</LinkButton>
+                <LinkButton href="/business-analysis/products">Set up product costs</LinkButton>
+                <LinkButton href="/business-analysis/expenses">Add an expense</LinkButton>
+              </div>
+            }
+          >
+            Start by adding your product costs, then import your Meesho orders and payment reports. Every figure here comes from your own records; nothing is estimated from thin air.
+          </EmptyState>
+        </Card>
+      ) : (
+        <>
+          <section aria-label="More figures" className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-5">
+            {rest.map((k) => (
+              <KpiCard key={k.key} kpi={k} />
+            ))}
+          </section>
+          {pnl.netProfitIsEstimate && !data.segment && (
+            <p className="-mt-2 text-xs text-zinc-500">Net profit is an estimate before unrecorded adjustments (no income tax recorded). Estimates are not audited figures.</p>
+          )}
 
-      <Card title="Business insights" subtitle="Rule-based and explained by the data; they point to things to check, not causes.">
-        {data.insights.length === 0 ? (
-          <p className="text-sm text-zinc-400">Nothing unusual stands out for this period.</p>
-        ) : (
-          <ul className="flex flex-col divide-y divide-zinc-800/80">
-            {data.insights.map((i) => {
-              const Icon = i.severity === "critical" ? AlertTriangle : i.severity === "warning" ? TriangleAlert : Info;
-              return (
-                <li key={i.id} className="flex items-start gap-3 py-2.5 first:pt-0 last:pb-0">
-                  <Icon className={`mt-0.5 h-4 w-4 shrink-0 ${i.severity === "critical" ? "text-rose-400" : i.severity === "warning" ? "text-amber-400" : "text-sky-400"}`} aria-hidden />
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium text-zinc-100">
-                      {i.title} <Badge tone={sev[i.severity]}>{i.severity}</Badge>
-                    </p>
-                    <p className="text-[13px] text-zinc-400">{i.detail}</p>
-                  </div>
-                  {i.href && (
-                    <Link href={baHref(i.href)} className="shrink-0 text-xs text-sky-400 hover:underline">
-                      Review
-                    </Link>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        )}
-      </Card>
+          {data.insights.length > 0 && (
+            <Card title="Things to check" subtitle="Rule-based flags from your data. They point to what to look at, not to causes.">
+              <ul className="flex flex-col divide-y divide-zinc-800">
+                {data.insights.map((i) => {
+                  const Icon = i.severity === "critical" ? AlertTriangle : i.severity === "warning" ? TriangleAlert : Info;
+                  return (
+                    <li key={i.id} className="flex items-start gap-3 py-3 first:pt-0 last:pb-0">
+                      <Icon className={`mt-0.5 h-4 w-4 shrink-0 ${i.severity === "critical" ? "text-rose-400" : i.severity === "warning" ? "text-amber-400" : "text-sky-400"}`} aria-hidden />
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-medium text-zinc-100">{i.title}</p>
+                        <p className="text-[13px] text-zinc-500">{i.detail}</p>
+                      </div>
+                      {i.href && (
+                        <Link href={baHref(i.href)} className="shrink-0 text-[13px] font-medium text-sky-400 hover:underline">
+                          Review
+                        </Link>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </Card>
+          )}
 
       <OverviewCharts
         series={data.series}
@@ -128,6 +140,8 @@ export default async function OverviewPage({ searchParams }: { searchParams: Pro
           </ul>
         </details>
       </Card>
+        </>
+      )}
     </div>
   );
 }

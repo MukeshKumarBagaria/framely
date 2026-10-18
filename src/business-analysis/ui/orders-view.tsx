@@ -29,7 +29,7 @@ export function OrdersView({ rows, total, page, pageSize, canWrite, allocation }
     h.accessor("sku", { header: "Product / SKU", cell: (c) => (
       <div className="max-w-56">
         <p className="truncate">{c.row.original.productName ?? "—"}</p>
-        <p className="font-mono text-[11px] text-zinc-500">{c.getValue() ?? "no SKU"}</p>
+        <p className="font-mono text-xs text-zinc-500">{c.getValue() ?? "no SKU"}</p>
       </div>
     ) }),
     h.accessor("quantity", { header: "Qty", enableSorting: false, meta: right }),
@@ -50,9 +50,9 @@ export function OrdersView({ rows, total, page, pageSize, canWrite, allocation }
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex flex-wrap items-end gap-2 rounded-xl border border-zinc-800 bg-zinc-900/40 p-3">
+      <div className="flex flex-wrap items-end gap-2 ba-surface rounded-2xl border border-zinc-800 bg-zinc-900 p-3">
         <form
-          className="flex flex-col gap-1 text-[11px] text-zinc-500"
+          className="flex flex-col gap-1 text-xs text-zinc-500"
           onSubmit={(e) => {
             e.preventDefault();
             set({ search: search.trim() || null });
@@ -64,7 +64,7 @@ export function OrdersView({ rows, total, page, pageSize, canWrite, allocation }
             <Button type="submit" aria-label="Search"><Search className="h-4 w-4" aria-hidden /></Button>
           </div>
         </form>
-        <label className="flex flex-col gap-1 text-[11px] text-zinc-500">
+        <label className="flex flex-col gap-1 text-xs text-zinc-500">
           Profitability
           <Select value={params.get("profitability") ?? ""} onChange={(e) => set({ profitability: e.target.value || null })} className="w-36" aria-label="Profitability">
             <option value="">Any</option>
@@ -73,7 +73,7 @@ export function OrdersView({ rows, total, page, pageSize, canWrite, allocation }
             <option value="breakeven">Break-even</option>
           </Select>
         </label>
-        <label className="flex flex-col gap-1 text-[11px] text-zinc-500">
+        <label className="flex flex-col gap-1 text-xs text-zinc-500">
           Reconciliation
           <Select value={params.get("reconStatus") ?? ""} onChange={(e) => set({ reconStatus: e.target.value || null })} className="w-44" aria-label="Reconciliation status">
             <option value="">Any</option>
@@ -187,7 +187,7 @@ function OrderDetailBody({ line, canWrite, onClose, onChanged }: { line: OrderLi
               </div>
             ))}
           </dl>
-          <p className="mt-1 text-[11px] text-zinc-500">Settlement: expected <Amt v={line.expectedSettlement} />, received sale <Amt v={line.settledSale} />, net <Amt v={line.settledNet} /> — {RECON_STATUS_LABELS[line.settlementStatus as ReconStatus]}.</p>
+          <p className="mt-1 text-xs text-zinc-500">Settlement: expected <Amt v={line.expectedSettlement} />, received sale <Amt v={line.settledSale} />, net <Amt v={line.settledNet} /> — {RECON_STATUS_LABELS[line.settlementStatus as ReconStatus]}.</p>
         </section>
 
         {error && <Notice tone="negative">{error}</Notice>}

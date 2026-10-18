@@ -33,9 +33,9 @@ export function ProductsView({ products, materials, costVersions, canWrite }: { 
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <div role="tablist" aria-label="Costing sections" className="flex gap-1 rounded-lg border border-zinc-800 bg-zinc-900/50 p-1">
+        <div role="tablist" aria-label="Costing sections" className="flex gap-1 rounded-lg border border-zinc-800 bg-zinc-900 p-1">
           {(["products", "materials"] as const).map((t) => (
-            <button key={t} role="tab" type="button" aria-selected={tab === t} onClick={() => setTab(t)} className={`rounded-md px-3 py-1.5 text-sm ${tab === t ? "bg-zinc-700 text-zinc-50" : "text-zinc-400 hover:text-zinc-200"}`}>
+            <button key={t} role="tab" type="button" aria-selected={tab === t} onClick={() => setTab(t)} className={`rounded-md px-3 py-1.5 text-sm ${tab === t ? "bg-zinc-800 text-zinc-50 shadow-sm" : "text-zinc-400 hover:text-zinc-200"}`}>
               {t === "products" ? `Products & recipes (${products.length})` : `Materials & prices (${materials.length})`}
             </button>
           ))}
@@ -63,9 +63,9 @@ export function ProductsView({ products, materials, costVersions, canWrite }: { 
                 <Card key={p.product.id} title={<span>{p.product.name} {p.product.status === "inactive" && <Badge>inactive</Badge>}</span>} subtitle={`${p.product.sku}${p.product.variant ? ` · ${p.product.variant}` : ""} · pack of ${p.product.pack_size}${p.product.dimensions ? ` · ${p.product.dimensions}` : ""}`}
                   actions={canWrite && <><Button size="sm" onClick={() => setProductForm(p.product)}>Edit</Button><Button size="sm" onClick={() => setRecipeFor(p)}>{p.currentRecipe ? "New recipe version" : "Add recipe"}</Button></>}>
                   <dl className="grid grid-cols-3 gap-3 text-sm">
-                    <div><dt className="text-[11px] uppercase text-zinc-500">Selling price</dt><dd><Amt v={price} /></dd></div>
-                    <div><dt className="text-[11px] uppercase text-zinc-500">Unit cost (est.)</dt><dd>{p.unitCost ? <Amt v={p.unitCost.total} /> : <span className="text-amber-400">no recipe</span>}</dd></div>
-                    <div><dt className="text-[11px] uppercase text-zinc-500">Before GST/fees</dt><dd><Amt v={margin} signed /></dd></div>
+                    <div><dt className="text-xs text-zinc-500">Selling price</dt><dd><Amt v={price} /></dd></div>
+                    <div><dt className="text-xs text-zinc-500">Unit cost (est.)</dt><dd>{p.unitCost ? <Amt v={p.unitCost.total} /> : <span className="text-amber-400">no recipe</span>}</dd></div>
+                    <div><dt className="text-xs text-zinc-500">Before GST/fees</dt><dd><Amt v={margin} signed /></dd></div>
                   </dl>
                   {p.unitCost && p.unitCost.missingComponents > 0 && <p className="mt-2 text-xs text-amber-400">{p.unitCost.missingComponents} component(s) have no price on file, so this cost is understated.</p>}
                   {p.currentRecipe ? (
@@ -106,13 +106,13 @@ export function ProductsView({ products, materials, costVersions, canWrite }: { 
           {materials.length === 0 ? <EmptyState title="No materials yet">Add frames, photo paper, boxes, foam and tape with their unit prices to cost your recipes.</EmptyState> : (
             <div className="overflow-x-auto">
               <table className="w-full min-w-max text-left text-[13px]">
-                <thead className="text-[11px] uppercase text-zinc-400"><tr><th className="px-3 py-2">Material</th><th className="px-3 py-2">Category</th><th className="px-3 py-2">Unit</th><th className="px-3 py-2 text-right">Current price</th><th className="px-3 py-2">Since</th><th className="px-3 py-2 text-right">Reorder at</th><th /></tr></thead>
+                <thead className="text-xs font-medium text-zinc-500"><tr><th className="px-3 py-2">Material</th><th className="px-3 py-2">Category</th><th className="px-3 py-2">Unit</th><th className="px-3 py-2 text-right">Current price</th><th className="px-3 py-2">Since</th><th className="px-3 py-2 text-right">Reorder at</th><th /></tr></thead>
                 <tbody>
                   {materials.map((m) => {
                     const c = latestCost(m.id);
                     return (
                       <tr key={m.id} className="border-t border-zinc-800/70">
-                        <td className="px-3 py-2">{m.name} {!m.is_active && <Badge>inactive</Badge>}<div className="font-mono text-[11px] text-zinc-500">{m.sku}</div></td>
+                        <td className="px-3 py-2">{m.name} {!m.is_active && <Badge>inactive</Badge>}<div className="font-mono text-xs text-zinc-500">{m.sku}</div></td>
                         <td className="px-3 py-2 text-zinc-400">{CATS.find((x) => x.value === m.category)?.label}</td>
                         <td className="px-3 py-2">{m.unit}</td>
                         <td className="px-3 py-2 text-right">{c ? <Amt v={c.unit_cost} /> : <span className="text-amber-400">not set</span>}</td>

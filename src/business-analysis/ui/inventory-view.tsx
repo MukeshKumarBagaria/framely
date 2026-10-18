@@ -39,7 +39,7 @@ export function InventoryView({ snapshot, movements, movementTotal, suppliers, p
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="grid grid-cols-2 gap-4 rounded-xl border border-zinc-800 bg-zinc-900/50 p-4 sm:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 ba-surface rounded-2xl border border-zinc-800 bg-zinc-900 p-4 sm:grid-cols-4">
         <Stat label={snapshot.isEstimate ? "Stock value (estimated)" : "Stock value"} value={<Amt v={snapshot.totalEstimatedValue ?? snapshot.totalValue} decimals={0} />} hint={snapshot.isEstimate ? "Includes estimated usage" : `As of ${formatDateIN(snapshot.asOf)}`} />
         <Stat label="Materials tracked" value={snapshot.items.length} />
         <Stat label="Below reorder level" value={low.length} tone={low.length ? "negative" : "neutral"} />
@@ -52,9 +52,9 @@ export function InventoryView({ snapshot, movements, movementTotal, suppliers, p
       )}
 
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <div role="tablist" aria-label="Inventory sections" className="flex gap-1 rounded-lg border border-zinc-800 bg-zinc-900/50 p-1">
+        <div role="tablist" aria-label="Inventory sections" className="flex gap-1 rounded-lg border border-zinc-800 bg-zinc-900 p-1">
           {TABS.map(([k, label]) => (
-            <button key={k} role="tab" type="button" aria-selected={tab === k} onClick={() => setTab(k)} className={`rounded-md px-3 py-1.5 text-sm ${tab === k ? "bg-zinc-700 text-zinc-50" : "text-zinc-400 hover:text-zinc-200"}`}>{label}</button>
+            <button key={k} role="tab" type="button" aria-selected={tab === k} onClick={() => setTab(k)} className={`rounded-md px-3 py-1.5 text-sm ${tab === k ? "bg-zinc-800 text-zinc-50 shadow-sm" : "text-zinc-400 hover:text-zinc-200"}`}>{label}</button>
           ))}
         </div>
         {canWrite && (
@@ -72,11 +72,11 @@ export function InventoryView({ snapshot, movements, movementTotal, suppliers, p
           {snapshot.items.length === 0 ? <EmptyState title="No materials yet">Add materials on the Product costing page, then record opening stock and purchases here.</EmptyState> : (
             <div className="overflow-x-auto">
               <table className="w-full min-w-max text-left text-[13px]">
-                <thead className="text-[11px] uppercase text-zinc-400"><tr><th className="px-3 py-2">Material</th><th className="px-3 py-2 text-right">On hand</th><th className="px-3 py-2 text-right">Est. after usage</th><th className="px-3 py-2 text-right">Reorder at</th><th className="px-3 py-2 text-right">Avg cost</th><th className="px-3 py-2 text-right">Value</th><th className="px-3 py-2">Last movement</th><th /></tr></thead>
+                <thead className="text-xs font-medium text-zinc-500"><tr><th className="px-3 py-2">Material</th><th className="px-3 py-2 text-right">On hand</th><th className="px-3 py-2 text-right">Est. after usage</th><th className="px-3 py-2 text-right">Reorder at</th><th className="px-3 py-2 text-right">Avg cost</th><th className="px-3 py-2 text-right">Value</th><th className="px-3 py-2">Last movement</th><th /></tr></thead>
                 <tbody>
                   {snapshot.items.map((i: InventoryItem) => (
                     <tr key={i.materialId} className="border-t border-zinc-800/70">
-                      <td className="px-3 py-2">{i.name} {i.belowReorder && <Badge tone="negative">reorder</Badge>} {i.wentNegative && <Badge tone="warning" title="Recorded usage exceeded recorded stock at some point">check stock</Badge>}<div className="text-[11px] text-zinc-500">{i.category.replace(/_/g, " ")}</div></td>
+                      <td className="px-3 py-2">{i.name} {i.belowReorder && <Badge tone="negative">reorder</Badge>} {i.wentNegative && <Badge tone="warning" title="Recorded usage exceeded recorded stock at some point">check stock</Badge>}<div className="text-xs text-zinc-500">{i.category.replace(/_/g, " ")}</div></td>
                       <td className="px-3 py-2 text-right tabular-nums">{Number(i.quantity).toLocaleString("en-IN")} {i.unit}</td>
                       <td className="px-3 py-2 text-right tabular-nums text-zinc-400">{i.estimatedQuantity !== null ? `${Number(i.estimatedQuantity).toLocaleString("en-IN")} ${i.unit}` : "—"}</td>
                       <td className="px-3 py-2 text-right tabular-nums">{Number(i.reorderThreshold).toLocaleString("en-IN")}</td>
@@ -104,13 +104,13 @@ export function InventoryView({ snapshot, movements, movementTotal, suppliers, p
           {movements.length === 0 ? <EmptyState title="No movements recorded" /> : (
             <div className="overflow-x-auto">
               <table className="w-full min-w-max text-left text-[13px]">
-                <thead className="text-[11px] uppercase text-zinc-400"><tr><th className="px-3 py-2">Date</th><th className="px-3 py-2">Item</th><th className="px-3 py-2">Type</th><th className="px-3 py-2 text-right">Quantity</th><th className="px-3 py-2 text-right">Unit cost</th><th className="px-3 py-2">Notes</th><th /></tr></thead>
+                <thead className="text-xs font-medium text-zinc-500"><tr><th className="px-3 py-2">Date</th><th className="px-3 py-2">Item</th><th className="px-3 py-2">Type</th><th className="px-3 py-2 text-right">Quantity</th><th className="px-3 py-2 text-right">Unit cost</th><th className="px-3 py-2">Notes</th><th /></tr></thead>
                 <tbody>
                   {movements.map((m) => (
                     <tr key={m.id} className={`border-t border-zinc-800/70 ${m.voided_at ? "opacity-50 line-through" : ""}`}>
                       <td className="px-3 py-2">{formatDateIN(m.movement_date)}</td>
                       <td className="px-3 py-2">{m.materials?.name ?? m.products?.name ?? "—"}</td>
-                      <td className="px-3 py-2">{MOVEMENT_LABELS[m.movement_type]} {m.reference_type && m.reference_type !== "manual" && <span className="text-[11px] text-zinc-500">({m.reference_type.replace(/_/g, " ")})</span>}</td>
+                      <td className="px-3 py-2">{MOVEMENT_LABELS[m.movement_type]} {m.reference_type && m.reference_type !== "manual" && <span className="text-xs text-zinc-500">({m.reference_type.replace(/_/g, " ")})</span>}</td>
                       <td className={`px-3 py-2 text-right tabular-nums ${Number(m.quantity) < 0 ? "text-rose-400" : "text-emerald-400"}`}>{Number(m.quantity) > 0 ? "+" : ""}{Number(m.quantity).toLocaleString("en-IN")} {m.materials?.unit ?? ""}</td>
                       <td className="px-3 py-2 text-right"><Amt v={m.unit_cost === null ? null : String(m.unit_cost)} /></td>
                       <td className="max-w-64 truncate px-3 py-2 text-zinc-400" title={m.notes ?? ""}>{m.notes}</td>

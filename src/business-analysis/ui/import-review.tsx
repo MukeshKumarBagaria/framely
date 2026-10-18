@@ -124,7 +124,7 @@ export function ImportReview({ imp, rows, total, counts, page, pageSize, statusF
       {imp.status === "rolled_back" && <Notice tone="info">Reversed {imp.rolled_back_at ? formatDateTimeIN(imp.rolled_back_at, "Asia/Kolkata") : ""}: {imp.rollback_reason}</Notice>}
       {lastResult && <Notice tone="positive" title="Import summary">{lastResult}</Notice>}
 
-      <section className="grid grid-cols-2 gap-4 rounded-xl border border-zinc-800 bg-zinc-900/50 p-4 sm:grid-cols-4 lg:grid-cols-8" aria-label="Import summary">
+      <section className="grid grid-cols-2 gap-4 ba-surface rounded-2xl border border-zinc-800 bg-zinc-900 p-4 sm:grid-cols-4 lg:grid-cols-8" aria-label="Import summary">
         <Stat label="Rows in file" value={imp.total_rows.toLocaleString("en-IN")} />
         <Stat label="Ready" value={imp.valid_rows.toLocaleString("en-IN")} tone="positive" />
         <Stat label="Invalid" value={imp.invalid_rows} tone={imp.invalid_rows ? "negative" : "neutral"} />
@@ -166,14 +166,14 @@ export function ImportReview({ imp, rows, total, counts, page, pageSize, statusF
       {editable && (
         <Card title="Column mapping" subtitle={`${adapter.label}: ${adapter.description}`} actions={<Button size="sm" onClick={() => setMapOpen((v) => !v)} aria-expanded={mapOpen}>{mapOpen ? "Hide" : "Review mapping"}</Button>}>
           <div className="mb-3 flex flex-wrap items-end gap-3">
-            <label className="flex flex-col gap-1 text-[11px] text-zinc-500">Report type
+            <label className="flex flex-col gap-1 text-xs text-zinc-500">Report type
               <Select aria-label="Report type" value={imp.report_type} disabled={remapping} onChange={(e) => remap({ reportType: e.target.value }, "Report type changed. Rows re-checked.")} className="w-64">{adapters.map((a) => <option key={a.reportType} value={a.reportType}>{a.label}</option>)}</Select></label>
           </div>
           {mapOpen && (
             <div className="flex flex-col gap-3">
               <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
                 {adapter.fields.map((f) => (
-                  <label key={f.key} className="flex flex-col gap-1 text-[11px] text-zinc-400" title={f.description}>
+                  <label key={f.key} className="flex flex-col gap-1 text-xs text-zinc-400" title={f.description}>
                     <span>{f.label}{f.required && <span className="text-rose-400"> *</span>}</span>
                     <Select aria-label={f.label} value={fields[f.key] ?? ""} onChange={(e) => setFields((p) => ({ ...p, [f.key]: e.target.value || null }))}>
                       <option value="">— not in this file —</option>
@@ -183,7 +183,7 @@ export function ImportReview({ imp, rows, total, counts, page, pageSize, statusF
                 ))}
               </div>
               {adapter.optionDefs?.map((o) => (
-                <label key={o.key} className="flex max-w-md flex-col gap-1 text-[11px] text-zinc-400">{o.label}
+                <label key={o.key} className="flex max-w-md flex-col gap-1 text-xs text-zinc-400">{o.label}
                   <Select value={String(options[o.key] ?? o.default)} onChange={(e) => setOptions((p) => ({ ...p, [o.key]: e.target.value }))}>{o.choices.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}</Select></label>
               ))}
               <div className="flex flex-wrap items-center gap-3">
@@ -197,20 +197,20 @@ export function ImportReview({ imp, rows, total, counts, page, pageSize, statusF
 
       <Card title="Preview" subtitle="Every row is shown with the result of validation. Raw values are kept exactly as in the file.">
         <div className="mb-3 flex flex-wrap items-end gap-2">
-          <label className="flex flex-col gap-1 text-[11px] text-zinc-500">Show
+          <label className="flex flex-col gap-1 text-xs text-zinc-500">Show
             <Select aria-label="Row filter" value={statusFilter} onChange={(e) => set({ status: e.target.value || null })} className="w-52">{filters.map(([v, l]) => <option key={v} value={v}>{l}{v && counts[v] ? ` (${counts[v]})` : ""}</option>)}</Select></label>
           <span className="pb-2 text-xs text-zinc-500">{total.toLocaleString("en-IN")} rows</span>
         </div>
         {rows.length === 0 ? <EmptyState title="No rows to show" /> : (
           <div className="overflow-x-auto rounded-lg border border-zinc-800">
             <table className="w-full min-w-max text-left text-[12px]">
-              <thead className="bg-zinc-900/80 text-[11px] uppercase text-zinc-400"><tr><th className="px-3 py-2">Row</th><th className="px-3 py-2">Result</th><th className="px-3 py-2">Understood as</th><th className="px-3 py-2">Issues</th></tr></thead>
+              <thead className="bg-zinc-900/80 text-xs font-medium text-zinc-500"><tr><th className="px-3 py-2">Row</th><th className="px-3 py-2">Result</th><th className="px-3 py-2">Understood as</th><th className="px-3 py-2">Issues</th></tr></thead>
               <tbody>
                 {rows.map((r) => (
                   <tr key={r.id} className="border-t border-zinc-800/70 align-top">
                     <td className="px-3 py-2 tabular-nums text-zinc-500">{r.source_row_number}</td>
                     <td className="px-3 py-2"><Badge tone={ROW_TONE[r.status] ?? "neutral"}>{ROW_LABEL[r.status] ?? r.status}</Badge></td>
-                    <td className="max-w-xl px-3 py-2 font-mono text-[11px] text-zinc-300">{summarise(r)}</td>
+                    <td className="max-w-xl px-3 py-2 font-mono text-xs text-zinc-300">{summarise(r)}</td>
                     <td className="px-3 py-2">
                       {[...r.errors.map((e) => ({ ...e, bad: true })), ...r.warnings.map((e) => ({ ...e, bad: false }))].map((i, k) => <p key={k} className={i.bad ? "text-rose-300" : "text-amber-300"}>{i.field ? `${i.field}: ` : ""}{i.message}</p>)}
                     </td>

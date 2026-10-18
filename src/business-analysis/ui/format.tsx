@@ -1,7 +1,8 @@
 import { formatINR } from "../domain/money";
 import { dec } from "../domain/money";
 import { ORDER_STATUS_LABELS, type OrderStatus } from "../domain/statuses";
-import { Badge, cx, type BadgeTone } from "./kit";
+import { Badge, type BadgeTone } from "./kit";
+import { cx } from "./cx";
 
 /** A rupee amount, optionally coloured by sign (green profit / red loss). */
 export function Amt({ v, signed, dash = "—", decimals = 2, className }: { v: string | number | null | undefined; signed?: boolean; dash?: string; decimals?: 0 | 2; className?: string }) {

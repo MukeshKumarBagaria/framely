@@ -1,17 +1,18 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import type { BreakdownSlice } from "../domain/financial-calculations";
 import { ORDER_STATUS_LABELS, type OrderStatus } from "../domain/statuses";
 import type { SeriesRow, SkuRow } from "../server/services/dashboard-service";
 import { dec } from "../domain/money";
 import { formatShortDate } from "../domain/dates";
-import { ChartCard, COLORS, ComboChart, CumulativeArea, Donut, GroupedBars, HorizontalBars, TrendChart } from "./charts";
+import { ChartCard, COLORS, ComboChart, Donut, GroupedBars, HorizontalBars, TrendChart } from "./charts";
 import { baHref } from "./links";
 
 const STATUS_COLORS: Partial<Record<OrderStatus, string>> = {
-  delivered: "#34d399", shipped: "#38bdf8", pending: "#facc15", cancelled: "#71717a",
-  rto: "#fb7185", returned: "#f97316", return_requested: "#fbbf24", exchanged: "#a78bfa", lost: "#e11d48", unknown: "#52525b",
+  delivered: "var(--ba-profit)", shipped: "var(--ba-revenue)", pending: "var(--ba-costs)", cancelled: "var(--ba-muted)",
+  rto: "var(--ba-loss)", returned: "var(--ba-cash-out)", return_requested: "var(--ba-cat-9)", exchanged: "var(--ba-ads)", lost: "var(--ba-cat-5)", unknown: "var(--color-zinc-600)",
 };
 
 type Props = {
@@ -28,6 +29,7 @@ type Props = {
 
 export function OverviewCharts({ series, weekly, monthly, breakdown, statuses, skus, query, segment, hasAds }: Props) {
   const router = useRouter();
+  const [period, setPeriod] = useState<"week" | "month">("week");
   const go = (path: string, extra?: Record<string, string>) => {
     const q = new URLSearchParams(query);
     for (const [k, v] of Object.entries(extra ?? {})) q.set(k, v);
@@ -43,27 +45,32 @@ export function OverviewCharts({ series, weekly, monthly, breakdown, statuses, s
   const barWeekly = weekly.map((w) => ({ ...w, label: formatShortDate(w.from) }));
   const barMonthly = monthly.map((m) => ({ ...m, profit: m.profit ?? 0 }));
 
+  const compare = period === "week" ? barWeekly.map((w) => ({ ...w, profit: w.profit ?? 0 })) : barMonthly;
+
   return (
     <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
-      <ChartCard
-        title="Revenue, costs and profit"
-        subtitle={segment ? "Filtered view: profit is contribution (before overheads and ads)" : "Net sales vs total expenses vs net profit"}
-        description="Line chart of net sales, costs and profit across the selected period."
-        empty={empty}
-      >
-        <TrendChart
-          data={data}
-          xKey="label"
-          onPointClick={drill}
-          series={[
-            { key: "netSales", name: "Net sales", color: COLORS.revenue },
-            { key: "costs", name: segment ? "Product & selling costs" : "Total expenses", color: COLORS.costs },
-            { key: "profit", name: profitLabel, color: COLORS.profit },
-          ]}
-        />
-      </ChartCard>
+      <div className="xl:col-span-2">
+        <ChartCard
+          title="Revenue, costs and profit"
+          subtitle={segment ? "Filtered view: profit is contribution (before overheads and ads). Click a point to see its orders." : "Net sales, total expenses and net profit. Click a point to see its orders."}
+          description="Line chart of net sales, costs and profit across the selected period."
+          empty={empty}
+          height={300}
+        >
+          <TrendChart
+            data={data}
+            xKey="label"
+            onPointClick={drill}
+            series={[
+              { key: "netSales", name: "Net sales", color: COLORS.revenue },
+              { key: "costs", name: segment ? "Product & selling costs" : "Total expenses", color: COLORS.costs },
+              { key: "profit", name: profitLabel, color: COLORS.profit },
+            ]}
+          />
+        </ChartCard>
+      </div>
 
-      <ChartCard title="Daily revenue and order volume" subtitle="Net sales (bars) and order lines (line)" description="Combined bar and line chart of net sales and order lines per period." empty={empty}>
+      <ChartCard title="Sales and order volume" subtitle="Net sales (bars) and order lines (line)" description="Combined bar and line chart of net sales and order lines per period." empty={empty}>
         <ComboChart
           data={series}
           xKey="label"
@@ -75,7 +82,16 @@ export function OverviewCharts({ series, weekly, monthly, breakdown, statuses, s
         />
       </ChartCard>
 
-      <ChartCard title="Where the money goes" subtitle="Click a slice to open the records" description="Donut chart of costs and expenses by category." empty={breakdown.length === 0}>
+      <ChartCard title="Order status" subtitle="Click a status to see those orders" description="Donut chart of order lines by status." empty={statuses.length === 0}>
+        <Donut
+          format="count"
+          centerLabel="Order lines"
+          data={statuses.map((s) => ({ key: s.status, label: ORDER_STATUS_LABELS[s.status], value: s.lines, color: STATUS_COLORS[s.status] }))}
+          onSliceClick={(s) => go("orders", { status: s.key })}
+        />
+      </ChartCard>
+
+      <ChartCard title="Where the money goes" subtitle="Costs by type; click to open the records" description="Donut chart of costs and expenses by category." empty={breakdown.length === 0}>
         <Donut
           data={breakdown.map((b) => ({ key: b.key, label: b.label, value: dec(b.amount).toNumber() }))}
           centerLabel="Total costs"
@@ -86,42 +102,11 @@ export function OverviewCharts({ series, weekly, monthly, breakdown, statuses, s
         />
       </ChartCard>
 
-      <ChartCard title="Product / SKU contribution" subtitle="Net sales minus product cost and selling deductions" description="Horizontal bar chart of contribution by SKU; losses are red." empty={skuShown.length === 0} height={Math.max(260, skuShown.length * 28 + 40)}>
+      <ChartCard title="Profit by product" subtitle="Contribution per SKU after product and selling costs" description="Horizontal bar chart of contribution by SKU; losses are red." empty={skuShown.length === 0} height={Math.max(260, skuShown.length * 28 + 40)}>
         <HorizontalBars data={skuShown} onBarClick={(sku) => go("orders", { sku })} />
       </ChartCard>
 
-      <ChartCard
-        title="Advertising spend vs attributed revenue"
-        subtitle="Meta-attributed revenue is the platform's own claim and can overlap Meesho sales"
-        description="Line chart of daily ad spend and Meta-attributed purchase value."
-        empty={!hasAds}
-        emptyText="Add ad spend on the Advertising page or import a Meta report."
-      >
-        <TrendChart
-          data={series}
-          xKey="label"
-          onPointClick={(row) => router.push(baHref(`advertising?preset=custom&from=${row.from}&to=${row.to}`))}
-          series={[
-            { key: "adSpend", name: "Ad spend", color: COLORS.ads },
-            { key: "attributedRevenue", name: "Attributed revenue", color: COLORS.revenue, dashed: true },
-          ]}
-        />
-      </ChartCard>
-
-      <ChartCard title="Margin over time" subtitle={`${profitLabel} ÷ net sales`} description="Line chart of the profit margin percentage per period." empty={empty || series.every((s) => s.margin === null)}>
-        <TrendChart data={series} xKey="label" percent series={[{ key: "margin", name: "Margin", color: COLORS.profit, format: "percent" }]} />
-      </ChartCard>
-
-      <ChartCard title="Order status" subtitle="Order lines in the period; click to filter orders" description="Donut chart of order lines by status." empty={statuses.length === 0}>
-        <Donut
-          format="count"
-          centerLabel="Order lines"
-          data={statuses.map((s) => ({ key: s.status, label: ORDER_STATUS_LABELS[s.status], value: s.lines, color: STATUS_COLORS[s.status] }))}
-          onSliceClick={(s) => go("orders", { status: s.key })}
-        />
-      </ChartCard>
-
-      <ChartCard title="Cash in vs cash out" subtitle="Recorded money movements by payment date" description="Grouped bar chart of cash inflows and outflows." empty={series.every((s) => s.cashIn === 0 && s.cashOut === 0)} emptyText="Cash appears once settlements, expenses or purchases are recorded.">
+      <ChartCard title="Cash in vs cash out" subtitle="Money that actually moved, by payment date" description="Grouped bar chart of cash inflows and outflows." empty={series.every((s) => s.cashIn === 0 && s.cashOut === 0)} emptyText="Cash appears once settlements, expenses or purchases are recorded.">
         <GroupedBars
           data={series}
           xKey="label"
@@ -133,9 +118,23 @@ export function OverviewCharts({ series, weekly, monthly, breakdown, statuses, s
         />
       </ChartCard>
 
-      <ChartCard title="Weekly comparison" subtitle="Last 8 weeks" description="Grouped bar chart comparing net sales, costs and profit by week." empty={weekly.every((w) => w.lines === 0 && w.costs === 0)}>
+      <ChartCard
+        title={period === "week" ? "Last 8 weeks" : "Last 6 months"}
+        subtitle="Net sales, costs and profit side by side"
+        description="Grouped bar chart comparing net sales, costs and profit by week or month."
+        empty={compare.every((w) => w.lines === 0 && w.costs === 0)}
+        actions={
+          <div role="radiogroup" aria-label="Compare by" className="flex rounded-lg border border-zinc-800 p-0.5 text-xs">
+            {(["week", "month"] as const).map((p) => (
+              <button key={p} type="button" role="radio" aria-checked={period === p} onClick={() => setPeriod(p)} className={`rounded-md px-2.5 py-1 ${period === p ? "bg-zinc-800 text-zinc-50" : "text-zinc-500 hover:text-zinc-200"}`}>
+                {p === "week" ? "Weekly" : "Monthly"}
+              </button>
+            ))}
+          </div>
+        }
+      >
         <GroupedBars
-          data={barWeekly.map((w) => ({ ...w, profit: w.profit ?? 0 }))}
+          data={compare}
           xKey="label"
           onBarClick={drill}
           series={[
@@ -146,31 +145,21 @@ export function OverviewCharts({ series, weekly, monthly, breakdown, statuses, s
         />
       </ChartCard>
 
-      <ChartCard title="Monthly comparison" subtitle="Last 6 months" description="Grouped bar chart comparing net sales, costs and profit by month." empty={monthly.every((m) => m.lines === 0 && m.costs === 0)}>
-        <GroupedBars
-          data={barMonthly}
-          xKey="label"
-          onBarClick={drill}
-          series={[
-            { key: "netSales", name: "Net sales", color: COLORS.revenue },
-            { key: "costs", name: "Costs", color: COLORS.costs },
-            { key: "profit", name: profitLabel, color: COLORS.profit },
-          ]}
-        />
-      </ChartCard>
-
-      <div className="xl:col-span-2">
-        <ChartCard title="Cumulative net sales and profit" subtitle="Running total across the selected period" description="Area chart of cumulative net sales and cumulative profit." empty={empty} height={280}>
-          <CumulativeArea
-            data={series}
-            xKey="label"
-            series={[
-              { key: "cumulativeNetSales", name: "Cumulative net sales", color: COLORS.revenue },
-              { key: "cumulativeProfit", name: `Cumulative ${profitLabel.toLowerCase()}`, color: COLORS.profit },
-            ]}
-          />
-        </ChartCard>
-      </div>
+      {hasAds && (
+        <div className="xl:col-span-2">
+          <ChartCard title="Ad spend vs Meta-attributed revenue" subtitle="Attributed revenue is Meta's own claim and can overlap Meesho sales" description="Line chart of daily ad spend and Meta-attributed purchase value." empty={false}>
+            <TrendChart
+              data={series}
+              xKey="label"
+              onPointClick={(row) => router.push(baHref(`advertising?preset=custom&from=${row.from}&to=${row.to}`))}
+              series={[
+                { key: "adSpend", name: "Ad spend", color: COLORS.ads },
+                { key: "attributedRevenue", name: "Attributed revenue", color: COLORS.revenue, dashed: true },
+              ]}
+            />
+          </ChartCard>
+        </div>
+      )}
     </div>
   );
 }

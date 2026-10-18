@@ -53,16 +53,16 @@ export function ExpensesView({ rows, total, page, pageSize, categories, canWrite
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex flex-wrap items-end gap-2 rounded-xl border border-zinc-800 bg-zinc-900/40 p-3">
-        <form className="flex flex-col gap-1 text-[11px] text-zinc-500" onSubmit={(e) => { e.preventDefault(); set({ search: search.trim() || null }); }}>
+      <div className="flex flex-wrap items-end gap-2 ba-surface rounded-2xl border border-zinc-800 bg-zinc-900 p-3">
+        <form className="flex flex-col gap-1 text-xs text-zinc-500" onSubmit={(e) => { e.preventDefault(); set({ search: search.trim() || null }); }}>
           <label htmlFor="ba-exp-search">Search vendor, reference, notes</label>
           <div className="flex gap-1.5"><Input id="ba-exp-search" value={search} onChange={(e) => setSearch(e.target.value)} className="w-56" /><Button type="submit" aria-label="Search"><Search className="h-4 w-4" aria-hidden /></Button></div>
         </form>
-        <label className="flex flex-col gap-1 text-[11px] text-zinc-500">Category
+        <label className="flex flex-col gap-1 text-xs text-zinc-500">Category
           <Select aria-label="Category" value={params.get("category") ?? ""} onChange={(e) => set({ category: e.target.value || null })} className="w-44"><option value="">All categories</option>{categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}</Select></label>
-        <label className="flex flex-col gap-1 text-[11px] text-zinc-500">Payment
+        <label className="flex flex-col gap-1 text-xs text-zinc-500">Payment
           <Select aria-label="Payment status" value={params.get("paymentStatus") ?? ""} onChange={(e) => set({ paymentStatus: e.target.value || null })} className="w-32"><option value="">Any</option><option value="paid">Paid</option><option value="unpaid">Unpaid</option></Select></label>
-        <label className="flex flex-col gap-1 text-[11px] text-zinc-500">Show
+        <label className="flex flex-col gap-1 text-xs text-zinc-500">Show
           <Select aria-label="Record type" value={isTemplates ? "templates" : ""} onChange={(e) => set({ recurring: e.target.value || null })} className="w-44"><option value="">Expense entries</option><option value="templates">Recurring templates</option></Select></label>
         <div className="ml-auto flex flex-wrap gap-2">
           {canWrite && <Button onClick={async () => { try { const r = await api<{ created: number }>("/expenses/recurring", { method: "POST", body: {} }); done(r.created ? `${r.created} recurring expense(s) created.` : "Nothing due; no duplicates were created."); } catch (e) { toast.notify("error", errorMessage(e)); } }}><Repeat className="h-4 w-4" aria-hidden /> Generate due</Button>}
@@ -192,8 +192,8 @@ function ExpenseDetailBody({ expense, onClose }: { expense: ExpenseRow; onClose:
       {expense && (
         <div className="flex flex-col gap-3 text-sm">
           <dl className="grid grid-cols-2 gap-2">
-            <div><dt className="text-[11px] uppercase text-zinc-500">Amount</dt><dd><Amt v={expense.amount} /></dd></div>
-            <div><dt className="text-[11px] uppercase text-zinc-500">Source</dt><dd className="text-zinc-300">{expense.source}</dd></div>
+            <div><dt className="text-xs text-zinc-500">Amount</dt><dd><Amt v={expense.amount} /></dd></div>
+            <div><dt className="text-xs text-zinc-500">Source</dt><dd className="text-zinc-300">{expense.source}</dd></div>
           </dl>
           {expense.notes && <p className="text-zinc-300">{expense.notes}</p>}
           {expense.reversal_reason && <Notice tone="warning">Reversed: {expense.reversal_reason}</Notice>}

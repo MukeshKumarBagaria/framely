@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Keep the dev-tools badge away from the business-analysis sidebar footer.
+  devIndicators: { position: "bottom-right" },
 };
 
 export default nextConfig;

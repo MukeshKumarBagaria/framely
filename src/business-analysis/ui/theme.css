@@ -1,0 +1,111 @@
+/*
+ * Business-analysis themes.
+ *
+ * Tailwind v4 compiles every colour utility (including /opacity variants) to
+ * var(--color-<name>-<shade>). Redefining those variables on .ba-root re-skins
+ * every component in this module for light and dark mode, while the template
+ * studio elsewhere keeps Tailwind's defaults.
+ *
+ * Neutral scale meaning, in both themes:
+ *   950 page · 900 surface · 800 border/hover · 700 strong border
+ *   600–500 muted text · 400 secondary text · 300–200 body text · 100–50 headings
+ * Status scales: 950–800 tinted backgrounds/borders, 400–300 text, 200–100 strong text.
+ */
+
+.ba-root {
+  font-family: "Inter", var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: "cv11", "ss01", "ss03";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.003em;
+}
+
+/* ---------- Dark: soft blue-grey, never pure black ---------- */
+.ba-root {
+  color-scheme: dark;
+  --color-zinc-50: #f3f5f7;
+  --color-zinc-100: #e6eaee;
+  --color-zinc-200: #d3d9df;
+  --color-zinc-300: #b9c1ca;
+  --color-zinc-400: #98a2ae;
+  --color-zinc-500: #727d8a;
+  --color-zinc-600: #525c69;
+  --color-zinc-700: #36404c;
+  --color-zinc-800: #262e39;
+  --color-zinc-900: #19202a;
+  --color-zinc-950: #11161d;
+
+  --color-emerald-100: #d4f3e3; --color-emerald-200: #b3e8cd; --color-emerald-300: #8fdbb5; --color-emerald-400: #6fcb9d;
+  --color-emerald-800: #24553f; --color-emerald-900: #1a3d2e; --color-emerald-950: #13291f;
+  --color-rose-100: #fbe0e0; --color-rose-200: #f5c3c3; --color-rose-300: #efa5a5; --color-rose-400: #ea8a8a; --color-rose-600: #c55c5c;
+  --color-rose-800: #5c2a2e; --color-rose-900: #431f22; --color-rose-950: #2c1618;
+  --color-sky-100: #dcecfa; --color-sky-200: #bcdaf3; --color-sky-400: #7fb6e6; --color-sky-500: #5d9fd8;
+  --color-sky-800: #23435f; --color-sky-900: #1a3248; --color-sky-950: #132332;
+  --color-amber-100: #f8ecd2; --color-amber-200: #f0dbab; --color-amber-300: #e7c784; --color-amber-400: #ddb468;
+  --color-amber-800: #5a4520; --color-amber-900: #413219; --color-amber-950: #2b2213;
+
+  --ba-revenue: #7fb6e6; --ba-costs: #ddb468; --ba-profit: #6fcb9d; --ba-loss: #ea8a8a; --ba-ads: #ac9cec;
+  --ba-cash-in: #63c3bb; --ba-cash-out: #e3a07e; --ba-muted: #727d8a; --ba-grid: #262e39;
+  --ba-cat-1: #7fb6e6; --ba-cat-2: #ddb468; --ba-cat-3: #ac9cec; --ba-cat-4: #6fcb9d; --ba-cat-5: #e59cc2; --ba-cat-6: #63c3bb;
+  --ba-cat-7: #e3a07e; --ba-cat-8: #9fb4d0; --ba-cat-9: #c8b97a; --ba-cat-10: #8fa3b8;
+  --ba-shadow: 0 1px 2px rgb(0 0 0 / 0.25);
+}
+
+/* ---------- Light: warm paper, ink text ---------- */
+.ba-root[data-theme="light"] {
+  color-scheme: light;
+  --color-zinc-50: #141a22;
+  --color-zinc-100: #1d242d;
+  --color-zinc-200: #2b333d;
+  --color-zinc-300: #3b4450;
+  --color-zinc-400: #576170;
+  --color-zinc-500: #7a8491;
+  --color-zinc-600: #a1a9b3;
+  --color-zinc-700: #cfd5dc;
+  --color-zinc-800: #e3e7ec;
+  --color-zinc-900: #ffffff;
+  --color-zinc-950: #f4f5f7;
+
+  --color-emerald-100: #0f4a32; --color-emerald-200: #145c3e; --color-emerald-300: #1b6e4b; --color-emerald-400: #1f8a5b;
+  --color-emerald-800: #b9e4cf; --color-emerald-900: #d6f0e3; --color-emerald-950: #ecf8f2;
+  --color-rose-100: #6b1d24; --color-rose-200: #7f232b; --color-rose-300: #9a2c35; --color-rose-400: #c0424c; --color-rose-600: #c0424c;
+  --color-rose-800: #f2c4c7; --color-rose-900: #f8dcde; --color-rose-950: #fcefef;
+  --color-sky-100: #0f3a5c; --color-sky-200: #164a72; --color-sky-400: #2a6fa8; --color-sky-500: #2a6fa8;
+  --color-sky-800: #bcd8ef; --color-sky-900: #d9e9f6; --color-sky-950: #eef5fb;
+  --color-amber-100: #5a3a06; --color-amber-200: #6e480a; --color-amber-300: #85580f; --color-amber-400: #a66d12;
+  --color-amber-800: #ecd7a8; --color-amber-900: #f5e7c6; --color-amber-950: #fbf4e3;
+
+  --ba-revenue: #3b7fbf; --ba-costs: #c48a2a; --ba-profit: #2e9466; --ba-loss: #cc5560; --ba-ads: #7a63c9;
+  --ba-cash-in: #2a8f88; --ba-cash-out: #c8733f; --ba-muted: #8a939e; --ba-grid: #e8ebef;
+  --ba-cat-1: #3b7fbf; --ba-cat-2: #c48a2a; --ba-cat-3: #7a63c9; --ba-cat-4: #2e9466; --ba-cat-5: #c25a90; --ba-cat-6: #2a8f88;
+  --ba-cat-7: #c8733f; --ba-cat-8: #5f7fa6; --ba-cat-9: #9a8a3a; --ba-cat-10: #6b7d90;
+  --ba-shadow: 0 1px 2px rgb(16 24 40 / 0.05), 0 1px 3px rgb(16 24 40 / 0.04);
+}
+
+/* "system" follows the operating system. Same values as light above. */
+@media (prefers-color-scheme: light) {
+  .ba-root[data-theme="system"] {
+    color-scheme: light;
+    --color-zinc-50: #141a22; --color-zinc-100: #1d242d; --color-zinc-200: #2b333d; --color-zinc-300: #3b4450; --color-zinc-400: #576170;
+    --color-zinc-500: #7a8491; --color-zinc-600: #a1a9b3; --color-zinc-700: #cfd5dc; --color-zinc-800: #e3e7ec; --color-zinc-900: #ffffff; --color-zinc-950: #f4f5f7;
+    --color-emerald-100: #0f4a32; --color-emerald-200: #145c3e; --color-emerald-300: #1b6e4b; --color-emerald-400: #1f8a5b;
+    --color-emerald-800: #b9e4cf; --color-emerald-900: #d6f0e3; --color-emerald-950: #ecf8f2;
+    --color-rose-100: #6b1d24; --color-rose-200: #7f232b; --color-rose-300: #9a2c35; --color-rose-400: #c0424c; --color-rose-600: #c0424c;
+    --color-rose-800: #f2c4c7; --color-rose-900: #f8dcde; --color-rose-950: #fcefef;
+    --color-sky-100: #0f3a5c; --color-sky-200: #164a72; --color-sky-400: #2a6fa8; --color-sky-500: #2a6fa8;
+    --color-sky-800: #bcd8ef; --color-sky-900: #d9e9f6; --color-sky-950: #eef5fb;
+    --color-amber-100: #5a3a06; --color-amber-200: #6e480a; --color-amber-300: #85580f; --color-amber-400: #a66d12;
+    --color-amber-800: #ecd7a8; --color-amber-900: #f5e7c6; --color-amber-950: #fbf4e3;
+    --ba-revenue: #3b7fbf; --ba-costs: #c48a2a; --ba-profit: #2e9466; --ba-loss: #cc5560; --ba-ads: #7a63c9;
+    --ba-cash-in: #2a8f88; --ba-cash-out: #c8733f; --ba-muted: #8a939e; --ba-grid: #e8ebef;
+    --ba-cat-1: #3b7fbf; --ba-cat-2: #c48a2a; --ba-cat-3: #7a63c9; --ba-cat-4: #2e9466; --ba-cat-5: #c25a90; --ba-cat-6: #2a8f88;
+    --ba-cat-7: #c8733f; --ba-cat-8: #5f7fa6; --ba-cat-9: #9a8a3a; --ba-cat-10: #6b7d90;
+    --ba-shadow: 0 1px 2px rgb(16 24 40 / 0.05), 0 1px 3px rgb(16 24 40 / 0.04);
+  }
+}
+
+/* Surfaces get a whisper of shadow (visible in light mode, invisible in dark). */
+.ba-root .ba-surface { box-shadow: var(--ba-shadow); }
+
+/* Native date pickers and selects follow the theme via color-scheme above. */
+.ba-root ::selection { background: color-mix(in oklab, var(--ba-revenue) 30%, transparent); }

@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { CircleAlert, CircleCheck, X } from "lucide-react";
-import { cx } from "./kit";
+import { cx } from "./cx";
 
 // ---- Modal: the native <dialog> provides focus trapping, Escape to close and
 // an inert background without extra libraries.

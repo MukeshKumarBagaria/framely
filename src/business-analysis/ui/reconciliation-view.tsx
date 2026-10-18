@@ -51,7 +51,7 @@ export function ReconciliationView({ view, summary, lines, unlinked, settlements
 
   return (
     <div className="flex flex-col gap-4">
-      <section aria-label="Reconciliation summary" className="grid grid-cols-2 gap-4 rounded-xl border border-zinc-800 bg-zinc-900/50 p-4 sm:grid-cols-3 lg:grid-cols-6">
+      <section aria-label="Reconciliation summary" className="grid grid-cols-2 gap-4 ba-surface rounded-2xl border border-zinc-800 bg-zinc-900 p-4 sm:grid-cols-3 lg:grid-cols-6">
         <Stat label="Expected from Meesho" value={<Amt v={s.expected} decimals={0} />} />
         <Stat label="Net received (settlements)" value={<Amt v={s.settledNet} decimals={0} />} />
         <Stat label="Outstanding receivable" value={<Amt v={s.outstanding} decimals={0} />} tone={dec(s.outstanding).greaterThan(0) ? "negative" : "neutral"} hint="Cancelled and nothing-due lines excluded" />
@@ -62,10 +62,10 @@ export function ReconciliationView({ view, summary, lines, unlinked, settlements
       <p className="text-xs text-zinc-500">A delivered order is never assumed to be paid: money counts as received only when a settlement report shows it (or you enter the bank receipt).</p>
 
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <div role="tablist" aria-label="Reconciliation views" className="flex gap-1 rounded-lg border border-zinc-800 bg-zinc-900/50 p-1">
+        <div role="tablist" aria-label="Reconciliation views" className="flex gap-1 rounded-lg border border-zinc-800 bg-zinc-900 p-1">
           {tabs.map(([k, label, n]) => (
-            <button key={k} role="tab" type="button" aria-selected={view === k} onClick={() => set({ view: k === "lines" ? null : k, page: null, reconStatus: null })} className={`rounded-md px-3 py-1.5 text-sm ${view === k ? "bg-zinc-700 text-zinc-50" : "text-zinc-400 hover:text-zinc-200"}`}>
-              {label}{n ? <span className="ml-1.5 rounded bg-rose-900/60 px-1.5 text-[11px] text-rose-200">{n}</span> : null}
+            <button key={k} role="tab" type="button" aria-selected={view === k} onClick={() => set({ view: k === "lines" ? null : k, page: null, reconStatus: null })} className={`rounded-md px-3 py-1.5 text-sm ${view === k ? "bg-zinc-800 text-zinc-50 shadow-sm" : "text-zinc-400 hover:text-zinc-200"}`}>
+              {label}{n ? <span className="ml-1.5 rounded bg-rose-900/60 px-1.5 text-xs text-rose-200">{n}</span> : null}
             </button>
           ))}
         </div>
@@ -74,11 +74,11 @@ export function ReconciliationView({ view, summary, lines, unlinked, settlements
       {view === "lines" && (
         <>
           <div className="flex flex-wrap items-end gap-2">
-            <form className="flex flex-col gap-1 text-[11px] text-zinc-500" onSubmit={(e) => { e.preventDefault(); set({ search: search.trim() || null }); }}>
+            <form className="flex flex-col gap-1 text-xs text-zinc-500" onSubmit={(e) => { e.preventDefault(); set({ search: search.trim() || null }); }}>
               <label htmlFor="ba-recon-search">Search order ID</label>
               <div className="flex gap-1.5"><Input id="ba-recon-search" value={search} onChange={(e) => setSearch(e.target.value)} className="w-52" /><Button type="submit" aria-label="Search"><Search className="h-4 w-4" aria-hidden /></Button></div>
             </form>
-            <label className="flex flex-col gap-1 text-[11px] text-zinc-500">Result
+            <label className="flex flex-col gap-1 text-xs text-zinc-500">Result
               <Select aria-label="Result" value={params.get("reconStatus") ?? ""} onChange={(e) => set({ reconStatus: e.target.value || null })} className="w-48"><option value="">All results</option>{RECON_STATUSES.map((r) => <option key={r} value={r}>{RECON_STATUS_LABELS[r]}</option>)}</Select></label>
           </div>
           <DataTable columns={columns} data={lines} total={total} page={page} pageSize={pageSize} caption="Order lines compared with settlements" getRowId={(r) => r.orderItemId}
@@ -91,7 +91,7 @@ export function ReconciliationView({ view, summary, lines, unlinked, settlements
           {unlinked.length === 0 ? <EmptyState title="Every payment line is linked to an order" /> : (
             <div className="overflow-x-auto">
               <table className="w-full min-w-max text-left text-[13px]">
-                <thead className="text-[11px] uppercase text-zinc-400"><tr><th className="px-3 py-2">Date</th><th className="px-3 py-2">Reference in report</th><th className="px-3 py-2">Type</th><th className="px-3 py-2">Settlement</th><th className="px-3 py-2 text-right">Amount</th><th /></tr></thead>
+                <thead className="text-xs font-medium text-zinc-500"><tr><th className="px-3 py-2">Date</th><th className="px-3 py-2">Reference in report</th><th className="px-3 py-2">Type</th><th className="px-3 py-2">Settlement</th><th className="px-3 py-2 text-right">Amount</th><th /></tr></thead>
                 <tbody>
                   {unlinked.map((u) => (
                     <tr key={u.id} className="border-t border-zinc-800/70">
@@ -115,13 +115,13 @@ export function ReconciliationView({ view, summary, lines, unlinked, settlements
           {settlements.length === 0 ? <EmptyState title="No settlements in this period">Import a Meesho payment report on the Reports & imports page.</EmptyState> : (
             <div className="overflow-x-auto">
               <table className="w-full min-w-max text-left text-[13px]">
-                <thead className="text-[11px] uppercase text-zinc-400"><tr><th className="px-3 py-2">Settlement</th><th className="px-3 py-2">Date</th><th className="px-3 py-2 text-right">Gross</th><th className="px-3 py-2 text-right">Deductions</th><th className="px-3 py-2 text-right">Net reported</th><th className="px-3 py-2">Bank receipt</th><th /></tr></thead>
+                <thead className="text-xs font-medium text-zinc-500"><tr><th className="px-3 py-2">Settlement</th><th className="px-3 py-2">Date</th><th className="px-3 py-2 text-right">Gross</th><th className="px-3 py-2 text-right">Deductions</th><th className="px-3 py-2 text-right">Net reported</th><th className="px-3 py-2">Bank receipt</th><th /></tr></thead>
                 <tbody>
                   {settlements.map((st) => {
                     const diff = st.bank_received_amount === null ? null : dec(st.bank_received_amount).minus(st.net_amount);
                     return (
                       <tr key={st.id} className="border-t border-zinc-800/70">
-                        <td className="px-3 py-2"><span className="font-mono text-xs">{st.external_settlement_id}</span><div className="text-[11px] text-zinc-500">{st.settlement_kind.replace(/_/g, " ")}</div></td>
+                        <td className="px-3 py-2"><span className="font-mono text-xs">{st.external_settlement_id}</span><div className="text-xs text-zinc-500">{st.settlement_kind.replace(/_/g, " ")}</div></td>
                         <td className="px-3 py-2">{formatDateIN(st.settlement_date)}</td>
                         <td className="px-3 py-2 text-right"><Amt v={st.gross_amount} /></td>
                         <td className="px-3 py-2 text-right"><Amt v={st.deductions_amount} /></td>
@@ -178,7 +178,7 @@ function MatchModal({ item, onClose, onMatched }: { item: Unlinked | null; onClo
           </li>
         ))}
       </ul>
-      <p className="mt-3 flex items-center gap-1 text-[11px] text-zinc-500"><Link2Off className="h-3 w-3" aria-hidden /> A link can be undone later; nothing is deleted.</p>
+      <p className="mt-3 flex items-center gap-1 text-xs text-zinc-500"><Link2Off className="h-3 w-3" aria-hidden /> A link can be undone later; nothing is deleted.</p>
     </Modal>
   );
 }

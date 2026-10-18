@@ -49,7 +49,7 @@ export function AdvertisingView({ accounts, totals, campaigns, metrics, metricsT
         Spend is real money and goes into your profit. <strong>Attributed revenue and ROAS are Meta&apos;s own numbers</strong> — they can overlap Meesho sales and are not your Meesho revenue, so they are shown for comparison only.
       </Notice>
 
-      <section aria-label="Advertising summary" className="grid grid-cols-2 gap-4 rounded-xl border border-zinc-800 bg-zinc-900/50 p-4 sm:grid-cols-3 lg:grid-cols-5">
+      <section aria-label="Advertising summary" className="grid grid-cols-2 gap-4 ba-surface rounded-2xl border border-zinc-800 bg-zinc-900 p-4 sm:grid-cols-3 lg:grid-cols-5">
         <Stat label="Ad spend" value={<Amt v={totals.spend} decimals={0} />} />
         <Stat label="Impressions" value={formatCount(totals.impressions)} />
         <Stat label="Clicks" value={formatCount(totals.clicks)} hint={dash(totals.ctr, (v) => `CTR ${v}%`)} />
@@ -73,11 +73,11 @@ export function AdvertisingView({ accounts, totals, campaigns, metrics, metricsT
         {!hasData ? <EmptyState title="No advertising data in this period" action={canWrite && accounts.length === 0 ? <Button variant="primary" onClick={() => setAccountForm(true)}>Add an ad account</Button> : undefined}>Enter daily spend by hand or import a Meta Ads Manager CSV. Campaign metrics are never invented.</EmptyState> : (
           <div className="overflow-x-auto">
             <table className="w-full min-w-max text-left text-[13px]">
-              <thead className="text-[11px] uppercase text-zinc-400"><tr><th className="px-3 py-2">Campaign</th><th className="px-3 py-2 text-right">Spend</th><th className="px-3 py-2 text-right">Impr.</th><th className="px-3 py-2 text-right">Clicks</th><th className="px-3 py-2 text-right">CTR</th><th className="px-3 py-2 text-right">CPM</th><th className="px-3 py-2 text-right">CPC</th><th className="px-3 py-2 text-right">Purchases</th><th className="px-3 py-2 text-right">Cost/purch.</th><th className="px-3 py-2 text-right">Attrib. revenue</th><th className="px-3 py-2 text-right">ROAS</th></tr></thead>
+              <thead className="text-xs font-medium text-zinc-500"><tr><th className="px-3 py-2">Campaign</th><th className="px-3 py-2 text-right">Spend</th><th className="px-3 py-2 text-right">Impr.</th><th className="px-3 py-2 text-right">Clicks</th><th className="px-3 py-2 text-right">CTR</th><th className="px-3 py-2 text-right">CPM</th><th className="px-3 py-2 text-right">CPC</th><th className="px-3 py-2 text-right">Purchases</th><th className="px-3 py-2 text-right">Cost/purch.</th><th className="px-3 py-2 text-right">Attrib. revenue</th><th className="px-3 py-2 text-right">ROAS</th></tr></thead>
               <tbody>
                 {campaigns.map((c) => (
                   <tr key={c.adAccountId + c.campaign} className="border-t border-zinc-800/70">
-                    <td className="max-w-64 truncate px-3 py-2" title={c.campaign}>{c.campaign}<div className="text-[11px] text-zinc-500">{accounts.find((a) => a.id === c.adAccountId)?.name} · {c.days} day(s)</div></td>
+                    <td className="max-w-64 truncate px-3 py-2" title={c.campaign}>{c.campaign}<div className="text-xs text-zinc-500">{accounts.find((a) => a.id === c.adAccountId)?.name} · {c.days} day(s)</div></td>
                     <td className="px-3 py-2 text-right"><Amt v={c.spend} /></td>
                     <td className="px-3 py-2 text-right tabular-nums">{formatCount(c.impressions)}</td>
                     <td className="px-3 py-2 text-right tabular-nums">{formatCount(c.clicks)}</td>
@@ -100,7 +100,7 @@ export function AdvertisingView({ accounts, totals, campaigns, metrics, metricsT
         {metrics.length === 0 ? <p className="text-sm text-zinc-500">Nothing in this period.</p> : (
           <div className="overflow-x-auto">
             <table className="w-full min-w-max text-left text-[13px]">
-              <thead className="text-[11px] uppercase text-zinc-400"><tr><th className="px-3 py-2">Date</th><th className="px-3 py-2">Account</th><th className="px-3 py-2">Campaign / ad set / ad</th><th className="px-3 py-2 text-right">Spend</th><th className="px-3 py-2 text-right">Impr.</th><th className="px-3 py-2 text-right">Clicks</th><th className="px-3 py-2">Source</th><th /></tr></thead>
+              <thead className="text-xs font-medium text-zinc-500"><tr><th className="px-3 py-2">Date</th><th className="px-3 py-2">Account</th><th className="px-3 py-2">Campaign / ad set / ad</th><th className="px-3 py-2 text-right">Spend</th><th className="px-3 py-2 text-right">Impr.</th><th className="px-3 py-2 text-right">Clicks</th><th className="px-3 py-2">Source</th><th /></tr></thead>
               <tbody>
                 {metrics.map((m) => (
                   <tr key={m.id} className="border-t border-zinc-800/70">

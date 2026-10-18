@@ -91,7 +91,7 @@ export function UploadPanel({ adapters, maxMb, presetType }: { adapters: Adapter
           <Button onClick={() => input.current?.click()} disabled={busy}>{file ? "Choose a different file" : "Choose file"}</Button>
         </div>
         <div className="flex flex-wrap items-end gap-3">
-          <label className="flex min-w-60 flex-col gap-1 text-[11px] text-zinc-500">
+          <label className="flex min-w-60 flex-col gap-1 text-xs text-zinc-500">
             Report type
             <Select value={type} onChange={(e) => setType(e.target.value)} disabled={busy} aria-label="Report type">
               <option value="">Detect automatically</option>
@@ -117,12 +117,12 @@ export function ImportHistory({ rows, total }: { rows: ImportListRow[]; total: n
       {rows.length === 0 ? <EmptyState title="No imports yet">Upload a Meesho orders, payment or returns report to begin.</EmptyState> : (
         <div className="overflow-x-auto">
           <table className="w-full min-w-max text-left text-[13px]">
-            <thead className="text-[11px] uppercase text-zinc-400"><tr><th className="px-3 py-2">Uploaded</th><th className="px-3 py-2">File</th><th className="px-3 py-2">Type</th><th className="px-3 py-2">Status</th><th className="px-3 py-2 text-right">Rows</th><th className="px-3 py-2 text-right">New</th><th className="px-3 py-2 text-right">Updated</th><th className="px-3 py-2 text-right">Same</th><th className="px-3 py-2 text-right">Skipped</th><th /></tr></thead>
+            <thead className="text-xs font-medium text-zinc-500"><tr><th className="px-3 py-2">Uploaded</th><th className="px-3 py-2">File</th><th className="px-3 py-2">Type</th><th className="px-3 py-2">Status</th><th className="px-3 py-2 text-right">Rows</th><th className="px-3 py-2 text-right">New</th><th className="px-3 py-2 text-right">Updated</th><th className="px-3 py-2 text-right">Same</th><th className="px-3 py-2 text-right">Skipped</th><th /></tr></thead>
             <tbody>
               {rows.map((r) => (
                 <tr key={r.id} className="border-t border-zinc-800/70">
                   <td className="px-3 py-2 text-zinc-400">{formatDateTimeIN(r.created_at, "Asia/Kolkata")}</td>
-                  <td className="max-w-64 truncate px-3 py-2" title={r.file_name}>{r.file_name} <span className="text-[11px] uppercase text-zinc-500">{r.file_format}</span></td>
+                  <td className="max-w-64 truncate px-3 py-2" title={r.file_name}>{r.file_name} <span className="text-xs text-zinc-500">{r.file_format}</span></td>
                   <td className="px-3 py-2 text-zinc-300">{r.report_type.replace(/_/g, " ")}</td>
                   <td className="px-3 py-2"><Badge tone={STATUS_TONE[r.status] ?? "neutral"}>{STATUS_LABEL[r.status] ?? r.status}</Badge></td>
                   <td className="px-3 py-2 text-right tabular-nums">{r.total_rows.toLocaleString("en-IN")}</td>
