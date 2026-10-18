@@ -39,6 +39,11 @@ export const COLORS = {
 };
 export const CATEGORICAL = ["#38bdf8", "#f59e0b", "#a78bfa", "#34d399", "#f472b6", "#facc15", "#60a5fa", "#fb923c", "#c084fc", "#2dd4bf", "#e879f9", "#94a3b8"];
 
+// Recharts shape callbacks receive internal prop types that are not exported.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type ShapeProps = any;
+export type Row = Record<string, unknown>;
+
 const axis = { stroke: COLORS.muted, fontSize: 11, tickLine: false, axisLine: false } as const;
 const tooltipStyle = {
   contentStyle: { background: "#18181b", border: "1px solid #3f3f46", borderRadius: 10, fontSize: 12, color: "#f4f4f5" },
@@ -83,11 +88,11 @@ function fmt(format: Series["format"]) {
   return format === "count" ? (v: unknown) => Number(v ?? 0).toLocaleString("en-IN") : format === "percent" ? (v: unknown) => (v === null ? "—" : `${Number(v).toFixed(1)}%`) : inr;
 }
 
-export function TrendChart<T extends Record<string, unknown>>({ data, xKey, series, onPointClick, percent }: {
-  data: T[];
-  xKey: keyof T & string;
+export function TrendChart({ data, xKey, series, onPointClick, percent }: {
+  data: Record<string, unknown>[];
+  xKey: string;
   series: Series[];
-  onPointClick?: (row: T) => void;
+  onPointClick?: (row: Row) => void;
   percent?: boolean;
 }) {
   return (
@@ -107,11 +112,11 @@ export function TrendChart<T extends Record<string, unknown>>({ data, xKey, seri
   );
 }
 
-export function ComboChart<T extends Record<string, unknown>>({ data, xKey, series, onPointClick }: {
-  data: T[];
-  xKey: keyof T & string;
+export function ComboChart({ data, xKey, series, onPointClick }: {
+  data: Record<string, unknown>[];
+  xKey: string;
   series: Series[];
-  onPointClick?: (row: T) => void;
+  onPointClick?: (row: Row) => void;
 }) {
   const hasRight = series.some((s) => s.axis === "right");
   return (
@@ -135,12 +140,12 @@ export function ComboChart<T extends Record<string, unknown>>({ data, xKey, seri
   );
 }
 
-export function GroupedBars<T extends Record<string, unknown>>({ data, xKey, series, stacked, onBarClick }: {
-  data: T[];
-  xKey: keyof T & string;
+export function GroupedBars({ data, xKey, series, stacked, onBarClick }: {
+  data: Record<string, unknown>[];
+  xKey: string;
   series: Series[];
   stacked?: boolean;
-  onBarClick?: (row: T) => void;
+  onBarClick?: (row: Row) => void;
 }) {
   return (
     <ResponsiveContainer width="100%" height="100%">
@@ -161,8 +166,8 @@ export function GroupedBars<T extends Record<string, unknown>>({ data, xKey, ser
             radius={stacked ? 0 : [3, 3, 0, 0]}
             maxBarSize={36}
             cursor={onBarClick ? "pointer" : undefined}
-            onClick={onBarClick ? (entry) => onBarClick(entry.payload as T) : undefined}
-            shape={(props: Record<string, unknown>) => {
+            onClick={onBarClick ? (entry) => onBarClick(entry.payload as Record<string, unknown>) : undefined}
+            shape={(props: ShapeProps) => {
               // Profit bars below zero are drawn in the loss colour.
               const value = Number((props.payload as Record<string, unknown>)?.[s.key] ?? 0);
               const fill = s.key === "profit" && value < 0 ? COLORS.loss : s.color;
@@ -175,7 +180,7 @@ export function GroupedBars<T extends Record<string, unknown>>({ data, xKey, ser
   );
 }
 
-export function CumulativeArea<T extends Record<string, unknown>>({ data, xKey, series }: { data: T[]; xKey: keyof T & string; series: Series[] }) {
+export function CumulativeArea({ data, xKey, series }: { data: Record<string, unknown>[]; xKey: string; series: Series[] }) {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <AreaChart data={data} margin={{ top: 8, right: 8, left: 4, bottom: 0 }}>
@@ -222,7 +227,7 @@ export function Donut({ data, onSliceClick, format = "money", centerLabel }: { d
               stroke="#18181b"
               onClick={onSliceClick ? (d) => onSliceClick(d.payload as Slice) : undefined}
               cursor={onSliceClick ? "pointer" : undefined}
-              shape={(props: Record<string, unknown>) => <Sector {...(props as object)} fill={String((props.payload as { fill?: string })?.fill ?? props.fill)} />}
+              shape={(props: ShapeProps) => <Sector {...(props as object)} fill={String((props.payload as { fill?: string })?.fill ?? props.fill)} />}
             />
           </PieChart>
         </ResponsiveContainer>
@@ -269,7 +274,7 @@ export function HorizontalBars({ data, onBarClick }: { data: { key: string; labe
           radius={3}
           cursor={onBarClick ? "pointer" : undefined}
           onClick={onBarClick ? (entry) => onBarClick(String((entry.payload as { key: string }).key)) : undefined}
-          shape={(props: Record<string, unknown>) => <Rectangle {...(props as object)} fill={String((props.payload as { fill: string })?.fill)} />}
+          shape={(props: ShapeProps) => <Rectangle {...(props as object)} fill={String((props.payload as { fill: string })?.fill)} />}
         />
       </BarChart>
     </ResponsiveContainer>

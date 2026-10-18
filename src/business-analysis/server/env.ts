@@ -12,8 +12,8 @@ import { isValidTimeZone } from "../domain/dates";
 // signed-in user under Row Level Security.
 
 const schema = z.object({
-  supabaseUrl: z.string().url("SUPABASE_URL must be your project URL, e.g. https://xyz.supabase.co"),
-  supabaseAnonKey: z.string().min(20, "SUPABASE_ANON_KEY (or the publishable key) is missing"),
+  supabaseUrl: z.string({ error: "SUPABASE_URL is not set (your Supabase project URL)" }).url("SUPABASE_URL must be your project URL, e.g. https://xyz.supabase.co"),
+  supabaseAnonKey: z.string({ error: "SUPABASE_ANON_KEY is not set (the anon or publishable key)" }).min(20, "SUPABASE_ANON_KEY (or the publishable key) is missing"),
   allowedEmails: z.array(z.string().email()),
   maxUploadMb: z.number().int().min(1).max(50),
   timeZone: z.string().refine(isValidTimeZone, "BUSINESS_ANALYSIS_TIMEZONE must be an IANA timezone"),
