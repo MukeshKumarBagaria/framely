@@ -216,6 +216,8 @@ export const calendarLayerSchema = layerCommon.extend({
   // titleUppercase — set both for the poster-style "FEB".
   titleAbbrev: z.boolean().default(false),
   titleUppercase: z.boolean().default(false),
+  // Set the month name in lower case ("october"), for handwritten styles.
+  titleLowercase: z.boolean().default(false),
   // Slant the month label (and the year beside it) — e.g. a bold italic "April".
   titleItalic: z.boolean().default(false),
   // "grid" only: print dates as two digits ("01", "02" … "09"), the way many

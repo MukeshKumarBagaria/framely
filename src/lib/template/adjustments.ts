@@ -160,6 +160,7 @@ export const FONT_CHOICES: { value: string; label: string }[] = [
   { value: "Sancreek", label: "Sancreek (western)" },
   { value: "Sacramento", label: "Sacramento (monoline script)" },
   { value: "Shalimar", label: "Shalimar (tall script)" },
+  { value: "Kalam", label: "Kalam (handwritten)" },
 ];
 
 // The template's own font for each bound field, so the picker opens on the real

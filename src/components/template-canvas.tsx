@@ -148,6 +148,7 @@ const FONT_FAMILIES = [
   "Sancreek",
   "Sacramento",
   "Shalimar",
+  "Kalam",
 ];
 
 function useFontsReady() {
@@ -1090,7 +1091,11 @@ function CalendarNode({ layer }: { layer: CalendarLayer }) {
   const dayLabel = (d: number) => (layer.zeroPad ? String(d).padStart(2, "0") : String(d));
   const monthName = layer.titleAbbrev ? MONTH_NAMES_SHORT[layer.month - 1] : MONTH_NAMES[layer.month - 1];
   const rawTitle = layer.title ?? monthName;
-  const title = layer.titleUppercase ? rawTitle.toUpperCase() : rawTitle;
+  const title = layer.titleUppercase
+    ? rawTitle.toUpperCase()
+    : layer.titleLowercase
+      ? rawTitle.toLowerCase()
+      : rawTitle;
 
   // Tear-off day card: month label band on top, large day number below.
   if (layer.variant === "day") {
