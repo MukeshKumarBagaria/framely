@@ -37,7 +37,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Alegreya&family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Gilda+Display&family=Great+Vibes&family=Hurricane&family=Comic+Relief:wght@400;700&family=Inter:wght@400;500;600;700;800;900&family=Kaushan+Script&family=Libre+Baskerville:wght@400;700&family=Licorice&family=Lobster+Two:wght@400;700&family=Luxurious+Script&family=Montserrat:wght@400;700;800;900&family=Moon+Dance&family=Ms+Madi&family=Oleo+Script:wght@400;700&family=Parisienne&family=Pinyon+Script&family=Poppins:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Alegreya&family=Alex+Brush&family=Arimo:ital,wght@0,400;0,700;1,400;1,700&family=Caladea:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Gilda+Display&family=Great+Vibes&family=Hurricane&family=Comic+Relief:wght@400;700&family=Inter:wght@400;500;600;700;800;900&family=Kaushan+Script&family=Libre+Baskerville:wght@400;700&family=Licorice&family=Lobster+Two:wght@400;700&family=Luxurious+Script&family=Montserrat:wght@400;700;800;900&family=Moon+Dance&family=Ms+Madi&family=Oleo+Script:wght@400;700&family=Parisienne&family=Pirata+One&family=Sacramento&family=Sancreek&family=Shalimar&family=Pinyon+Script&family=Poppins:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap"
           rel="stylesheet"
         />
       </head>

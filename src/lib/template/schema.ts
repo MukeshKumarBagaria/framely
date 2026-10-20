@@ -216,6 +216,11 @@ export const calendarLayerSchema = layerCommon.extend({
   // titleUppercase — set both for the poster-style "FEB".
   titleAbbrev: z.boolean().default(false),
   titleUppercase: z.boolean().default(false),
+  // Slant the month label (and the year beside it) — e.g. a bold italic "April".
+  titleItalic: z.boolean().default(false),
+  // "grid" only: print dates as two digits ("01", "02" … "09"), the way many
+  // printed calendars set them.
+  zeroPad: z.boolean().default(false),
   weekdayLabels: z.array(z.string()).length(7).default(["S", "M", "T", "W", "T", "F", "S"]),
   highlightDay: z.number().int().min(1).max(31).optional(),
   // How `highlightDay` is marked in the "grid" variant:

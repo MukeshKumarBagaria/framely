@@ -1,0 +1,539 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "PF-000036",
+    "occasion": [
+      "birthday",
+      "love",
+      "anniversary"
+    ]
+  },
+  "canvas": {
+    "widthMm": 304.8,
+    "heightMm": 457.2,
+    "dpi": 300,
+    "bleedMm": 3,
+    "widthPx": 3600,
+    "heightPx": 5400,
+    "background": "#030403"
+  },
+  "inputs": {
+    "photos": {
+      "min": 4,
+      "max": 4
+    },
+    "fields": [
+      {
+        "key": "sign_line1",
+        "label": "Sign line 1",
+        "type": "text",
+        "maxLen": 18,
+        "required": true,
+        "default": "HAPPY BIRTHDAY"
+      },
+      {
+        "key": "sign_line2",
+        "label": "Sign line 2",
+        "type": "text",
+        "maxLen": 12,
+        "required": false,
+        "default": "MY LOVE"
+      },
+      {
+        "key": "greeting",
+        "label": "Greeting",
+        "type": "text",
+        "maxLen": 20,
+        "required": true,
+        "default": "Happy Birthday"
+      },
+      {
+        "key": "line1",
+        "label": "Message line 1",
+        "type": "text",
+        "maxLen": 14,
+        "required": false,
+        "default": "gorgeous!"
+      },
+      {
+        "key": "highlight",
+        "label": "Highlighted word (yellow)",
+        "type": "text",
+        "maxLen": 10,
+        "required": false,
+        "default": "Cheers"
+      },
+      {
+        "key": "line1_end",
+        "label": "Message line 1 (end)",
+        "type": "text",
+        "maxLen": 8,
+        "required": false,
+        "default": "to"
+      },
+      {
+        "key": "line2",
+        "label": "Message line 2",
+        "type": "text",
+        "maxLen": 18,
+        "required": false,
+        "default": "another year"
+      },
+      {
+        "key": "line3",
+        "label": "Message line 3",
+        "type": "text",
+        "maxLen": 14,
+        "required": false,
+        "default": "of you!"
+      }
+    ]
+  },
+  "layers": [
+    {
+      "id": "p1",
+      "type": "photoSlot",
+      "label": "Photo 1",
+      "x": 2159,
+      "y": 1304,
+      "w": 956,
+      "h": 1118,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 9,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p2",
+      "type": "photoSlot",
+      "label": "Photo 2",
+      "x": 1923,
+      "y": 2486,
+      "w": 896,
+      "h": 1044,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 9,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p4",
+      "type": "photoSlot",
+      "label": "Photo 3",
+      "x": 1923,
+      "y": 3593,
+      "w": 1076,
+      "h": 918,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 9,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p3",
+      "type": "photoSlot",
+      "label": "Photo 4",
+      "x": 1009,
+      "y": 3305,
+      "w": 851,
+      "h": 1048,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 9,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "floral",
+      "type": "image",
+      "label": "Rose & daisy",
+      "role": "sticker",
+      "src": "/templates/PF-000036/assets/floral.png",
+      "x": -32,
+      "y": 2751,
+      "w": 1561,
+      "h": 2574,
+      "flipX": false,
+      "locked": true
+    },
+    {
+      "id": "petal-1",
+      "type": "image",
+      "label": "Rose petal 1",
+      "role": "sticker",
+      "src": "/templates/PF-000036/assets/petal-8.png",
+      "x": 3206,
+      "y": 1608,
+      "w": 313,
+      "h": 273,
+      "rotation": 90,
+      "flipX": true,
+      "locked": true
+    },
+    {
+      "id": "petal-2",
+      "type": "image",
+      "label": "Rose petal 2",
+      "role": "sticker",
+      "src": "/templates/PF-000036/assets/petal-2.png",
+      "x": 3168,
+      "y": 1960,
+      "w": 220,
+      "h": 205,
+      "rotation": -10,
+      "flipX": false,
+      "locked": true
+    },
+    {
+      "id": "petal-3",
+      "type": "image",
+      "label": "Rose petal 3",
+      "role": "sticker",
+      "src": "/templates/PF-000036/assets/petal-7.png",
+      "x": 3373,
+      "y": 2463,
+      "w": 271,
+      "h": 213,
+      "rotation": -60,
+      "flipX": false,
+      "locked": true
+    },
+    {
+      "id": "petal-4",
+      "type": "image",
+      "label": "Rose petal 4",
+      "role": "sticker",
+      "src": "/templates/PF-000036/assets/petal-5.png",
+      "x": 3454,
+      "y": 2946,
+      "w": 255,
+      "h": 242,
+      "rotation": 50,
+      "flipX": true,
+      "locked": true
+    },
+    {
+      "id": "petal-5",
+      "type": "image",
+      "label": "Rose petal 5",
+      "role": "sticker",
+      "src": "/templates/PF-000036/assets/petal-10.png",
+      "x": 3207,
+      "y": 3337,
+      "w": 185,
+      "h": 113,
+      "rotation": 150,
+      "flipX": false,
+      "locked": true
+    },
+    {
+      "id": "petal-6",
+      "type": "image",
+      "label": "Rose petal 6",
+      "role": "sticker",
+      "src": "/templates/PF-000036/assets/petal-3.png",
+      "x": 3426,
+      "y": 3404,
+      "w": 237,
+      "h": 246,
+      "rotation": 130,
+      "flipX": false,
+      "locked": true
+    },
+    {
+      "id": "petal-7",
+      "type": "image",
+      "label": "Rose petal 7",
+      "role": "sticker",
+      "src": "/templates/PF-000036/assets/petal-2.png",
+      "x": 3056,
+      "y": 3651,
+      "w": 342,
+      "h": 318,
+      "rotation": -150,
+      "flipX": false,
+      "locked": true
+    },
+    {
+      "id": "petal-8",
+      "type": "image",
+      "label": "Rose petal 8",
+      "role": "sticker",
+      "src": "/templates/PF-000036/assets/petal-2.png",
+      "x": 1449,
+      "y": 4519,
+      "w": 298,
+      "h": 278,
+      "rotation": 20,
+      "flipX": true,
+      "locked": true
+    },
+    {
+      "id": "petal-9",
+      "type": "image",
+      "label": "Rose petal 9",
+      "role": "sticker",
+      "src": "/templates/PF-000036/assets/petal-8.png",
+      "x": 1874,
+      "y": 4882,
+      "w": 326,
+      "h": 284,
+      "rotation": 70,
+      "flipX": true,
+      "locked": true
+    },
+    {
+      "id": "petal-10",
+      "type": "image",
+      "label": "Rose petal 10",
+      "role": "sticker",
+      "src": "/templates/PF-000036/assets/petal-10.png",
+      "x": 2288,
+      "y": 5058,
+      "w": 379,
+      "h": 232,
+      "rotation": 20,
+      "flipX": false,
+      "locked": true
+    },
+    {
+      "id": "butterfly",
+      "type": "image",
+      "label": "Butterfly",
+      "role": "sticker",
+      "src": "/templates/PF-000036/assets/butterfly.png",
+      "x": 2261,
+      "y": 3962,
+      "w": 1312,
+      "h": 1211,
+      "flipX": false,
+      "locked": true
+    },
+    {
+      "id": "sign",
+      "type": "image",
+      "label": "Wooden sign",
+      "role": "sticker",
+      "src": "/templates/PF-000036/assets/sign.png",
+      "x": 387,
+      "y": -5,
+      "w": 2821,
+      "h": 1238,
+      "flipX": false,
+      "locked": true
+    },
+    {
+      "id": "sparkles-1",
+      "type": "image",
+      "label": "Sparkles 1",
+      "role": "sticker",
+      "src": "/templates/PF-000036/assets/sparkles.png",
+      "x": 3139,
+      "y": 229,
+      "w": 429,
+      "h": 492,
+      "locked": true
+    },
+    {
+      "id": "sparkles-2",
+      "type": "image",
+      "label": "Sparkles 2",
+      "role": "sticker",
+      "src": "/templates/PF-000036/assets/sparkles.png",
+      "x": 27,
+      "y": 830,
+      "w": 393,
+      "h": 451,
+      "locked": true
+    },
+    {
+      "id": "sparkles-3",
+      "type": "image",
+      "label": "Sparkles 3",
+      "role": "sticker",
+      "src": "/templates/PF-000036/assets/sparkles.png",
+      "x": 2831,
+      "y": 2788,
+      "w": 411,
+      "h": 472,
+      "locked": true
+    },
+    {
+      "id": "sign-heart-left",
+      "type": "image",
+      "label": "Sign heart (left)",
+      "role": "sticker",
+      "src": "/templates/PF-000036/assets/heart-outline-cream.png",
+      "x": 959,
+      "y": 728,
+      "w": 292,
+      "h": 300,
+      "locked": true
+    },
+    {
+      "id": "sign-heart-right",
+      "type": "image",
+      "label": "Sign heart (right)",
+      "role": "sticker",
+      "src": "/templates/PF-000036/assets/heart-outline-cream.png",
+      "x": 2303,
+      "y": 725,
+      "w": 296,
+      "h": 300,
+      "locked": true
+    },
+    {
+      "id": "sign-line1",
+      "type": "text",
+      "binds": "sign_line1",
+      "x": 765,
+      "y": 399,
+      "w": 2000,
+      "align": "center",
+      "font": "Sancreek",
+      "weight": 400,
+      "sizePx": 260,
+      "color": "#FBF6EC",
+      "maxLines": 1,
+      "autoFit": true,
+      "glow": {
+        "color": "#3B2414",
+        "blur": 16,
+        "opacity": 0.75
+      }
+    },
+    {
+      "id": "sign-line2",
+      "type": "text",
+      "binds": "sign_line2",
+      "x": 1277,
+      "y": 729,
+      "w": 960,
+      "align": "center",
+      "font": "Sancreek",
+      "weight": 400,
+      "sizePx": 250,
+      "color": "#FBF6EC",
+      "maxLines": 1,
+      "autoFit": true,
+      "glow": {
+        "color": "#3B2414",
+        "blur": 16,
+        "opacity": 0.75
+      }
+    },
+    {
+      "id": "greeting",
+      "type": "text",
+      "binds": "greeting",
+      "x": -14,
+      "y": 1496,
+      "w": 2120,
+      "align": "center",
+      "font": "Shalimar",
+      "weight": 700,
+      "sizePx": 444,
+      "color": "#F43462",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "greeting-heart",
+      "type": "image",
+      "label": "Small heart",
+      "role": "sticker",
+      "src": "/templates/PF-000036/assets/heart-outline-pink.png",
+      "x": 896,
+      "y": 1556,
+      "w": 110,
+      "h": 124,
+      "locked": true
+    },
+    {
+      "id": "line1",
+      "type": "text",
+      "binds": "line1",
+      "x": 52,
+      "y": 2031,
+      "w": 1000,
+      "align": "right",
+      "font": "Sacramento",
+      "weight": 700,
+      "sizePx": 276,
+      "color": "#FFFFFF",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "highlight",
+      "type": "text",
+      "binds": "highlight",
+      "x": 954,
+      "y": 2024,
+      "w": 900,
+      "align": "center",
+      "font": "Shalimar",
+      "weight": 700,
+      "sizePx": 389,
+      "color": "#FCF07E",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "line1-end",
+      "type": "text",
+      "binds": "line1_end",
+      "x": 1796,
+      "y": 2074,
+      "w": 700,
+      "align": "left",
+      "font": "Sacramento",
+      "weight": 700,
+      "sizePx": 262,
+      "color": "#FFFFFF",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "line2",
+      "type": "text",
+      "binds": "line2",
+      "x": 311,
+      "y": 2418,
+      "w": 1600,
+      "align": "center",
+      "font": "Sacramento",
+      "weight": 700,
+      "sizePx": 274,
+      "color": "#FFFFFF",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "line3",
+      "type": "text",
+      "binds": "line3",
+      "x": 367,
+      "y": 2768,
+      "w": 1600,
+      "align": "center",
+      "font": "Sacramento",
+      "weight": 700,
+      "sizePx": 310,
+      "color": "#FFFFFF",
+      "maxLines": 1,
+      "autoFit": true
+    }
+  ]
+}

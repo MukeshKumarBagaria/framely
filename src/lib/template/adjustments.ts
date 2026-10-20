@@ -153,6 +153,13 @@ export const FONT_CHOICES: { value: string; label: string }[] = [
   { value: "Moon Dance", label: "Moon Dance (signature)" },
   { value: "Alegreya", label: "Alegreya (classic serif)" },
   { value: "Libre Baskerville", label: "Libre Baskerville (bookish serif)" },
+  { value: "Pirata One", label: "Pirata One (gothic)" },
+  { value: "Caladea", label: "Caladea (classic serif)" },
+  { value: "Arimo", label: "Arimo (clean sans)" },
+  { value: "Alex Brush", label: "Alex Brush (brush script)" },
+  { value: "Sancreek", label: "Sancreek (western)" },
+  { value: "Sacramento", label: "Sacramento (monoline script)" },
+  { value: "Shalimar", label: "Shalimar (tall script)" },
 ];
 
 // The template's own font for each bound field, so the picker opens on the real

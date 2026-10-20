@@ -1,0 +1,474 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "PF-000035",
+    "occasion": [
+      "birthday",
+      "sister",
+      "brother",
+      "family"
+    ]
+  },
+  "canvas": {
+    "widthMm": 210,
+    "heightMm": 297,
+    "dpi": 300,
+    "bleedMm": 3,
+    "widthPx": 2480,
+    "heightPx": 3508,
+    "background": "#000000"
+  },
+  "inputs": {
+    "photos": {
+      "min": 13,
+      "max": 13
+    },
+    "fields": [
+      {
+        "key": "date",
+        "label": "Date",
+        "type": "text",
+        "maxLen": 20,
+        "required": false,
+        "default": "05-09-2026"
+      },
+      {
+        "key": "message",
+        "label": "Message (up to 600 characters)",
+        "type": "text",
+        "maxLen": 600,
+        "required": false,
+        "default": "A Brother's first\nDaughter is her\nyounger Sister... A\nSister's second\nFather is his big\nBrother..."
+      },
+      {
+        "key": "name",
+        "label": "Name",
+        "type": "text",
+        "maxLen": 16,
+        "required": true,
+        "default": "Radha"
+      }
+    ]
+  },
+  "layers": [
+    {
+      "id": "p1",
+      "type": "photoSlot",
+      "label": "Photo 1",
+      "x": 692,
+      "y": 1009,
+      "w": 510,
+      "h": 441,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 8,
+        "color": "#E6E6E6"
+      }
+    },
+    {
+      "id": "p2",
+      "type": "photoSlot",
+      "label": "Photo 2",
+      "x": 1227,
+      "y": 1011,
+      "w": 411,
+      "h": 439,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 8,
+        "color": "#E6E6E6"
+      }
+    },
+    {
+      "id": "p3",
+      "type": "photoSlot",
+      "label": "Photo 3",
+      "x": 1658,
+      "y": 1010,
+      "w": 410,
+      "h": 440,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 8,
+        "color": "#E6E6E6"
+      }
+    },
+    {
+      "id": "p4",
+      "type": "photoSlot",
+      "label": "Photo 4",
+      "x": 1215,
+      "y": 1486,
+      "w": 525,
+      "h": 476,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 8,
+        "color": "#E6E6E6"
+      }
+    },
+    {
+      "id": "p5",
+      "type": "photoSlot",
+      "label": "Photo 5",
+      "x": 1767,
+      "y": 1488,
+      "w": 412,
+      "h": 439,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 8,
+        "color": "#E6E6E6"
+      }
+    },
+    {
+      "id": "p6",
+      "type": "photoSlot",
+      "label": "Photo 6",
+      "x": 1119,
+      "y": 1995,
+      "w": 345,
+      "h": 410,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 8,
+        "color": "#E6E6E6"
+      }
+    },
+    {
+      "id": "p7",
+      "type": "photoSlot",
+      "label": "Photo 7",
+      "x": 1481,
+      "y": 1995,
+      "w": 344,
+      "h": 410,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 8,
+        "color": "#E6E6E6"
+      }
+    },
+    {
+      "id": "p8",
+      "type": "photoSlot",
+      "label": "Photo 8",
+      "x": 1844,
+      "y": 1963,
+      "w": 397,
+      "h": 423,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 8,
+        "color": "#E6E6E6"
+      }
+    },
+    {
+      "id": "p9",
+      "type": "photoSlot",
+      "label": "Photo 9",
+      "x": 203,
+      "y": 2286,
+      "w": 366,
+      "h": 386,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 8,
+        "color": "#E6E6E6"
+      }
+    },
+    {
+      "id": "p10",
+      "type": "photoSlot",
+      "label": "Photo 10",
+      "x": 583,
+      "y": 2437,
+      "w": 365,
+      "h": 437,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 8,
+        "color": "#E6E6E6"
+      }
+    },
+    {
+      "id": "p11",
+      "type": "photoSlot",
+      "label": "Photo 11",
+      "x": 961,
+      "y": 2436,
+      "w": 363,
+      "h": 504,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 8,
+        "color": "#E6E6E6"
+      }
+    },
+    {
+      "id": "p12",
+      "type": "photoSlot",
+      "label": "Photo 12",
+      "x": 1345,
+      "y": 2436,
+      "w": 469,
+      "h": 505,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 8,
+        "color": "#E6E6E6"
+      }
+    },
+    {
+      "id": "p13",
+      "type": "photoSlot",
+      "label": "Photo 13",
+      "x": 1837,
+      "y": 2406,
+      "w": 393,
+      "h": 500,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 8,
+        "color": "#E6E6E6"
+      }
+    },
+    {
+      "id": "heart-trail",
+      "type": "image",
+      "label": "Heart trail",
+      "role": "sticker",
+      "src": "/templates/PF-000035/assets/heart-trail.png",
+      "x": 1231,
+      "y": 427,
+      "w": 394,
+      "h": 532,
+      "locked": true
+    },
+    {
+      "id": "dreamcatcher",
+      "type": "image",
+      "label": "Dreamcatcher",
+      "role": "sticker",
+      "src": "/templates/PF-000035/assets/dreamcatcher.png",
+      "x": 1746,
+      "y": 154,
+      "w": 566,
+      "h": 739,
+      "locked": true
+    },
+    {
+      "id": "butterfly-left",
+      "type": "image",
+      "label": "Butterfly (left)",
+      "role": "sticker",
+      "src": "/templates/PF-000035/assets/butterfly-left.png",
+      "x": 144,
+      "y": 2897,
+      "w": 433,
+      "h": 387,
+      "locked": true
+    },
+    {
+      "id": "butterfly-right",
+      "type": "image",
+      "label": "Butterfly (right)",
+      "role": "sticker",
+      "src": "/templates/PF-000035/assets/butterfly-right.png",
+      "x": 1924,
+      "y": 2926,
+      "w": 459,
+      "h": 387,
+      "locked": true
+    },
+    {
+      "id": "sparkles",
+      "type": "image",
+      "label": "Sparkles",
+      "role": "sticker",
+      "src": "/templates/PF-000035/assets/sparkles.png",
+      "x": 230,
+      "y": 1050,
+      "w": 300,
+      "h": 300,
+      "locked": true
+    },
+    {
+      "id": "msg-heart-1",
+      "type": "image",
+      "label": "Message heart 1",
+      "role": "sticker",
+      "src": "/templates/PF-000035/assets/heart-small.png",
+      "x": 114,
+      "y": 1509,
+      "w": 56,
+      "h": 50
+    },
+    {
+      "id": "msg-heart-2",
+      "type": "image",
+      "label": "Message heart 2",
+      "role": "sticker",
+      "src": "/templates/PF-000035/assets/heart-small.png",
+      "x": 834,
+      "y": 1916,
+      "w": 56,
+      "h": 50
+    },
+    {
+      "id": "msg-heart-3",
+      "type": "image",
+      "label": "Message heart 3",
+      "role": "sticker",
+      "src": "/templates/PF-000035/assets/heart-small.png",
+      "x": 805,
+      "y": 2163,
+      "w": 56,
+      "h": 50
+    },
+    {
+      "id": "month",
+      "type": "calendar",
+      "label": "Month",
+      "variant": "month",
+      "x": 72,
+      "y": 58,
+      "w": 900,
+      "h": 260,
+      "titleAlign": "left",
+      "year": 2026,
+      "month": 4,
+      "highlightDay": 15,
+      "font": "Pirata One",
+      "titleFont": "Arimo",
+      "titleSizePx": 196,
+      "titleWeight": 700,
+      "titleItalic": true,
+      "headerSizePx": 56,
+      "cellSizePx": 62,
+      "headerWeight": 400,
+      "weight": 400,
+      "color": "#F2F2F2",
+      "titleColor": "#FFFFFF",
+      "headerColor": "#F2F2F2",
+      "heartColor": "#E8141E",
+      "highlightTextColor": "#FFFFFF"
+    },
+    {
+      "id": "calendar",
+      "type": "calendar",
+      "label": "Calendar",
+      "variant": "grid",
+      "x": 36,
+      "y": 283,
+      "w": 948,
+      "h": 742.5,
+      "showTitle": false,
+      "headerBandPx": 121,
+      "highlightStyle": "heartShape",
+      "highlightSizePx": 107,
+      "zeroPad": true,
+      "weekdayLabels": [
+        "SU",
+        "MO",
+        "TU",
+        "WE",
+        "TH",
+        "FR",
+        "SA"
+      ],
+      "year": 2026,
+      "month": 4,
+      "highlightDay": 15,
+      "font": "Pirata One",
+      "titleFont": "Arimo",
+      "titleSizePx": 196,
+      "titleWeight": 700,
+      "titleItalic": true,
+      "headerSizePx": 56,
+      "cellSizePx": 62,
+      "headerWeight": 400,
+      "weight": 400,
+      "color": "#F2F2F2",
+      "titleColor": "#FFFFFF",
+      "headerColor": "#F2F2F2",
+      "heartColor": "#E8141E",
+      "highlightTextColor": "#FFFFFF"
+    },
+    {
+      "id": "date",
+      "type": "text",
+      "label": "Date",
+      "binds": "date",
+      "x": -38,
+      "y": 1374,
+      "w": 900,
+      "align": "center",
+      "font": "Caladea",
+      "weight": 400,
+      "sizePx": 108,
+      "color": "#E8E8E8",
+      "maxLines": 1,
+      "autoFit": true
+    },
+    {
+      "id": "message",
+      "type": "text",
+      "label": "Message",
+      "binds": "message",
+      "x": 48,
+      "y": 1487,
+      "w": 880,
+      "align": "center",
+      "font": "Caladea",
+      "weight": 400,
+      "sizePx": 110,
+      "color": "#E8E8E8",
+      "maxLines": 6,
+      "lineHeight": 1.164,
+      "autoFit": true
+    },
+    {
+      "id": "name",
+      "type": "text",
+      "label": "Name",
+      "binds": "name",
+      "x": 346,
+      "y": 2989,
+      "w": 1800,
+      "align": "center",
+      "font": "Alex Brush",
+      "weight": 700,
+      "sizePx": 380,
+      "color": "#FFFFFF",
+      "maxLines": 1,
+      "autoFit": true
+    }
+  ]
+}

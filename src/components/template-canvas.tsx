@@ -141,6 +141,13 @@ const FONT_FAMILIES = [
   "Moon Dance",
   "Alegreya",
   "Libre Baskerville",
+  "Pirata One",
+  "Caladea",
+  "Arimo",
+  "Alex Brush",
+  "Sancreek",
+  "Sacramento",
+  "Shalimar",
 ];
 
 function useFontsReady() {
@@ -154,6 +161,7 @@ function useFontsReady() {
         document.fonts.load(`800 32px "${f}"`),
         document.fonts.load(`900 32px "${f}"`),
         document.fonts.load(`italic 400 32px "${f}"`),
+        document.fonts.load(`italic 700 32px "${f}"`),
         document.fonts.load(`italic 700 32px "${f}"`),
       ])
     )
@@ -933,16 +941,44 @@ function fitFontSize(layer: TextLayer, text: string) {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
   if (!ctx) return layer.sizePx;
-  const minSize = layer.sizePx * 0.6;
+  // A wrapping block may shrink further than a one-line label: a long message
+  // has to fit the height its `maxLines` take at the authored size, so smaller
+  // text is allowed proportionally more lines.
+  const multiLine = layer.maxLines > 1;
+  const minSize = layer.sizePx * (multiLine ? 0.35 : 0.6);
   let size = layer.sizePx;
   while (size > minSize) {
     // Measure with exactly the style the text is drawn in, or an 800/900
     // weight measures as bold, overflows the box and gets ellipsised.
     ctx.font = `${konvaFontStyle(layer.weight, layer.italic)} ${size}px "${layer.font}"`;
-    if (ctx.measureText(text).width <= layer.w) break;
+    const fits = multiLine
+      ? wrappedLineCount(ctx, text, layer.w, layer.letterSpacing) * size <= layer.maxLines * layer.sizePx
+      : ctx.measureText(text).width <= layer.w;
+    if (fits) break;
     size -= 4;
   }
   return size;
+}
+
+// How many lines `text` takes when word-wrapped to `width` the way Konva does
+// it: explicit newlines always break, and a word that doesn't fit moves down.
+function wrappedLineCount(ctx: CanvasRenderingContext2D, text: string, width: number, letterSpacing: number) {
+  const measure = (s: string) => ctx.measureText(s).width + letterSpacing * s.length;
+  let lines = 0;
+  for (const paragraph of text.split("\n")) {
+    lines += 1;
+    let line = "";
+    for (const word of paragraph.split(" ")) {
+      const next = line ? `${line} ${word}` : word;
+      if (line && measure(next) > width) {
+        lines += 1;
+        line = word;
+      } else {
+        line = next;
+      }
+    }
+  }
+  return lines;
 }
 
 // The text a layer draws: its bound field, its fixed text, or — for a details
@@ -1051,6 +1087,7 @@ function CalendarNode({ layer }: { layer: CalendarLayer }) {
   const rowsUsed = Math.ceil((firstWeekday + daysInMonth) / cols);
 
   const highlight = layer.highlightDay;
+  const dayLabel = (d: number) => (layer.zeroPad ? String(d).padStart(2, "0") : String(d));
   const monthName = layer.titleAbbrev ? MONTH_NAMES_SHORT[layer.month - 1] : MONTH_NAMES[layer.month - 1];
   const rawTitle = layer.title ?? monthName;
   const title = layer.titleUppercase ? rawTitle.toUpperCase() : rawTitle;
@@ -1101,7 +1138,7 @@ function CalendarNode({ layer }: { layer: CalendarLayer }) {
           wrap="none"
           text={layer.variant === "month" ? title : String(layer.year)}
           fontFamily={layer.titleFont}
-          fontStyle={konvaFontStyle(layer.titleWeight, false)}
+          fontStyle={konvaFontStyle(layer.titleWeight, layer.titleItalic)}
           fontSize={layer.titleSizePx}
           fill={layer.titleColor}
         />
@@ -1138,7 +1175,7 @@ function CalendarNode({ layer }: { layer: CalendarLayer }) {
           align="center"
           verticalAlign="middle"
           wrap="none"
-          text={String(d)}
+          text={dayLabel(d)}
           fontFamily={layer.font}
           fontStyle={konvaFontStyle(layer.weight, false)}
           fontSize={layer.cellSizePx}
@@ -1198,7 +1235,7 @@ function CalendarNode({ layer }: { layer: CalendarLayer }) {
             height={rowH}
             align="center"
             verticalAlign="middle"
-            text={String(d)}
+            text={dayLabel(d)}
             fontFamily={layer.font}
             fontStyle={konvaFontStyle(layer.weight, false)}
             fontSize={layer.cellSizePx}
@@ -1219,7 +1256,7 @@ function CalendarNode({ layer }: { layer: CalendarLayer }) {
         align="center"
         verticalAlign="middle"
         wrap="none"
-        text={marked ? "♥" : String(d)}
+        text={marked ? "♥" : dayLabel(d)}
         fontFamily={layer.font}
         fontStyle={konvaFontStyle(layer.weight, false)}
         fontSize={marked ? fitMarkerSize(layer.highlightSizePx ?? layer.cellSizePx * 1.15, colW, rowH) : layer.cellSizePx}
@@ -1238,7 +1275,7 @@ function CalendarNode({ layer }: { layer: CalendarLayer }) {
           align={layer.titleAlign}
           text={title}
           fontFamily={layer.titleFont}
-          fontStyle={konvaFontStyle(layer.titleWeight, false)}
+          fontStyle={konvaFontStyle(layer.titleWeight, layer.titleItalic)}
           fontSize={layer.titleSizePx}
           fill={layer.titleColor}
         />
@@ -1252,7 +1289,7 @@ function CalendarNode({ layer }: { layer: CalendarLayer }) {
           align={layer.titleAlign === "right" ? "left" : "right"}
           text={String(layer.year)}
           fontFamily={layer.titleFont}
-          fontStyle={konvaFontStyle(layer.titleWeight, false)}
+          fontStyle={konvaFontStyle(layer.titleWeight, layer.titleItalic)}
           fontSize={layer.titleSizePx}
           fill={layer.titleColor}
         />
