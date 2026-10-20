@@ -149,6 +149,9 @@ const FONT_FAMILIES = [
   "Sacramento",
   "Shalimar",
   "Kalam",
+  "Lora",
+  "Tinos",
+  "Yellowtail",
 ];
 
 function useFontsReady() {
@@ -1069,6 +1072,33 @@ function HeartMarker({ cx, cy, width, color }: { cx: number; cy: number; width: 
   );
 }
 
+// The "heartOutline" calendar marker: the same heart as HeartMarker, stroked
+// instead of filled and lit like a neon sign — a coloured glow, the tube itself,
+// then a thin pale core down its middle.
+function HeartOutlineMarker({ cx, cy, width, color }: { cx: number; cy: number; width: number; color: string }) {
+  const w = width;
+  const h = width * 0.85;
+  const tube = Math.max(2, w * 0.045);
+  const path = (ctx: Konva.Context, shape: Konva.Shape) => {
+    ctx.beginPath();
+    ctx.moveTo(w / 2, h);
+    ctx.bezierCurveTo(w * 0.17, h * 0.78, 0, h * 0.55, 0, h * 0.32);
+    ctx.bezierCurveTo(0, h * 0.12, w * 0.12, 0, w * 0.27, 0);
+    ctx.bezierCurveTo(w * 0.38, 0, w * 0.46, h * 0.07, w / 2, h * 0.19);
+    ctx.bezierCurveTo(w * 0.54, h * 0.07, w * 0.62, 0, w * 0.73, 0);
+    ctx.bezierCurveTo(w * 0.88, 0, w, h * 0.12, w, h * 0.32);
+    ctx.bezierCurveTo(w, h * 0.55, w * 0.83, h * 0.78, w / 2, h);
+    ctx.closePath();
+    ctx.fillStrokeShape(shape);
+  };
+  return (
+    <Group x={cx - w / 2} y={cy - h / 2} listening={false}>
+      <Shape sceneFunc={path} stroke={color} strokeWidth={tube} lineJoin="round" shadowColor={color} shadowBlur={tube * 3} shadowOpacity={1} />
+      <Shape sceneFunc={path} stroke={tint(color, 0.75)} strokeWidth={tube * 0.35} lineJoin="round" />
+    </Group>
+  );
+}
+
 // Konva drops any text line taller than a fixed `height` — a marker glyph sized
 // purely off cellSizePx silently renders as nothing in a tight row (its line box
 // is fontSize × lineHeight, which overflows well before the glyph does). Clamp
@@ -1083,7 +1113,10 @@ function fitMarkerSize(desired: number, colW: number, rowH: number) {
 // serif used for the numbers.
 function CalendarNode({ layer }: { layer: CalendarLayer }) {
   const cols = 7;
-  const firstWeekday = new Date(layer.year, layer.month - 1, 1).getDay(); // 0 = Sun
+  // Column of the 1st: getDay() is 0 = Sun; a Monday-first week shifts it left.
+  const mondayFirst = layer.weekStart === "monday";
+  const sundayCol = mondayFirst ? cols - 1 : 0;
+  const firstWeekday = (new Date(layer.year, layer.month - 1, 1).getDay() + (mondayFirst ? 6 : 0)) % cols;
   const daysInMonth = new Date(layer.year, layer.month, 0).getDate();
   const rowsUsed = Math.ceil((firstWeekday + daysInMonth) / cols);
 
@@ -1184,7 +1217,7 @@ function CalendarNode({ layer }: { layer: CalendarLayer }) {
           fontFamily={layer.font}
           fontStyle={konvaFontStyle(layer.weight, false)}
           fontSize={layer.cellSizePx}
-          fill={col === 0 && layer.sundayColor ? layer.sundayColor : layer.color}
+          fill={col === sundayCol && layer.sundayColor ? layer.sundayColor : layer.color}
           opacity={layer.leadingDaysOpacity}
         />
       );
@@ -1198,14 +1231,14 @@ function CalendarNode({ layer }: { layer: CalendarLayer }) {
     const cy = titleH + headerH + row * rowH;
     const marked = d === highlight;
 
-    const sunday = col === 0 && layer.sundayColor;
+    const sunday = col === sundayCol && layer.sundayColor;
     const dateColor = sunday ? layer.sundayColor! : layer.color;
 
     // "heart" swaps the number out for a glyph; the others keep the number and
     // draw a marker behind (filled disc / heart) or around it (hollow ring).
     if (marked && layer.highlightStyle !== "heart") {
       const markerSize = markerBase;
-      const isRing = layer.highlightStyle === "ring";
+      const isRing = layer.highlightStyle === "ring" || layer.highlightStyle === "heartOutline";
       cells.push(
         <Group key={`d-${d}`} x={cx} y={cy}>
           {layer.highlightStyle === "heartDay" ? (
@@ -1224,6 +1257,8 @@ function CalendarNode({ layer }: { layer: CalendarLayer }) {
             />
           ) : layer.highlightStyle === "heartShape" ? (
             <HeartMarker cx={colW / 2} cy={rowH / 2} width={markerSize} color={layer.heartColor} />
+          ) : layer.highlightStyle === "heartOutline" ? (
+            <HeartOutlineMarker cx={colW / 2} cy={rowH / 2} width={markerSize} color={layer.heartColor} />
           ) : (
             <Ellipse
               x={colW / 2}
@@ -1310,7 +1345,7 @@ function CalendarNode({ layer }: { layer: CalendarLayer }) {
           fontFamily={layer.headerFont ?? layer.font}
           fontStyle={konvaFontStyle(layer.headerWeight, false)}
           fontSize={layer.headerSizePx}
-          fill={i === 0 && layer.sundayColor ? layer.sundayColor : layer.headerColor}
+          fill={i === sundayCol && layer.sundayColor ? layer.sundayColor : layer.headerColor}
         />
       ))}
       {cells}

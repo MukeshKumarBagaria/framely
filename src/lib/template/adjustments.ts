@@ -161,6 +161,9 @@ export const FONT_CHOICES: { value: string; label: string }[] = [
   { value: "Sacramento", label: "Sacramento (monoline script)" },
   { value: "Shalimar", label: "Shalimar (tall script)" },
   { value: "Kalam", label: "Kalam (handwritten)" },
+  { value: "Lora", label: "Lora (calligraphic serif)" },
+  { value: "Tinos", label: "Tinos (Times-style serif)" },
+  { value: "Yellowtail", label: "Yellowtail (retro script)" },
 ];
 
 // The template's own font for each bound field, so the picker opens on the real

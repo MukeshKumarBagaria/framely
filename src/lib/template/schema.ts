@@ -233,7 +233,13 @@ export const calendarLayerSchema = layerCommon.extend({
   //   "heartShape" — like "heartDay", but the heart is drawn as a vector shape
   //                  (wider than tall, softly lit) instead of the font's ♥
   //                  glyph, so it looks the same on every device
-  highlightStyle: z.enum(["heart", "heartDay", "circle", "ring", "heartShape"]).default("heart"),
+  //   "heartOutline" — a hollow, softly glowing heart (a neon sign) around the
+  //                  date number, which keeps its normal colour
+  highlightStyle: z.enum(["heart", "heartDay", "circle", "ring", "heartShape", "heartOutline"]).default("heart"),
+  // "grid" only: which day the week's first column is. A Monday start puts
+  // Sunday in the last column (weekdayLabels must be ordered to match), and
+  // sundayColor follows it there.
+  weekStart: z.enum(["sunday", "monday"]).default("sunday"),
   // Explicit size for the "heartDay" marker glyph (for "heartShape": the
   // heart's width; for "heart": the replacing glyph, still kept within its
   // row). Absent, it's derived from
