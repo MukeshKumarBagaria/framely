@@ -267,6 +267,9 @@ export const calendarLayerSchema = layerCommon.extend({
   leadingDaysOpacity: z.number().min(0).max(1).default(0.4),
   // "grid" only: recolours the Sunday column (header + dates), e.g. red.
   sundayColor: hexColor.optional(),
+  // Apply sundayColor to the weekday label only ("SUN" in blue over white
+  // dates), not the Sunday dates below it.
+  sundayHeaderOnly: z.boolean().default(false),
   font: z.string(), // grid dates ("grid") / the big day number ("day")
   // "grid" only: a separate face for the weekday letters (e.g. serif initials
   // over sans dates). Falls back to `font`.

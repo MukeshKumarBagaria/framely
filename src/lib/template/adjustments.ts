@@ -164,6 +164,7 @@ export const FONT_CHOICES: { value: string; label: string }[] = [
   { value: "Lora", label: "Lora (calligraphic serif)" },
   { value: "Tinos", label: "Tinos (Times-style serif)" },
   { value: "Yellowtail", label: "Yellowtail (retro script)" },
+  { value: "Josefin Sans", label: "Josefin Sans (geometric sans)" },
 ];
 
 // The template's own font for each bound field, so the picker opens on the real

@@ -1,0 +1,590 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "PF-000039",
+    "occasion": [
+      "birthday",
+      "brother",
+      "family"
+    ]
+  },
+  "canvas": {
+    "widthMm": 210,
+    "heightMm": 297,
+    "dpi": 300,
+    "bleedMm": 3,
+    "widthPx": 2480,
+    "heightPx": 3508,
+    "background": "#000000"
+  },
+  "inputs": {
+    "photos": {
+      "min": 12,
+      "max": 12
+    },
+    "fields": [
+      {
+        "key": "title",
+        "label": "Title",
+        "type": "text",
+        "maxLen": 30,
+        "required": true,
+        "default": "Happy birthday"
+      },
+      {
+        "key": "name",
+        "label": "Name (blue)",
+        "type": "text",
+        "maxLen": 12,
+        "required": false,
+        "default": "bro"
+      },
+      {
+        "key": "note_left",
+        "label": "Left note",
+        "type": "text",
+        "maxLen": 60,
+        "required": false,
+        "default": "Good\nPeople\nBrighter\nDays"
+      },
+      {
+        "key": "note_right",
+        "label": "Right note",
+        "type": "text",
+        "maxLen": 60,
+        "required": false,
+        "default": "Same\nBoy\nBrighter\nDays"
+      },
+      {
+        "key": "message",
+        "label": "Message",
+        "type": "text",
+        "maxLen": 320,
+        "required": false,
+        "default": "May you have a day filled with\nhappiness and a  year filled with\njoy. 💙  Hope your special\nday  brings you all that your\nheart desires! 💙 Sending you\nsmiles for every moment of your\nspecial day... Have a wonderful\n✨ time. 💙"
+      }
+    ]
+  },
+  "layers": [
+    {
+      "id": "frame-outer",
+      "type": "shape",
+      "label": "Frame (outer line)",
+      "kind": "rect",
+      "x": 132.4,
+      "y": 134.5,
+      "w": 2215.1,
+      "h": 3210,
+      "fill": "none",
+      "stroke": {
+        "width": 6,
+        "color": "#FFFFFF"
+      },
+      "locked": true
+    },
+    {
+      "id": "frame-inner",
+      "type": "shape",
+      "label": "Frame (inner line)",
+      "kind": "rect",
+      "x": 174.7,
+      "y": 181.7,
+      "w": 2128.3,
+      "h": 3121.6,
+      "fill": "none",
+      "stroke": {
+        "width": 5,
+        "color": "#FFFFFF"
+      },
+      "locked": true
+    },
+    {
+      "id": "p1",
+      "type": "photoSlot",
+      "label": "Photo 1",
+      "x": 220.4,
+      "y": 1176.2,
+      "w": 481.8,
+      "h": 424,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 5,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p2",
+      "type": "photoSlot",
+      "label": "Photo 2",
+      "x": 736.5,
+      "y": 1105.9,
+      "w": 637.1,
+      "h": 489.4,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 5,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p3",
+      "type": "photoSlot",
+      "label": "Photo 3",
+      "x": 1403.3,
+      "y": 1178.6,
+      "w": 436.2,
+      "h": 416.7,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 5,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p4",
+      "type": "photoSlot",
+      "label": "Photo 4",
+      "x": 1866.9,
+      "y": 1282.8,
+      "w": 397.3,
+      "h": 312.5,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 5,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p5",
+      "type": "photoSlot",
+      "label": "Photo 5",
+      "x": 1197.8,
+      "y": 1636.5,
+      "w": 267.2,
+      "h": 264.1,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 5,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p6",
+      "type": "photoSlot",
+      "label": "Photo 6",
+      "x": 1197.8,
+      "y": 1929.6,
+      "w": 269.5,
+      "h": 264.1,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 5,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p7",
+      "type": "photoSlot",
+      "label": "Photo 7",
+      "x": 1492.3,
+      "y": 1634.1,
+      "w": 392.8,
+      "h": 557.2,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 5,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p8",
+      "type": "photoSlot",
+      "label": "Photo 8",
+      "x": 1914.8,
+      "y": 1634.1,
+      "w": 351.7,
+      "h": 557.2,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 5,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p9",
+      "type": "photoSlot",
+      "label": "Photo 9",
+      "x": 220.4,
+      "y": 2305.2,
+      "w": 472.7,
+      "h": 474.8,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 5,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p10",
+      "type": "photoSlot",
+      "label": "Photo 10",
+      "x": 722.8,
+      "y": 2305.2,
+      "w": 452.2,
+      "h": 474.8,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 5,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p11",
+      "type": "photoSlot",
+      "label": "Photo 11",
+      "x": 1204.6,
+      "y": 2227.6,
+      "w": 481.8,
+      "h": 552.4,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 5,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "p12",
+      "type": "photoSlot",
+      "label": "Photo 12",
+      "x": 1716.1,
+      "y": 2227.6,
+      "w": 550.3,
+      "h": 552.4,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 5,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "id": "dreamcatcher",
+      "type": "image",
+      "label": "Dreamcatcher",
+      "role": "sticker",
+      "src": "/templates/PF-000039/assets/dreamcatcher.png",
+      "x": 1747.8,
+      "y": 133.2,
+      "w": 619.4,
+      "h": 1081.5,
+      "locked": true
+    },
+    {
+      "id": "panda",
+      "type": "image",
+      "label": "Panda",
+      "role": "sticker",
+      "src": "/templates/PF-000039/assets/panda.png",
+      "x": 1778,
+      "y": 2944.5,
+      "w": 583,
+      "h": 372.7,
+      "locked": true
+    },
+    {
+      "id": "swoosh-month",
+      "type": "image",
+      "label": "Swoosh (under month)",
+      "role": "sticker",
+      "src": "/templates/PF-000039/assets/swoosh-blue.png",
+      "x": 679.4,
+      "y": 471.5,
+      "w": 598.3,
+      "h": 55.2,
+      "rotation": 1,
+      "locked": true
+    },
+    {
+      "id": "swoosh-title",
+      "type": "image",
+      "label": "Swoosh (under title)",
+      "role": "sticker",
+      "src": "/templates/PF-000039/assets/swoosh-blue.png",
+      "x": 801.5,
+      "y": 3142.1,
+      "w": 475,
+      "h": 43.8,
+      "rotation": -7,
+      "locked": true
+    },
+    {
+      "id": "heart-month",
+      "type": "image",
+      "label": "Heart (month)",
+      "role": "sticker",
+      "src": "/templates/PF-000039/assets/heart-outline-blue.png",
+      "x": 1590.8,
+      "y": 268.3,
+      "w": 132,
+      "h": 132,
+      "rotation": 18,
+      "locked": true
+    },
+    {
+      "id": "heart-day",
+      "type": "image",
+      "label": "Heart doodle (date)",
+      "role": "sticker",
+      "src": "/templates/PF-000039/assets/heart-outline-blue.png",
+      "x": 722.2,
+      "y": 777.1,
+      "w": 40,
+      "h": 40,
+      "rotation": -35,
+      "locked": true
+    },
+    {
+      "id": "heart-left",
+      "type": "image",
+      "label": "Heart (left note)",
+      "role": "sticker",
+      "src": "/templates/PF-000039/assets/heart-outline-blue.png",
+      "x": 423.7,
+      "y": 858.5,
+      "w": 66,
+      "h": 66,
+      "rotation": -8,
+      "locked": true
+    },
+    {
+      "id": "heart-right",
+      "type": "image",
+      "label": "Heart (right note)",
+      "role": "sticker",
+      "src": "/templates/PF-000039/assets/heart-outline-blue.png",
+      "x": 1779.6,
+      "y": 992.6,
+      "w": 74,
+      "h": 74,
+      "rotation": 10,
+      "locked": true
+    },
+    {
+      "id": "heart-name",
+      "type": "image",
+      "label": "Heart (name)",
+      "role": "sticker",
+      "src": "/templates/PF-000039/assets/heart-outline-blue.png",
+      "x": 1787.7,
+      "y": 2936.3,
+      "w": 92,
+      "h": 92,
+      "rotation": 14,
+      "locked": true
+    },
+    {
+      "id": "crown",
+      "type": "image",
+      "label": "Crown",
+      "role": "sticker",
+      "src": "/templates/PF-000039/assets/crown-outline-blue.png",
+      "x": 1417.5,
+      "y": 2816.4,
+      "w": 136,
+      "h": 123.4,
+      "rotation": -4,
+      "locked": true
+    },
+    {
+      "id": "paper-plane",
+      "type": "image",
+      "label": "Paper plane",
+      "role": "sticker",
+      "src": "/templates/PF-000039/assets/paper-plane.png",
+      "x": 1433.9,
+      "y": 578.5,
+      "w": 368,
+      "h": 153.7,
+      "locked": true
+    },
+    {
+      "id": "cal-month",
+      "type": "calendar",
+      "label": "Calendar month",
+      "variant": "month",
+      "x": 319.7,
+      "y": 217.6,
+      "w": 1400,
+      "h": 473.2,
+      "titleAlign": "left",
+      "titleSizePx": 364,
+      "year": 2025,
+      "month": 12,
+      "highlightDay": 9,
+      "font": "Poppins Medium",
+      "titleFont": "Alex Brush",
+      "titleWeight": 400,
+      "headerWeight": 400,
+      "weight": 400,
+      "color": "#FFFFFF",
+      "titleColor": "#FFFFFF",
+      "headerColor": "#FFFFFF",
+      "heartColor": "#14C6F5",
+      "highlightTextColor": "#FFFFFF",
+      "headerSizePx": 40,
+      "cellSizePx": 52
+    },
+    {
+      "id": "calendar",
+      "type": "calendar",
+      "label": "Calendar",
+      "variant": "grid",
+      "x": 470.5,
+      "y": 572.9,
+      "w": 925.5,
+      "h": 492.9,
+      "showTitle": false,
+      "headerBandPx": 67.8,
+      "weekStart": "sunday",
+      "weekdayLabels": [
+        "SUN",
+        "MON",
+        "TUE",
+        "WED",
+        "THU",
+        "FRI",
+        "SAT"
+      ],
+      "highlightStyle": "heartOutline",
+      "highlightSizePx": 128,
+      "sundayColor": "#14C6F5",
+      "sundayHeaderOnly": true,
+      "titleSizePx": 364,
+      "year": 2025,
+      "month": 12,
+      "highlightDay": 9,
+      "font": "Poppins Medium",
+      "titleFont": "Alex Brush",
+      "titleWeight": 400,
+      "headerWeight": 400,
+      "weight": 400,
+      "color": "#FFFFFF",
+      "titleColor": "#FFFFFF",
+      "headerColor": "#FFFFFF",
+      "heartColor": "#14C6F5",
+      "highlightTextColor": "#FFFFFF",
+      "headerSizePx": 40,
+      "cellSizePx": 52
+    },
+    {
+      "id": "note-left",
+      "type": "text",
+      "binds": "note_left",
+      "label": "Left note",
+      "x": 198.4,
+      "y": 665.3,
+      "w": 420,
+      "rotation": -16,
+      "align": "left",
+      "font": "Kalam",
+      "weight": 400,
+      "sizePx": 63,
+      "color": "#FFFFFF",
+      "maxLines": 4,
+      "lineHeight": 1.3402,
+      "autoFit": true
+    },
+    {
+      "id": "note-right",
+      "type": "text",
+      "binds": "note_right",
+      "label": "Right note",
+      "x": 1518.3,
+      "y": 805.8,
+      "w": 420,
+      "rotation": -16,
+      "align": "left",
+      "font": "Kalam",
+      "weight": 400,
+      "sizePx": 63,
+      "color": "#FFFFFF",
+      "maxLines": 4,
+      "lineHeight": 1.3402,
+      "autoFit": true
+    },
+    {
+      "id": "message",
+      "type": "text",
+      "binds": "message",
+      "label": "Message",
+      "x": 210.2,
+      "y": 1658.1,
+      "w": 1000,
+      "align": "center",
+      "font": "Josefin Sans",
+      "weight": 400,
+      "sizePx": 61,
+      "color": "#FFFFFF",
+      "maxLines": 8,
+      "lineHeight": 1.136,
+      "autoFit": true
+    },
+    {
+      "id": "title",
+      "type": "text",
+      "binds": "title",
+      "label": "Title",
+      "x": 248.9,
+      "y": 2907,
+      "w": 1500,
+      "align": "left",
+      "font": "Ms Madi",
+      "weight": 400,
+      "sizePx": 249,
+      "color": "#FFFFFF",
+      "maxLines": 1,
+      "lineHeight": 1,
+      "autoFit": true
+    },
+    {
+      "id": "name",
+      "type": "text",
+      "binds": "name",
+      "label": "Name",
+      "x": 1543.7,
+      "y": 2894.1,
+      "w": 420,
+      "align": "left",
+      "font": "Great Vibes",
+      "weight": 400,
+      "sizePx": 272,
+      "color": "#14C6F5",
+      "maxLines": 1,
+      "lineHeight": 1,
+      "autoFit": true
+    }
+  ]
+}

@@ -73,14 +73,27 @@ function assignPhotosToSlots(slots: PhotoSlotLayer[], photos: { url: string; are
   return assignment;
 }
 
-function readImageMeta(file: File): Promise<{ url: string; area: number }> {
+type UploadedPhoto = { url: string; area: number };
+
+// Null when the browser can't decode the file (e.g. iPhone HEIC in Chrome).
+// Such a file used to be "placed" anyway: it sorted last by area, landed in
+// the smallest slots and rendered as an empty placeholder that couldn't be
+// filled — PF-000029's slots 04 and 07.
+function readImageMeta(file: File): Promise<UploadedPhoto | null> {
   return new Promise((resolve) => {
     const url = URL.createObjectURL(file);
     const img = new window.Image();
     img.onload = () => resolve({ url, area: img.naturalWidth * img.naturalHeight });
-    img.onerror = () => resolve({ url, area: 0 });
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      resolve(null);
+    };
     img.src = url;
   });
+}
+
+function unreadableNote(count: number) {
+  return `${count} photo${count === 1 ? "" : "s"} couldn't be opened — this browser can't read that file type (often iPhone HEIC). Save ${count === 1 ? "it" : "them"} as JPG or PNG, then tap an empty slot to add ${count === 1 ? "it" : "them"}.`;
 }
 
 function pad2(n: number) {
@@ -143,9 +156,13 @@ function Panel({ title, hint, children }: { title: string; hint?: string; childr
 export default function TemplateWorkspace({ doc, productId }: Props) {
   const [fieldValues, setFieldValues] = useState(() => defaultFieldValues(doc));
   const [photoUrls, setPhotoUrls] = useState<Partial<Record<string, string>>>({});
-  const [photoCount, setPhotoCount] = useState(0);
+  const [photoError, setPhotoError] = useState<string | null>(null);
   // Kept so photos can be re-assigned when the layout variant changes.
-  const [uploadedPhotos, setUploadedPhotos] = useState<{ url: string; area: number }[]>([]);
+  const [uploadedPhotos, setUploadedPhotos] = useState<UploadedPhoto[]>([]);
+  // Hidden picker for filling a single empty slot (tapped on the preview or
+  // in the Rearrange grid); remembers which slot it's for.
+  const slotFileInputRef = useRef<HTMLInputElement | null>(null);
+  const pendingSlotRef = useRef<string | null>(null);
   const [selectedSlotId, setSelectedSlotId] = useState<string | null>(null);
   const [productSizeId, setProductSizeId] = useState(productId);
   const [adjustments, setAdjustments] = useState<Adjustments>(() => defaultAdjustments(doc));
@@ -189,6 +206,7 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
     () => activePhotoSlots(doc, adjustments),
     [doc, adjustments]
   );
+  const photoCount = photoSlots.filter((s) => photoUrls[s.id]).length;
   const layoutOptions = useMemo(() => photoLayoutOptions(doc), [doc]);
   const hasCalendar = useMemo(() => doc.layers.some((l) => l.type === "calendar"), [doc.layers]);
   const cornerMax = useMemo(() => maxPhotoCornerRadius(doc), [doc]);
@@ -276,16 +294,65 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
     return () => observer.disconnect();
   }, []);
 
-  async function handleFiles(files: FileList | null) {
-    if (!files || files.length === 0) return;
-    const picked = Array.from(files).slice(0, photoSlots.length);
-    const withMeta = await Promise.all(picked.map(readImageMeta));
+  // With some slots already filled, a new pick tops up the empty ones instead
+  // of wiping everything; once every slot is full, a new pick starts over.
+  async function handleFiles(files: File[]) {
+    if (files.length === 0) return;
+    const emptySlots = photoSlots.filter((s) => !photoUrls[s.id]);
+    const topUp = photoCount > 0 && emptySlots.length > 0;
+    const capacity = topUp ? emptySlots.length : photoSlots.length;
+    const picked = files.slice(0, capacity);
+    const read = await Promise.all(picked.map(readImageMeta));
+    const withMeta = read.filter((m): m is UploadedPhoto => m !== null);
+
+    const notes: string[] = [];
+    const unreadable = read.length - withMeta.length;
+    if (unreadable > 0) notes.push(unreadableNote(unreadable));
+    const extra = files.length - picked.length;
+    if (extra > 0) {
+      notes.push(
+        topUp
+          ? `Only ${capacity} slot${capacity === 1 ? " was" : "s were"} empty, so ${extra} photo${extra === 1 ? " wasn't" : "s weren't"} used. Use Clear to start over.`
+          : `This design holds ${capacity} photos — ${extra} extra ${extra === 1 ? "wasn't" : "weren't"} used.`
+      );
+    }
+    setPhotoError(notes.length > 0 ? notes.join(" ") : null);
+    setSelectedSlotId(null);
+    // Nothing usable: keep whatever is already placed.
+    if (withMeta.length === 0) return;
+
+    if (topUp) {
+      objectUrlsRef.current.push(...withMeta.map((m) => m.url));
+      setUploadedPhotos((prev) => [...prev, ...withMeta]);
+      setPhotoUrls((prev) => ({ ...prev, ...assignPhotosToSlots(emptySlots, withMeta) }));
+      return;
+    }
     objectUrlsRef.current.forEach((u) => URL.revokeObjectURL(u));
     objectUrlsRef.current = withMeta.map((m) => m.url);
     resetCutouts();
     setUploadedPhotos(withMeta);
     setPhotoUrls(assignPhotosToSlots(photoSlots, withMeta));
-    setPhotoCount(withMeta.length);
+  }
+
+  function openSlotPicker(slotId: string) {
+    if (photoUrls[slotId]) return;
+    pendingSlotRef.current = slotId;
+    slotFileInputRef.current?.click();
+  }
+
+  async function handleSlotFile(file: File | undefined) {
+    const slotId = pendingSlotRef.current;
+    pendingSlotRef.current = null;
+    if (!file || !slotId) return;
+    const meta = await readImageMeta(file);
+    if (!meta) {
+      setPhotoError(unreadableNote(1));
+      return;
+    }
+    setPhotoError(null);
+    objectUrlsRef.current.push(meta.url);
+    setUploadedPhotos((prev) => [...prev, meta]);
+    setPhotoUrls((prev) => ({ ...prev, [slotId]: meta.url }));
     setSelectedSlotId(null);
   }
 
@@ -299,7 +366,6 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
       return { ...a, photoLayoutId: id, photoCrops: crops };
     });
     setPhotoUrls(assignPhotosToSlots(nextSlots, uploadedPhotos));
-    setPhotoCount(Math.min(uploadedPhotos.length, nextSlots.length));
     setSelectedSlotId(null);
     setCropSlotId(null);
   }
@@ -310,7 +376,7 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
     resetCutouts();
     setUploadedPhotos([]);
     setPhotoUrls({});
-    setPhotoCount(0);
+    setPhotoError(null);
     setSelectedSlotId(null);
   }
 
@@ -330,7 +396,10 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
 
   function handleChipClick(slotId: string) {
     if (selectedSlotId === null) {
-      if (!photoUrls[slotId]) return;
+      if (!photoUrls[slotId]) {
+        openSlotPicker(slotId);
+        return;
+      }
       setSelectedSlotId(slotId);
       return;
     }
@@ -562,8 +631,24 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
             type="file"
             accept="image/*"
             multiple
-            onChange={(e) => handleFiles(e.target.files)}
+            onChange={(e) => {
+              const files = Array.from(e.target.files ?? []);
+              // Reset so picking the same file again still fires onChange.
+              e.target.value = "";
+              handleFiles(files);
+            }}
             className="mt-3 block w-full text-sm text-zinc-300 file:mr-3 file:rounded-md file:border-0 file:bg-zinc-100 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-zinc-900 hover:file:bg-white"
+          />
+          <input
+            ref={slotFileInputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              e.target.value = "";
+              handleSlotFile(file);
+            }}
           />
           <div className="mt-3 flex items-center justify-between text-xs text-zinc-500">
             <span>
@@ -575,13 +660,26 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
               </button>
             )}
           </div>
+          {photoError && (
+            <p role="alert" className="mt-2 text-xs text-amber-300">
+              {photoError}
+            </p>
+          )}
+          {photoCount > 0 && photoCount < photoSlots.length && (
+            <p className="mt-2 text-xs text-zinc-400">
+              {photoSlots.length - photoCount} slot{photoSlots.length - photoCount === 1 ? " is" : "s are"} still
+              empty — tap one on the preview (or below) to add a photo, or pick more photos above.
+            </p>
+          )}
 
           {photoCount > 0 && (
             <div className="mt-4 border-t border-zinc-800 pt-3">
               <p className="text-xs font-medium text-zinc-300">
                 Rearrange {selectedSlotId && <span className="text-zinc-500">— pick a slot to swap with</span>}
               </p>
-              <p className="mt-0.5 text-xs text-zinc-500">Tap two photos to swap them, or drag one onto another.</p>
+              <p className="mt-0.5 text-xs text-zinc-500">
+                Tap two photos to swap them, or drag one onto another. Tap an empty slot to add a photo to it.
+              </p>
               <div className="mt-2 grid grid-cols-4 gap-2">
                 {photoSlots.map((slot, i) => {
                   const url = photoUrls[slot.id];
@@ -1135,6 +1233,7 @@ export default function TemplateWorkspace({ doc, productId }: Props) {
             onLayerDrag={handleLayerDrag}
             photoAdjust={photoAdjust}
             onPhotoCropChange={handlePhotoCropChange}
+            onEmptySlotClick={openSlotPicker}
             orderId={adjustments.orderId}
             orderIdCorner={adjustments.orderIdCorner}
             orderIdColor={adjustments.orderIdColor}

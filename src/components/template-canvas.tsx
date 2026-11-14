@@ -46,6 +46,9 @@ type Props = {
   // Photo-fit mode: drag a photo to reposition it *inside* its frame.
   photoAdjust?: boolean;
   onPhotoCropChange?: (slotId: string, offsetX: number, offsetY: number) => void;
+  // Tapping a photo slot that has no photo yet (outside edit / photo-fit
+  // modes) — lets the user fill that one slot straight from the preview.
+  onEmptySlotClick?: (slotId: string) => void;
   // Merchant-facing order reference, printed tiny in a corner (empty = hidden).
   orderId?: string;
   orderIdCorner?: "bottom-right" | "bottom-left" | "top-right" | "top-left";
@@ -152,6 +155,7 @@ const FONT_FAMILIES = [
   "Lora",
   "Tinos",
   "Yellowtail",
+  "Josefin Sans",
 ];
 
 function useFontsReady() {
@@ -607,9 +611,12 @@ function PhotoSlotNode({
     const el = new window.Image();
     el.crossOrigin = "anonymous";
     el.onload = () => setImg(el);
+    // An undecodable file must not leave the previous photo showing.
+    el.onerror = () => setImg(null);
     el.src = url;
     return () => {
       el.onload = null;
+      el.onerror = null;
     };
   }, [url]);
 
@@ -1121,6 +1128,8 @@ function CalendarNode({ layer }: { layer: CalendarLayer }) {
   const rowsUsed = Math.ceil((firstWeekday + daysInMonth) / cols);
 
   const highlight = layer.highlightDay;
+  // Colour for the Sunday column's dates (the weekday label is handled below).
+  const sundayDateColor = layer.sundayHeaderOnly ? undefined : layer.sundayColor;
   const dayLabel = (d: number) => (layer.zeroPad ? String(d).padStart(2, "0") : String(d));
   const monthName = layer.titleAbbrev ? MONTH_NAMES_SHORT[layer.month - 1] : MONTH_NAMES[layer.month - 1];
   const rawTitle = layer.title ?? monthName;
@@ -1217,7 +1226,7 @@ function CalendarNode({ layer }: { layer: CalendarLayer }) {
           fontFamily={layer.font}
           fontStyle={konvaFontStyle(layer.weight, false)}
           fontSize={layer.cellSizePx}
-          fill={col === sundayCol && layer.sundayColor ? layer.sundayColor : layer.color}
+          fill={col === sundayCol && sundayDateColor ? sundayDateColor : layer.color}
           opacity={layer.leadingDaysOpacity}
         />
       );
@@ -1231,8 +1240,7 @@ function CalendarNode({ layer }: { layer: CalendarLayer }) {
     const cy = titleH + headerH + row * rowH;
     const marked = d === highlight;
 
-    const sunday = col === sundayCol && layer.sundayColor;
-    const dateColor = sunday ? layer.sundayColor! : layer.color;
+    const dateColor = col === sundayCol && sundayDateColor ? sundayDateColor : layer.color;
 
     // "heart" swaps the number out for a glyph; the others keep the number and
     // draw a marker behind (filled disc / heart) or around it (hollow ring).
@@ -1364,6 +1372,7 @@ export default function TemplateCanvas({
   onLayerDrag,
   photoAdjust = false,
   onPhotoCropChange,
+  onEmptySlotClick,
   orderId = "",
   orderIdCorner = "bottom-right",
   orderIdColor = "auto",
@@ -1400,12 +1409,24 @@ export default function TemplateCanvas({
   return (
     <Stage ref={stageRef} width={displayWidth} height={displayHeight} scaleX={scale} scaleY={scale}>
       {/* remount once fonts finish loading so text re-measures/re-paints with the real families */}
-      <Layer key={fontsReady ? "fonts-ready" : "fonts-loading"} listening={editable || photoAdjust}>
+      <Layer
+        key={fontsReady ? "fonts-ready" : "fonts-loading"}
+        listening={editable || photoAdjust || !!onEmptySlotClick}
+      >
         <Rect x={0} y={0} width={doc.canvas.widthPx} height={doc.canvas.heightPx} fill={doc.canvas.background} />
         {doc.layers
           .filter((l) => l.visible)
           .map((layer) => {
             const offset = layerOffsets[layer.id] ?? { dx: 0, dy: 0 };
+            // Outside edit / photo-fit modes only empty slots listen, and
+            // stickers stay deaf — so a decoration drawn over a slot (e.g. the
+            // petals over PF-000029's centre frame) can't swallow the tap.
+            const emptySlotTap =
+              !!onEmptySlotClick &&
+              !editable &&
+              !photoAdjust &&
+              layer.type === "photoSlot" &&
+              !photoUrls[layer.id];
             // Each layer lives inside an offset Group. The group *is* the
             // reposition transform, so dragging it directly yields the new
             // offset — no accumulation, no snap-back.
@@ -1418,13 +1439,16 @@ export default function TemplateCanvas({
                 // so a decorative corner spray drawn *after* a photo swallows
                 // the drag meant for the photo underneath it. While adjusting
                 // photo fit, only the photo slots may listen.
-                listening={editable || (photoAdjust && layer.type === "photoSlot")}
+                listening={editable || (photoAdjust && layer.type === "photoSlot") || emptySlotTap}
                 draggable={editable}
                 onDragEnd={(e) => onLayerDrag?.(layer.id, e.target.x(), e.target.y())}
+                onClick={emptySlotTap ? () => onEmptySlotClick!(layer.id) : undefined}
+                onTap={emptySlotTap ? () => onEmptySlotClick!(layer.id) : undefined}
                 onMouseEnter={(e) => {
-                  if (editable) {
+                  const cursor = editable ? "move" : emptySlotTap ? "pointer" : null;
+                  if (cursor) {
                     const stage = e.target.getStage();
-                    if (stage) stage.container().style.cursor = "move";
+                    if (stage) stage.container().style.cursor = cursor;
                   }
                 }}
                 onMouseLeave={(e) => {
