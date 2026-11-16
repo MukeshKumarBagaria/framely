@@ -57,7 +57,9 @@ export const photoSlotLayerSchema = layerCommon.extend({
   // "hexagon" is a flat-top hexagon inscribed in [w × h] — the honeycomb
   // collage shape. Its natural proportion is w : h = 2 : √3; give the slot that
   // ratio or the hexagon comes out stretched.
-  shape: z.enum(["rect", "rounded", "circle", "heart", "hexagon"]).default("rect"),
+  // "scallop" is an ellipse inscribed in [w × h] whose edge is a ring of
+  // rounded bumps — the wavy "cloud" frame of a baby-photo keepsake.
+  shape: z.enum(["rect", "rounded", "circle", "heart", "hexagon", "scallop"]).default("rect"),
   cornerRadius: z.number().min(0).optional(),
   fit: z.literal("cover").default("cover"),
   focal: z.enum(["faces", "center"]).default("faces"),

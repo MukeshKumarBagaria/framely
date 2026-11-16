@@ -287,10 +287,36 @@ function heartPath(ctx: Konva.Context, w: number, h: number) {
   ctx.closePath();
 }
 
+// A scalloped ellipse inscribed in [w × h]: the edge dips to valleys on an
+// inner ellipse and bulges out in SCALLOP_BUMPS rounded bumps whose crests just
+// touch the box. Each bump is a quadratic curve; its control point is pushed
+// out far enough that the curve's midpoint lands exactly on the outer ellipse.
+const SCALLOP_BUMPS = 14;
+const SCALLOP_DEPTH = 0.07; // valley depth, as a share of the radius
+function scallopPath(ctx: Konva.Context, w: number, h: number) {
+  const cx = w / 2;
+  const cy = h / 2;
+  const inner = 1 - SCALLOP_DEPTH;
+  const step = (Math.PI * 2) / SCALLOP_BUMPS;
+  const ctrl = 2 - inner * Math.cos(step / 2);
+  const point = (angle: number, r: number) => [cx + Math.cos(angle) * cx * r, cy + Math.sin(angle) * cy * r];
+  ctx.beginPath();
+  const [sx, sy] = point(-Math.PI / 2 - step / 2, inner);
+  ctx.moveTo(sx, sy);
+  for (let i = 0; i < SCALLOP_BUMPS; i++) {
+    const mid = -Math.PI / 2 + i * step;
+    const [qx, qy] = point(mid, ctrl);
+    const [ex, ey] = point(mid + step / 2, inner);
+    ctx.quadraticCurveTo(qx, qy, ex, ey);
+  }
+  ctx.closePath();
+}
+
 // Slots that aren't rectangles are drawn by clipping to their outline path.
 function clippedSlotPath(shape: PhotoSlotLayer["shape"]) {
   if (shape === "hexagon") return hexagonPath;
   if (shape === "heart") return heartPath;
+  if (shape === "scallop") return scallopPath;
   return null;
 }
 
