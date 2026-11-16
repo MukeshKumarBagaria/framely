@@ -156,6 +156,7 @@ const FONT_FAMILIES = [
   "Tinos",
   "Yellowtail",
   "Josefin Sans",
+  "Allison",
 ];
 
 function useFontsReady() {

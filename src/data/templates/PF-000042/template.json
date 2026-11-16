@@ -1,0 +1,457 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "PF-000042",
+    "occasion": [
+      "birthday",
+      "friend",
+      "girlfriend",
+      "wife"
+    ]
+  },
+  "canvas": {
+    "widthMm": 210,
+    "heightMm": 297,
+    "dpi": 300,
+    "bleedMm": 3,
+    "widthPx": 2480,
+    "heightPx": 3508,
+    "background": "#121212"
+  },
+  "inputs": {
+    "photos": {
+      "min": 13,
+      "max": 13
+    },
+    "fields": [
+      {
+        "key": "heading",
+        "label": "Heading",
+        "type": "text",
+        "maxLen": 24,
+        "required": false,
+        "default": "Happy birthday"
+      },
+      {
+        "key": "name",
+        "label": "Name",
+        "type": "text",
+        "maxLen": 16,
+        "required": true,
+        "default": "Rashmika"
+      },
+      {
+        "key": "message",
+        "label": "Message",
+        "type": "text",
+        "maxLen": 260,
+        "required": false,
+        "default": "Wishing you a day filled with happiness😊 and a\nyear filled with joy. Hope your special💖 day\nbrings you all that your heart desires! Sending you\nsmiles for every moment of your special day...\nHave a wonderful time."
+      }
+    ]
+  },
+  "layers": [
+    {
+      "id": "hero",
+      "type": "photoSlot",
+      "label": "Main photo",
+      "x": 900,
+      "y": 400,
+      "w": 1580,
+      "h": 2420,
+      "shape": "rect",
+      "fit": "cover",
+      "focal": "faces"
+    },
+    {
+      "id": "fade-left",
+      "type": "shape",
+      "label": "Main photo fade (left)",
+      "kind": "rect",
+      "x": 899,
+      "y": 400,
+      "w": 640,
+      "h": 2420,
+      "fill": "none",
+      "fillGradient": {
+        "from": "#121212",
+        "to": "#12121200",
+        "direction": "horizontal"
+      },
+      "locked": true
+    },
+    {
+      "id": "fade-top",
+      "type": "shape",
+      "label": "Main photo fade (top)",
+      "kind": "rect",
+      "x": 899,
+      "y": 399,
+      "w": 1581,
+      "h": 760,
+      "fill": "none",
+      "fillGradient": {
+        "from": "#121212",
+        "to": "#12121200",
+        "direction": "vertical"
+      },
+      "locked": true
+    },
+    {
+      "id": "fade-bottom",
+      "type": "shape",
+      "label": "Main photo fade (bottom)",
+      "kind": "rect",
+      "x": 899,
+      "y": 2160,
+      "w": 1581,
+      "h": 661,
+      "fill": "none",
+      "fillGradient": {
+        "from": "#12121200",
+        "to": "#121212",
+        "direction": "vertical"
+      },
+      "locked": true
+    },
+    {
+      "id": "p1",
+      "type": "photoSlot",
+      "label": "Photo 1",
+      "x": 444,
+      "y": 574,
+      "w": 266,
+      "h": 320,
+      "shape": "rounded",
+      "cornerRadius": 34,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 16,
+        "color": "#F4F4F4"
+      }
+    },
+    {
+      "id": "p2",
+      "type": "photoSlot",
+      "label": "Photo 2",
+      "x": 104,
+      "y": 870,
+      "w": 352,
+      "h": 430,
+      "shape": "rounded",
+      "cornerRadius": 34,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 16,
+        "color": "#F4F4F4"
+      }
+    },
+    {
+      "id": "p3",
+      "type": "photoSlot",
+      "label": "Photo 3",
+      "x": 536,
+      "y": 946,
+      "w": 290,
+      "h": 354,
+      "shape": "rounded",
+      "cornerRadius": 34,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 16,
+        "color": "#F4F4F4"
+      }
+    },
+    {
+      "id": "p4",
+      "type": "photoSlot",
+      "label": "Photo 4",
+      "x": 110,
+      "y": 1360,
+      "w": 406,
+      "h": 490,
+      "shape": "rounded",
+      "cornerRadius": 34,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 16,
+        "color": "#F4F4F4"
+      }
+    },
+    {
+      "id": "p5",
+      "type": "photoSlot",
+      "label": "Photo 5",
+      "x": 540,
+      "y": 1380,
+      "w": 346,
+      "h": 430,
+      "shape": "rounded",
+      "cornerRadius": 34,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 16,
+        "color": "#F4F4F4"
+      }
+    },
+    {
+      "id": "p6",
+      "type": "photoSlot",
+      "label": "Photo 6",
+      "x": 190,
+      "y": 1880,
+      "w": 390,
+      "h": 450,
+      "shape": "rounded",
+      "cornerRadius": 34,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 16,
+        "color": "#F4F4F4"
+      }
+    },
+    {
+      "id": "p7",
+      "type": "photoSlot",
+      "label": "Photo 7",
+      "x": 600,
+      "y": 1890,
+      "w": 366,
+      "h": 440,
+      "shape": "rounded",
+      "cornerRadius": 34,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 16,
+        "color": "#F4F4F4"
+      }
+    },
+    {
+      "id": "p8",
+      "type": "photoSlot",
+      "label": "Photo 8",
+      "x": 176,
+      "y": 2370,
+      "w": 634,
+      "h": 440,
+      "shape": "rounded",
+      "cornerRadius": 34,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 16,
+        "color": "#F4F4F4"
+      }
+    },
+    {
+      "id": "p9",
+      "type": "photoSlot",
+      "label": "Photo 9",
+      "x": 272,
+      "y": 2885,
+      "w": 620,
+      "h": 510,
+      "shape": "rounded",
+      "cornerRadius": 34,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 16,
+        "color": "#F4F4F4"
+      }
+    },
+    {
+      "id": "p10",
+      "type": "photoSlot",
+      "label": "Photo 10",
+      "x": 930,
+      "y": 2874,
+      "w": 620,
+      "h": 480,
+      "shape": "rounded",
+      "cornerRadius": 34,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 16,
+        "color": "#F4F4F4"
+      }
+    },
+    {
+      "id": "p11",
+      "type": "photoSlot",
+      "label": "Photo 11",
+      "x": 1555,
+      "y": 2905,
+      "w": 394,
+      "h": 430,
+      "shape": "rounded",
+      "cornerRadius": 34,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 16,
+        "color": "#F4F4F4"
+      }
+    },
+    {
+      "id": "p12",
+      "type": "photoSlot",
+      "label": "Photo 12",
+      "x": 1956,
+      "y": 2918,
+      "w": 400,
+      "h": 444,
+      "shape": "rounded",
+      "cornerRadius": 34,
+      "fit": "cover",
+      "focal": "faces",
+      "border": {
+        "width": 16,
+        "color": "#F4F4F4"
+      }
+    },
+    {
+      "type": "text",
+      "maxLines": 1,
+      "lineHeight": 1.2,
+      "autoFit": true,
+      "weight": 400,
+      "id": "heading",
+      "binds": "heading",
+      "label": "Heading",
+      "x": 30,
+      "y": 64,
+      "w": 900,
+      "align": "left",
+      "font": "Allison",
+      "sizePx": 190,
+      "color": "#F4F4F4"
+    },
+    {
+      "type": "text",
+      "maxLines": 1,
+      "lineHeight": 1.2,
+      "autoFit": true,
+      "weight": 400,
+      "id": "name",
+      "binds": "name",
+      "label": "Name",
+      "x": 760,
+      "y": 230,
+      "w": 560,
+      "align": "left",
+      "font": "Allison",
+      "sizePx": 200,
+      "color": "#F4F4F4"
+    },
+    {
+      "id": "cal-month",
+      "type": "calendar",
+      "label": "Month",
+      "variant": "month",
+      "x": 1225,
+      "y": 56,
+      "w": 1200,
+      "h": 200,
+      "titleAlign": "center",
+      "year": 2025,
+      "month": 10,
+      "highlightDay": 28,
+      "font": "Montserrat",
+      "titleFont": "Lora",
+      "titleWeight": 400,
+      "headerWeight": 900,
+      "weight": 800,
+      "color": "#F2F2F2",
+      "titleColor": "#F2F2F2",
+      "headerColor": "#F2F2F2",
+      "heartColor": "#E4E4E4",
+      "highlightTextColor": "#9C9C9C",
+      "titleSizePx": 128,
+      "headerSizePx": 60,
+      "cellSizePx": 68,
+      "titleItalic": true
+    },
+    {
+      "id": "cal-rule",
+      "type": "shape",
+      "label": "Calendar rule",
+      "kind": "line",
+      "x": 1280,
+      "y": 186,
+      "w": 1130,
+      "h": 8,
+      "stroke": {
+        "width": 6,
+        "color": "#F2F2F2"
+      },
+      "locked": true
+    },
+    {
+      "id": "calendar",
+      "type": "calendar",
+      "label": "Calendar",
+      "variant": "grid",
+      "x": 1276.2,
+      "y": 214,
+      "w": 1117.9,
+      "h": 547.5,
+      "showTitle": false,
+      "headerBandPx": 75,
+      "weekStart": "sunday",
+      "zeroPad": true,
+      "weekdayLabels": [
+        "SU",
+        "MO",
+        "TU",
+        "WE",
+        "TH",
+        "FR",
+        "SA"
+      ],
+      "highlightStyle": "heartShape",
+      "highlightSizePx": 132,
+      "year": 2025,
+      "month": 10,
+      "highlightDay": 28,
+      "font": "Montserrat",
+      "titleFont": "Lora",
+      "titleWeight": 400,
+      "headerWeight": 900,
+      "weight": 800,
+      "color": "#F2F2F2",
+      "titleColor": "#F2F2F2",
+      "headerColor": "#F2F2F2",
+      "heartColor": "#E4E4E4",
+      "highlightTextColor": "#9C9C9C",
+      "titleSizePx": 128,
+      "headerSizePx": 60,
+      "cellSizePx": 68
+    },
+    {
+      "type": "text",
+      "maxLines": 5,
+      "lineHeight": 1.4,
+      "autoFit": true,
+      "weight": 700,
+      "id": "message",
+      "binds": "message",
+      "label": "Message",
+      "x": 1060,
+      "y": 2510,
+      "w": 1320,
+      "align": "center",
+      "font": "Comic Relief",
+      "sizePx": 50,
+      "color": "#F4F4F4"
+    }
+  ]
+}
